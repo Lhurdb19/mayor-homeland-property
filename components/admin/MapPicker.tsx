@@ -5,8 +5,8 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// FIX: Set default marker icon (NO delete _getIconUrl)
-const icon = L.icon({
+// FIX: Set default marker icon safely (no deleting prototype methods)
+const defaultIcon = L.icon({
   iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
@@ -14,7 +14,7 @@ const icon = L.icon({
   iconAnchor: [12, 41],
 });
 
-L.Marker.prototype.options.icon = icon;
+L.Marker.prototype.options.icon = defaultIcon;
 
 interface MapPickerProps {
   value?: { lat: number; lng: number };

@@ -1,13 +1,23 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+export const config = {
+  matcher: ["/dashboard/admin/:path*", "/dashboard/user/:path*"],
+};
 
-  const url = req.nextUrl.clone();
+export default async function proxy(req: Request) {
+  const url = new URL(req.url);
 
-  // Admin routes
+  // Fix TS errors by typing as 'any'
+  const token = await getToken({
+    req: {
+      headers: Object.fromEntries(req.headers),
+      cookies: req.headers.get("cookie") ?? "",
+    } as any,
+    secret: process.env.NEXTAUTH_SECRET!,
+  });
+
+  // ADMIN ROUTES
   if (url.pathname.startsWith("/dashboard/admin")) {
     if (!token || token.role !== "admin") {
       url.pathname = "/auth/login";
@@ -15,7 +25,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // User routes
+  // USER ROUTES
   if (url.pathname.startsWith("/dashboard/user")) {
     if (!token || token.role !== "user") {
       url.pathname = "/auth/login";
@@ -25,7 +35,3 @@ export async function middleware(req: NextRequest) {
 
   return NextResponse.next();
 }
-
-export const config = {
-  matcher: ["/dashboard/admin/:path*", "/dashboard/user/:path*"],
-};
