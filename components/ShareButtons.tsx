@@ -25,48 +25,48 @@ export default function ShareButtons({ title }: ShareButtonsProps) {
       <CardContent className="flex gap-3 flex-wrap">
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 text-blue-200 hover:bg-blue-50"
-              as="a"
+            <a
+              className="flex items-center gap-2 text-blue-200 hover:bg-blue-50 border rounded px-3 py-2 outline outline-1 outline-blue-200"
               href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
               target="_blank"
+              rel="noopener noreferrer"
             >
               <FacebookIcon className="w-5 h-5" />
               Facebook
-            </Button>
+            </a>
+
           </TooltipTrigger>
           <TooltipContent>Share on Facebook</TooltipContent>
         </Tooltip>
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 text-blue-200 hover:bg-blue-50"
-              as="a"
-              href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`}
+            <a
+              className="flex items-center gap-2 text-blue-200 hover:bg-blue-50 border rounded px-3 py-2 outline outline-1 outline-blue-200"
+              href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
               target="_blank"
+              rel="noopener noreferrer"
             >
+
               <LinkedinIcon className="w-5 h-5" />
               LinkedIn
-            </Button>
+            </a>
           </TooltipTrigger>
           <TooltipContent>Share on LinkedIn</TooltipContent>
         </Tooltip>
 
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 text-blue-200 hover:bg-blue-50"
-              as="a"
-              href={`https://twitter.com/intent/tweet?url=${url}&text=${title}`}
+            <a
+              className="flex items-center gap-2 text-blue-200 hover:bg-blue-50 border rounded px-3 py-2 outline outline-1 outline-blue-200"
+              href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
               target="_blank"
+              rel="noopener noreferrer"
             >
+
               <TwitterIcon className="w-5 h-5" />
               Twitter
-            </Button>
+            </a>
           </TooltipTrigger>
           <TooltipContent>Share on Twitter</TooltipContent>
         </Tooltip>
