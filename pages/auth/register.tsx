@@ -56,15 +56,15 @@ export default function Register() {
             <form className="space-y-2" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name</Label>
-                <Input id="firstName" name="firstName" value={form.firstName} onChange={handleChange} required />
+                <Input id="firstName" name="firstName" value={form.firstName} onChange={handleChange} required className="border-l-0 border-r-0 border-t-0 border-blue-500 " />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name</Label>
-                <Input id="lastName" name="lastName" value={form.lastName} onChange={handleChange} required />
+                <Input id="lastName" name="lastName" value={form.lastName} onChange={handleChange} required className="border-l-0 border-r-0 border-t-0 border-blue-500 " />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
-                <Input id="email" name="email" type="email" value={form.email} onChange={handleChange} required />
+                <Input id="email" name="email" type="email" value={form.email} onChange={handleChange} required className="border-l-0 border-r-0 border-t-0 border-blue-500 " />
               </div>
               <div className="relative space-y-2">
                 <Label htmlFor="password">Password</Label>
@@ -75,7 +75,7 @@ export default function Register() {
                   value={form.password}
                   onChange={handleChange}
                   required
-                  className="pr-10"
+                  className="border-l-0 border-r-0 border-t-0 border-blue-500"
                 />
                 <span
                   className="absolute right-3 top-7.5 cursor-pointer"
@@ -86,23 +86,26 @@ export default function Register() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" name="phone" type="text" value={form.phone} onChange={handleChange} placeholder="e.g. 08012345678" required />
+                <Input id="phone" name="phone" type="text" value={form.phone} onChange={handleChange} placeholder="e.g. 08012345678" required className="border-l-0 border-r-0 border-t-0 border-blue-500 " />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="address">Address</Label>
-                <Input id="address" name="address" type="text" value={form.address} onChange={handleChange} required />
+                <Input id="address" name="address" type="text" value={form.address} onChange={handleChange} required className="border-l-0 border-r-0 border-t-0 border-blue-500 " />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="role">Select Role</Label>
-                <select id="role" name="role" value={form.role} onChange={handleChange} className="w-full border rounded-md p-2">
+                <select id="role" name="role" value={form.role} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500">
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
 
-              <Button className="w-full font-bold" type="submit" disabled={loading}>
+              <div className="text-end flex justify-end">
+
+              <Button className="w-[150px] text-end flex items-end font-bold" type="submit" disabled={loading}>
                 {loading ? "Creating..." : "Register"}
               </Button>
+              </div>
             </form>
           </CardContent>
         </Card>

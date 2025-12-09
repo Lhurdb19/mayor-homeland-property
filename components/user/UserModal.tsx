@@ -116,12 +116,14 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             name="firstName"
             value={form.firstName}
             onChange={handleChange}
+            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
           />
           <Input
             placeholder="Last Name"
             name="lastName"
             value={form.lastName}
             onChange={handleChange}
+            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
           />
           <Input
             placeholder="Email"
@@ -129,18 +131,21 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             name="email"
             value={form.email}
             onChange={handleChange}
+            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
           />
           <Input
             placeholder="Phone"
             name="phone"
             value={form.phone}
             onChange={handleChange}
+            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
           />
           <Input
             placeholder="Address"
             name="address"
             value={form.address}
             onChange={handleChange}
+            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
           />
 
           {!user && (
@@ -150,6 +155,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
               name="password"
               value={(form as any).password || ""}
               onChange={handleChange}
+              className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
             />
           )}
 
@@ -157,7 +163,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             name="role"
             value={form.role}
             onChange={handleChange}
-            className="border rounded px-2 py-1 w-full"
+            className="rounded px-2 py-1 w-full p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
@@ -170,6 +176,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
               checked={form.isVerified}
               onChange={handleChange}
               id="verified"
+              className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
             />
             <label htmlFor="verified" className="text-sm font-medium">
               Verified

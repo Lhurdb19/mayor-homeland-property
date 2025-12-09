@@ -69,12 +69,12 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
                 </DialogHeader>
 
                 <div className="space-y-4">
-                    <Input placeholder="First Name" name="firstName" value={form.firstName} onChange={handleChange} />
-                    <Input placeholder="Last Name" name="lastName" value={form.lastName} onChange={handleChange} />
-                    <Input placeholder="Email" name="email" type="email" value={form.email} onChange={handleChange} />
-                    <Input placeholder="Phone" name="phone" value={form.phone} onChange={handleChange} />
-                    <Input placeholder="Address" name="address" value={form.address} onChange={handleChange} />
-                    <select name="role" value={form.role} onChange={handleChange} className="w-full border rounded-md p-2">
+                    <Input placeholder="First Name" name="firstName" value={form.firstName} onChange={handleChange} className="border rounded-md border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                    <Input placeholder="Last Name" name="lastName" value={form.lastName} onChange={handleChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                    <Input placeholder="Email" name="email" type="email" value={form.email} onChange={handleChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                    <Input placeholder="Phone" name="phone" value={form.phone} onChange={handleChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                    <Input placeholder="Address" name="address" value={form.address} onChange={handleChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                    <select name="role" value={form.role} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500">
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
@@ -82,7 +82,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
                         {user.isVerified ? "Verified" : "Not Verified"}
                     </p>
 
-                    {!user && <Input placeholder="Password" name="password" type="password" value={form.password} onChange={handleChange} />}
+                    {!user && <Input placeholder="Password" name="password" type="password" value={form.password} onChange={handleChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>}
                     <div className="flex justify-end gap-2 mt-4">
                         <Button variant="outline" onClick={onClose}>Cancel</Button>
                         <Button onClick={handleSubmit} disabled={loading}>{loading ? "Saving..." : "Save"}</Button>

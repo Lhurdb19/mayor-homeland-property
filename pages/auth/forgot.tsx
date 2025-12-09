@@ -41,7 +41,9 @@ export default function ForgotPassword() {
             <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
-                <Input id="email" type="email" required value={email} onChange={e => setEmail(e.target.value)} />
+                <Input id="email" type="email" required value={email} onChange={e => setEmail(e.target.value)} 
+                className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                />
               </div>
               <Button className="w-full" type="submit" disabled={loading}>
                 {loading ? "Sending..." : "Send Reset Link"}

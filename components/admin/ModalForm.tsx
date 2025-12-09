@@ -83,12 +83,12 @@ export default function ModalForm({ open, onClose, property, refresh }: ModalFor
         </DialogHeader>
 
         <div className="space-y-4">
-          <Input placeholder="Title" name="title" value={form.title} onChange={handleChange} />
-          <Textarea placeholder="Description" name="description" value={form.description} onChange={handleChange} />
-          <Input placeholder="Price" name="price" type="number" value={form.price} onChange={handleChange} />
-          <Input placeholder="Location" name="location" value={form.location} onChange={handleChange} />
-          <Input placeholder="Images (comma separated URLs)" name="images" value={form.images} onChange={handleChange} />
-          <select name="status" value={form.status} onChange={handleChange} className="w-full border rounded-md p-2">
+          <Input placeholder="Title" name="title" value={form.title} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <Textarea placeholder="Description" name="description" value={form.description} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <Input placeholder="Price" name="price" type="number" value={form.price} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <Input placeholder="Location" name="location" value={form.location} onChange={handleChange}className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+          <Input placeholder="Images (comma separated URLs)" name="images" value={form.images} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <select name="status" value={form.status} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500">
             <option value="available">Available</option>
             <option value="sold">Sold</option>
           </select>

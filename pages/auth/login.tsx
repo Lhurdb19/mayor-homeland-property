@@ -65,6 +65,7 @@ export default function Login() {
                   required
                   value={form.email}
                   onChange={handleChange}
+                  className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
                 />
               </div>
 
@@ -77,7 +78,7 @@ export default function Login() {
                   required
                   value={form.password}
                   onChange={handleChange}
-                  className="pr-10"
+                  className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
                 />
                 <span
                   className="absolute right-3 top-7.5 cursor-pointer"

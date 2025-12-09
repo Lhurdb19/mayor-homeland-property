@@ -94,10 +94,10 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Input placeholder="Title" {...register("title", { required: true })} />
+          <Input placeholder="Title" {...register("title", { required: true })} className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
           {errors.title && <p className="text-red-500 text-xs">Title is required</p>}
 
-          <textarea {...register("description", { required: true })} className="w-full border rounded p-2" rows={3} placeholder="Description" />
+          <textarea {...register("description", { required: true })} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" rows={3} placeholder="Description" />
           {errors.description && <p className="text-red-500 text-xs">Description is required</p>}
 
           <Input type="number" placeholder="Price" {...register("price", { required: true })} />
@@ -108,14 +108,14 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
           <div className="grid grid-cols-2 gap-3">
             <select
               {...register("status")}
-              className="border rounded p-2 w-full"
+              className="border rounded p-2 w-full border-l-0 border-r-0 border-t-0 border-blue-500"
             >
               <option value="available">Available</option>
               <option value="sold">Sold</option>
               <option value="rented">Rented</option>
             </select>
 
-            <select {...register("type")} className="border rounded p-2 w-full">
+            <select {...register("type")} className="border rounded p-2 w-full border-l-0 border-r-0 border-t-0 border-blue-500">
               <option value="sale">For Sale</option>
               <option value="rent">For Rent</option>
               <option value="lease">Lease</option>
@@ -129,20 +129,22 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
               type="number"
               placeholder="Bedrooms"
               {...register("bedrooms")}
+              className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
             />
 
             <Input
               type="number"
               placeholder="Bathrooms"
               {...register("bathrooms")}
+              className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
             />
 
-            <Input type="number" placeholder="Sqft" {...register("sqft")} />
+            <Input type="number" placeholder="Sqft" {...register("sqft")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
           </div>
 
           {/* CONTACT */}
-          <Input placeholder="Phone" {...register("phone")} />
-          <Input type="email" placeholder="Email" {...register("email")} />
+          <Input placeholder="Phone" {...register("phone")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <Input type="email" placeholder="Email" {...register("email")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
 
           <MapPicker
             value={
@@ -171,7 +173,7 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
           <p className="text-xs text-gray-500 mt-1">Click on the map to select property location</p>
 
           {/* IMAGE UPLOAD */}
-          <input type="file" multiple accept="image/*" onChange={handleFileChange} />
+          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
 
           {/* PREVIEW IMAGES */}
           <div className="grid grid-cols-3 gap-3 mt-2">

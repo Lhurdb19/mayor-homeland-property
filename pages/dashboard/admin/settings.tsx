@@ -103,21 +103,25 @@ export default function SettingsPage() {
                 placeholder="Last Name"
                 value={adminData.lastName}
                 onChange={(e) => setAdminData({ ...adminData, lastName: e.target.value })}
+                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
               />
               <Input
                 placeholder="Email"
                 value={adminData.email}
                 onChange={(e) => setAdminData({ ...adminData, email: e.target.value })}
+                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
               />
               <Input
                 placeholder="Phone"
                 value={adminData.phone}
                 onChange={(e) => setAdminData({ ...adminData, phone: e.target.value })}
+                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
               />
               <Input
                 type="password"
                 placeholder="Password (leave blank to keep current)"
                 onChange={(e) => setAdminData({ ...adminData, password: e.target.value })}
+                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
               />
             </CardContent>
           </Card>
@@ -133,6 +137,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   setSiteSettings({ ...siteSettings, commissionRate: Number(e.target.value) })
                 }
+                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
               />
               <label className="flex items-center gap-2">
                 <input
@@ -141,6 +146,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setSiteSettings({ ...siteSettings, featuredListings: e.target.checked })
                   }
+                  className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
                 />
                 Featured Listings Enabled
               </label>
@@ -151,6 +157,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setSiteSettings({ ...siteSettings, darkMode: e.target.checked })
                   }
+                  className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
                 />
                 Dark Mode
               </label>
@@ -166,6 +173,7 @@ export default function SettingsPage() {
                       list[index] = e.target.value;
                       setSiteSettings({ ...siteSettings, whatsappNumbers: list });
                     }}
+                    className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
                   />
                   <Button
                     variant="destructive"

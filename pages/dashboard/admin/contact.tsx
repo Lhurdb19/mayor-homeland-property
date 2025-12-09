@@ -139,7 +139,7 @@ export default function AdminContactPage() {
                   placeholder="Type a reply..."
                   value={reply}
                   onChange={(e) => setReply(e.target.value)}
-                  className="flex-1 h-16 resize-none rounded-xl p-2 text-sm"
+                  className="flex-1 h-16 resize-none text-sm rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
                 />
                 <Button onClick={handleReply} className="bg-blue-600 text-white hover:bg-blue-700 rounded-full px-4">
                   Send
