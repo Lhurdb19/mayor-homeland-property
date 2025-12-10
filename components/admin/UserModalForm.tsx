@@ -8,10 +8,18 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { toast } from "sonner";
 
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  role: "user" | "admin";
+  isVerified: boolean;
+}
+
 interface UserModalFormProps {
   open: boolean;
   onClose: () => void;
-  user?: any; // Editing existing user
+  user?: User; // Editing existing user
   refresh: () => void;
 }
 
@@ -20,7 +28,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
   const [form, setForm] = useState({
     name: "",
     email: "",
-    role: "user",
+    role: "user" as "user" | "admin",
     isVerified: false,
   });
 
@@ -43,12 +51,20 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
     }
   }, [user]);
 
-  // Fix TS error: allow input + select
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  // Separate handlers for type safety
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value as "user" | "admin" }));
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setForm((prev) => ({ ...prev, [name]: checked }));
   };
 
   const handleSubmit = async () => {
@@ -58,7 +74,6 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
     }
 
     setLoading(true);
-
     try {
       if (user) {
         // UPDATE USER
@@ -93,7 +108,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             <Input
               name="name"
               value={form.name}
-              onChange={handleChange}
+              onChange={handleInputChange}
               placeholder="Enter full name"
             />
           </div>
@@ -104,7 +119,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             <Input
               name="email"
               value={form.email}
-              onChange={handleChange}
+              onChange={handleInputChange}
               type="email"
               placeholder="user@example.com"
             />
@@ -116,7 +131,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             <select
               name="role"
               value={form.role}
-              onChange={handleChange}
+              onChange={handleSelectChange}
               className="w-full border px-3 py-2 rounded-md"
             >
               <option value="user">User</option>
@@ -129,13 +144,9 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             <input
               type="checkbox"
               id="verified"
+              name="isVerified"
               checked={form.isVerified}
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  isVerified: e.target.checked,
-                }))
-              }
+              onChange={handleCheckboxChange}
             />
             <Label htmlFor="verified">Verified</Label>
           </div>
