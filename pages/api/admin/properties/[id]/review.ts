@@ -4,21 +4,33 @@ import Property from "@/models/Property";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
+// Define the Review type for TypeScript
+interface ReviewType {
+  user?: any;
+  name: string;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await connectDB();
   const { id } = req.query;
 
-  if (req.method !== "POST") return res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== "POST")
+    return res.status(405).json({ message: "Method not allowed" });
 
   try {
     const session = await getServerSession(req, res, authOptions);
 
     const { rating, comment, name: guestName } = req.body;
 
-    if (!rating || !comment) return res.status(400).json({ message: "Missing fields" });
+    if (!rating || !comment)
+      return res.status(400).json({ message: "Missing fields" });
 
     const property = await Property.findById(id);
-    if (!property) return res.status(404).json({ message: "Property not found" });
+    if (!property)
+      return res.status(404).json({ message: "Property not found" });
 
     // Determine reviewer
     const reviewerName = session?.user?.name || guestName || "Anonymous";
@@ -26,22 +38,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Prevent duplicate review for logged-in users
     if (reviewerId) {
-      const existingReview = property.reviews.find(r => r.user?.toString() === reviewerId);
-      if (existingReview) return res.status(400).json({ message: "You already reviewed this property" });
+      const existingReview = property.reviews.find(
+        (r: ReviewType) => r.user?.toString() === reviewerId
+      );
+
+      if (existingReview)
+        return res
+          .status(400)
+          .json({ message: "You already reviewed this property" });
     }
 
-    property.reviews.push({
+    // Push new review
+    const newReview: ReviewType = {
       user: reviewerId,
       name: reviewerName,
       rating,
       comment,
       createdAt: new Date(),
-    });
+    };
+
+    property.reviews.push(newReview);
 
     await property.save();
 
     return res.status(201).json({ reviews: property.reviews });
-
   } catch (error) {
     console.error("Review Error:", error);
     return res.status(500).json({ message: "Server error" });

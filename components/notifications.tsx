@@ -68,7 +68,7 @@ export default function NotificationsDropdown() {
                     <p className="text-xs text-gray-500">{new Date(n.createdAt).toLocaleString()}</p>
                   </Link>
                   {!n.read && (
-                    <Button size="xs" variant="outline" onClick={() => markAsRead(n._id)}>
+                    <Button size="sm" variant="outline" onClick={() => markAsRead(n._id)}>
                       Mark as Read
                     </Button>
                   )}

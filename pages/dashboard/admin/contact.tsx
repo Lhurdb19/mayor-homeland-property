@@ -16,6 +16,8 @@ interface Contact {
   adminResponse?: string;
   createdAt: string;
   updatedAt?: string;
+
+  sender: "user" | "admin";  // 👈 ADD THIS
 }
 
 export default function AdminContactPage() {

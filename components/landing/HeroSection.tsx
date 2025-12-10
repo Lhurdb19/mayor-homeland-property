@@ -10,71 +10,60 @@ export default function Hero() {
 
   const [filters, setFilters] = useState({
     location: "",
-    category: "",
-    bedroom: "",
+    type: "any",
+    bedrooms: "",
     minPrice: "",
     maxPrice: "",
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    const query = new URLSearchParams(filters);
-    router.push(`/dashboard/user/properties?${query.toString()}`);
+
+    // Create URL params but remove empty strings and "any"
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value !== "" && value !== "any") {
+        params.append(key, value);
+      }
+    });
+
+    // Push to properties page with clean query
+    router.push(`/properties?${params.toString()}`);
   };
 
   return (
     <section
-      className="
-        relative pt-20 pb-10 md:py-10 h-auto md:h-[90vh] w-full flex items-center justify-center 
-        bg-cover bg-center bg-no-repeat
-      "
+      className="relative pt-20 pb-10 md:py-10 h-auto md:h-[90vh] w-full flex items-center justify-center 
+      bg-cover bg-center"
       style={{ backgroundImage: "url('/office-image.avif')" }}
     >
-      {/* Dark overlay with gradient */}
-      <div className="absolute inset-0 bg-black/60 md:bg-gradient-to-r md:from-black/70 md:to-black/40" />
+      <div className="absolute inset-0 bg-black/60" />
 
-      {/* Content */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 1 }}
         className="relative z-20 w-full max-w-4xl text-center px-5"
       >
-        {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-3xl md:text-6xl font-bold text-white leading-tight drop-shadow-xl"
-        >
-          Discover Your  
-          <span className="text-blue-400"> Dream Home</span>
-        </motion.h1>
+        <h1 className="text-3xl md:text-6xl font-bold text-white drop-shadow-xl">
+          Discover Your <span className="text-blue-400">Dream Home</span>
+        </h1>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2 }}
-          className="text-xs md:text-xl mt-4 text-gray-200 max-w-8xl mx-auto leading-6 md:leading-10 capitalize"
-        >
-          Explore verified listings for rent and sale at <strong className="text-blue-300">Mayor Homeland Property</strong>,  across every major city in Nigeria.
-        </motion.p>
+        <p className="text-xs md:text-xl mt-4 text-gray-200">
+          Explore verified listings across Nigeria.
+        </p>
 
-        {/* Search Panel Wrapper */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.3 }}
-          className="
-            mt-5 md:mt-8 p-5 rounded-2xl 
-            bg-white/10 backdrop-blur-xs 
-            shadow-xl border border-white/20
-          "
+          className="mt-5 md:mt-8 p-5 rounded-2xl bg-white/10 backdrop-blur-sm shadow-xl"
         >
           <SearchSidebar
             filters={filters}
@@ -83,9 +72,6 @@ export default function Hero() {
           />
         </motion.div>
       </motion.div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black/60 to-transparent" />
     </section>
   );
 }

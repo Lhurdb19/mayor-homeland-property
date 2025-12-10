@@ -19,8 +19,33 @@ interface PropertyType {
   views: number;
 }
 
+type Filters = {
+  location: string;
+  type: string;
+  bedrooms: string;
+  minPrice: string;
+  maxPrice: string;
+};
+
 export default function UserPropertiesPage() {
-  const searchParams = useSearchParams();
+  const params = useSearchParams();
+
+  const [filters, setFilters] = useState<Filters>({
+    location: "",
+    type: "any",
+    bedrooms: "",
+    minPrice: "",
+    maxPrice: "",
+  });
+
+  const [searchFilters, setSearchFilters] = useState<Filters>({
+    location: "",
+    type: "any",
+    bedrooms: "",
+    minPrice: "",
+    maxPrice: "",
+  });
+
   const [properties, setProperties] = useState<PropertyType[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -28,18 +53,42 @@ export default function UserPropertiesPage() {
 
   const cacheRef = useRef<Map<string, PropertyType[]>>(new Map());
 
+  // Load URL filters ONCE when page loads (Hero search or URL query)
+  useEffect(() => {
+    const urlFilters: any = {};
+    ["location", "type", "bedrooms", "minPrice", "maxPrice"].forEach((key) => {
+      const value = params.get(key);
+      if (value && value !== "") urlFilters[key] = value;
+    });
+
+    if (Object.keys(urlFilters).length > 0) {
+      setFilters((prev) => ({ ...prev, ...urlFilters }));
+      setSearchFilters((prev) => ({ ...prev, ...urlFilters }));
+    }
+  }, []); // empty dependency → run only once
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearchFilters(filters);
+    setPage(1);
+  };
+
+  // Fetch properties based on searchFilters
   const fetchProperties = async (currentPage = 1) => {
-    const params: any = { limit: 8, page: currentPage };
+    const paramsObj: any = { ...searchFilters, limit: 8, page: currentPage };
 
-    if (searchParams.get("location")) params.location = searchParams.get("location");
-    if (searchParams.get("type")) params.type = searchParams.get("type");
-    if (searchParams.get("bedrooms")) params.bedrooms = searchParams.get("bedrooms");
-    if (searchParams.get("minPrice")) params.minPrice = searchParams.get("minPrice");
-    if (searchParams.get("maxPrice")) params.maxPrice = searchParams.get("maxPrice");
-    if (searchParams.get("time")) params.time = searchParams.get("time");
+    // Convert "any" to empty string for API
+    Object.keys(paramsObj).forEach((k) => {
+      if (paramsObj[k] === "any") paramsObj[k] = "";
+    });
 
-    const cacheKey = `${JSON.stringify(params)}`;
-
+    const cacheKey = JSON.stringify(paramsObj);
     if (cacheRef.current.has(cacheKey)) {
       setProperties(cacheRef.current.get(cacheKey)!);
       setLoading(false);
@@ -48,7 +97,7 @@ export default function UserPropertiesPage() {
 
     setLoading(true);
     try {
-      const res = await axios.get("/api/properties", { params });
+      const res = await axios.get("/api/properties", { params: paramsObj });
       const data = Array.isArray(res.data.data) ? res.data.data : [];
       setProperties(data);
       setTotalPages(Math.ceil(res.data.meta.total / res.data.meta.perPage));
@@ -60,31 +109,26 @@ export default function UserPropertiesPage() {
     setLoading(false);
   };
 
-  // Re-fetch whenever query params or page change
   useEffect(() => {
     fetchProperties(page);
-  }, [searchParams.toString(), page]);
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage);
-    }
-  };
+  }, [searchFilters, page]);
 
   return (
     <div className="py-20 px-4 lg:px-20 max-w-8xl mx-auto">
-      <h1 className="text-2xl lg:text-4xl font-bold mb-6 tracking-tight">
-        Available Properties
-      </h1>
+      <h1 className="text-2xl lg:text-4xl font-bold mb-6">Available Properties</h1>
 
-      <div className="mb-8 flex flex-col lg:flex-row gap-4">
-        <SearchSidebar setResults={setProperties} />
+      <div className="mb-8">
+        <SearchSidebar
+          filters={filters}
+          handleChange={handleChange}
+          handleSearch={handleSearch}
+        />
       </div>
 
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i} className="overflow-hidden">
+            <Card key={i}>
               <Skeleton className="h-48 w-full" />
             </Card>
           ))}
@@ -96,25 +140,20 @@ export default function UserPropertiesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {properties.map((p) => (
               <Link key={p._id} href={`/properties/${p._id}`}>
-                <Card className="shadow-md rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer">
+                <Card className="rounded-xl shadow-md">
                   <div className="h-50 w-full overflow-hidden">
                     <img
                       src={p.images?.[0] || "/placeholder.jpg"}
-                      className="h-full w-full object-cover hover:scale-110 transition duration-500"
+                      className="h-full w-full object-cover"
                     />
                   </div>
 
                   <CardContent className="px-2 space-y-1">
-                    <h2 className="font-semibold text-sm lg:text-lg">{p.title}</h2>
-                    <p className="text-gray-600 text-xs lg:text-sm">{p.location}</p>
-                    <p className="font-bold text-sm lg:text-lg">
-                      ₦{p.price.toLocaleString()}
-                    </p>
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Eye className="h-4 w-4" /> {p.views} views
-                      </span>
-                      <span>{p.status}</span>
+                    <h2 className="font-semibold">{p.title}</h2>
+                    <p className="text-gray-600 text-sm">{p.location}</p>
+                    <p className="font-bold">₦{p.price.toLocaleString()}</p>
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <Eye className="h-4 w-4" /> {p.views} views
                     </div>
                   </CardContent>
                 </Card>
@@ -122,22 +161,23 @@ export default function UserPropertiesPage() {
             ))}
           </div>
 
-          {/* Pagination */}
           <div className="flex justify-center items-center gap-4 mt-8">
             <button
-              onClick={() => handlePageChange(page - 1)}
+              onClick={() => setPage((p) => p - 1)}
               disabled={page === 1}
-              className="px-3 py-1 rounded bg-gray-200 text-black disabled:opacity-50"
+              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
             >
               Prev
             </button>
+
             <span>
               Page {page} of {totalPages}
             </span>
+
             <button
-              onClick={() => handlePageChange(page + 1)}
+              onClick={() => setPage((p) => p + 1)}
               disabled={page === totalPages}
-              className="px-3 py-1 rounded bg-gray-200 text-black disabled:opacity-50"
+              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
             >
               Next
             </button>

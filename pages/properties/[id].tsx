@@ -13,7 +13,7 @@ import { ChevronLeft, ChevronRight, Heart, MapPin } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
 import MortgageCalculator from "@/components/calculator/MortgageCalculator";
 
-import SearchProperty from "@/pages/search";
+import SearchProperty from "@/components/SearchProperty";
 import PropertyMap from "@/components/PropertyMap";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -26,6 +26,7 @@ const Popup = dynamic(() => import("react-leaflet").then(mod => mod.Popup), { ss
 interface ReviewType {
   user: string;
   rating: number;
+  name: string;   // <--- add this
   comment: string;
   createdAt: string;
 }

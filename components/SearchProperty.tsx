@@ -1,4 +1,3 @@
-// components/SearchProperty.tsx
 "use client";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -14,8 +13,15 @@ import {
 } from "@/components/ui/select";
 
 interface Props {
-  filters: any;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | any) => void;
+  filters: {
+    location: string;
+    category: string;
+    bedroom: string;
+    minPrice: string;
+    maxPrice: string;
+    time: string;
+  };
+  handleChange: (e: any) => void;
   handleSearch: (e: React.FormEvent) => void;
 }
 
@@ -23,11 +29,12 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
   return (
     <Card className="shadow-md bg-black">
       <CardHeader>
-        <CardTitle>Search Property In Nigeria</CardTitle>
+        <CardTitle className="text-white">Search Property In Nigeria</CardTitle>
       </CardHeader>
+
       <CardContent className="space-y-4">
         <div>
-          <Label>Location</Label>
+          <Label className="text-white">Location</Label>
           <Input
             type="text"
             name="location"
@@ -38,11 +45,11 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
         </div>
 
         <div>
-          <Label>Category</Label>
+          <Label className="text-white">Category</Label>
           <Select
             value={filters.category || "any"}
             onValueChange={(val) =>
-              handleChange({ target: { name: "category", value: val } } as any)
+              handleChange({ target: { name: "category", value: val } })
             }
           >
             <SelectTrigger>
@@ -59,7 +66,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
         </div>
 
         <div>
-          <Label>Bedrooms</Label>
+          <Label className="text-white">Bedrooms</Label>
           <Input
             type="number"
             name="bedroom"
@@ -70,7 +77,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
         </div>
 
         <div>
-          <Label>Minimum Price</Label>
+          <Label className="text-white">Minimum Price</Label>
           <Input
             type="number"
             name="minPrice"
@@ -81,7 +88,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
         </div>
 
         <div>
-          <Label>Maximum Price</Label>
+          <Label className="text-white">Maximum Price</Label>
           <Input
             type="number"
             name="maxPrice"
@@ -92,11 +99,11 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
         </div>
 
         <div>
-          <Label>Time Added</Label>
+          <Label className="text-white">Time Added</Label>
           <Select
             value={filters.time || "any"}
             onValueChange={(val) =>
-              handleChange({ target: { name: "time", value: val } } as any)
+              handleChange({ target: { name: "time", value: val } })
             }
           >
             <SelectTrigger>
@@ -112,9 +119,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
           </Select>
         </div>
 
-        <Button type="button" className="w-full" onClick={handleSearch}>
-          Search
-        </Button>
+        <Button className="w-full" onClick={handleSearch}>Search</Button>
       </CardContent>
     </Card>
   );

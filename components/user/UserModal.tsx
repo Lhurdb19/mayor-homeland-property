@@ -16,6 +16,7 @@ interface UserType {
   address: string;
   role: string;
   isVerified: boolean;
+  password?: string;
 }
 
 interface UserModalFormProps {
@@ -34,10 +35,11 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
     address: "",
     role: "user",
     isVerified: false,
+    password: "",
   });
+
   const [loading, setLoading] = useState(false);
 
-  // Populate form when editing
   useEffect(() => {
     if (user) {
       setForm({
@@ -58,20 +60,30 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
         address: "",
         role: "user",
         isVerified: false,
+        password: "",
       });
     }
   }, [user]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target;
+  // FIXED TYPE NARROWING
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const target = e.target;
+
+    let value: any = target.value;
+
+    if (target instanceof HTMLInputElement && target.type === "checkbox") {
+      value = target.checked;
+    }
+
     setForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [target.name]: value,
     }));
   };
 
   const handleSubmit = async () => {
-    // Validation
     if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.address) {
       toast.error("All fields are required");
       return;
@@ -79,20 +91,21 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
 
     try {
       setLoading(true);
+
       if (user) {
-        // Edit existing user
         await axios.put(`/api/admin/users/${user._id}`, form);
         toast.success("User updated successfully");
       } else {
-        // Create new user
         if (!form.password) {
           toast.error("Password is required for new users");
           setLoading(false);
           return;
         }
+
         await axios.post("/api/admin/users", form);
         toast.success("User created successfully");
       }
+
       refresh();
       onClose();
     } catch (err: any) {
@@ -111,51 +124,19 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
         </DialogHeader>
 
         <div className="space-y-3 mt-2">
-          <Input
-            placeholder="First Name"
-            name="firstName"
-            value={form.firstName}
-            onChange={handleChange}
-            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
-          />
-          <Input
-            placeholder="Last Name"
-            name="lastName"
-            value={form.lastName}
-            onChange={handleChange}
-            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
-          />
-          <Input
-            placeholder="Email"
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
-          />
-          <Input
-            placeholder="Phone"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
-          />
-          <Input
-            placeholder="Address"
-            name="address"
-            value={form.address}
-            onChange={handleChange}
-            className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
-          />
+          <Input name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} />
+          <Input name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} />
+          <Input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} />
+          <Input name="phone" placeholder="Phone" value={form.phone} onChange={handleChange} />
+          <Input name="address" placeholder="Address" value={form.address} onChange={handleChange} />
 
           {!user && (
             <Input
-              placeholder="Password"
-              type="password"
               name="password"
-              value={(form as any).password || ""}
+              type="password"
+              placeholder="Password"
+              value={form.password}
               onChange={handleChange}
-              className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
             />
           )}
 
@@ -163,7 +144,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             name="role"
             value={form.role}
             onChange={handleChange}
-            className="rounded px-2 py-1 w-full p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+            className="rounded px-2 py-1 w-full border border-gray-300"
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
@@ -175,12 +156,8 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
               name="isVerified"
               checked={form.isVerified}
               onChange={handleChange}
-              id="verified"
-              className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
             />
-            <label htmlFor="verified" className="text-sm font-medium">
-              Verified
-            </label>
+            <label className="text-sm font-medium">Verified</label>
           </div>
         </div>
 
