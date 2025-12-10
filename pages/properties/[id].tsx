@@ -13,7 +13,6 @@ import { ChevronLeft, ChevronRight, Heart, MapPin } from "lucide-react";
 import ShareButtons from "@/components/ShareButtons";
 import MortgageCalculator from "@/components/calculator/MortgageCalculator";
 
-import "leaflet/dist/leaflet.css";
 import SearchProperty from "@/pages/search";
 import PropertyMap from "@/components/PropertyMap";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -223,27 +222,23 @@ export default function PropertyDetailPage() {
                 <div className="grid grid-cols-2 mt-4 text-sm text-muted-foreground">
                   <p className="text-[10px] md:text-lg">Status: <span className="font-medium text-[10px] md:text-lg">{property.status}</span></p>
                   <p className="text-[10px] md:text-lg">Views: <span className="font-medium ">{property.views}</span></p>
-                  <WhatsAppButton title="Property Visit Inquiry"/>
+                  <WhatsAppButton title="Property Visit Inquiry" />
                 </div>
               </CardContent>
             </Card>
           )}
 
           {/* MAP */}
-          {activeTab === "map" && (
-            property.latitude && property.longitude ? (
-              <PropertyMap
-                latitude={property.latitude ?? 0}
-                longitude={property.longitude ?? 0}
-                title={property.title}
-                hasLocation={!!(property.latitude && property.longitude)}
-              />
-
-            ) : (
-              <p className="text-center text-gray-500 mt-10">No location available</p>
-            )
+          {property.latitude && property.longitude ? (
+            <PropertyMap
+              latitude={property.latitude}
+              longitude={property.longitude}
+              title={property.title}
+              hasLocation={!!(property.latitude && property.longitude)}
+            />
+          ) : (
+            <p className="text-center text-gray-500 mt-10">No location available</p>
           )}
-
         </div>
 
         {/* Reviews */}

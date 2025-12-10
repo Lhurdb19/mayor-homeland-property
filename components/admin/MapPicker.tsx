@@ -1,58 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-
-// FIX: Set default marker icon safely (no deleting prototype methods)
-const defaultIcon = L.icon({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
-
-L.Marker.prototype.options.icon = defaultIcon;
-
 interface MapPickerProps {
   value?: { lat: number; lng: number };
   onChange: (pos: { lat: number; lng: number }) => void;
-  defaultCenter?: [number, number];
-  zoom?: number;
+  width?: string;
+  height?: string;
 }
 
-export default function MapPicker({
-  value,
-  onChange,
-  defaultCenter = [6.5244, 3.3792], // Lagos
-  zoom = 13,
-}: MapPickerProps) {
-  const [position, setPosition] = useState<{ lat: number; lng: number } | null>(value || null);
+export default function MapPicker({ value, onChange, width = "100%", height = "300px" }: MapPickerProps) {
+  const lat = value?.lat ?? 6.5244; // default Lagos
+  const lng = value?.lng ?? 3.3792;
 
-  function LocationMarker() {
-    useMapEvents({
-      click(e) {
-        setPosition(e.latlng);
-        onChange(e.latlng);
-      },
-    });
-
-    return position ? <Marker position={position} /> : null;
-  }
+  const mapUrl = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lng}&zoom=13&size=600x300&markers=${lat},${lng},red-pushpin`;
 
   return (
-    <MapContainer
-      center={position || defaultCenter}
-      zoom={zoom}
-      style={{ height: "300px", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; OpenStreetMap contributors"
-      />
-      <LocationMarker />
-    </MapContainer>
+    <div style={{ width, height, position: "relative", cursor: "pointer" }} onClick={() => onChange({ lat, lng })}>
+      <img src={mapUrl} alt="Property location" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
+    </div>
   );
 }

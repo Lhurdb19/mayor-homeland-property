@@ -11,7 +11,32 @@ import { Button } from "@/components/ui/button";
 // Dynamic import of MapPicker (client-only)
 const MapPicker = dynamic(() => import("../admin/MapPicker"), { ssr: false });
 
-export default function PropertyModalForm({ open, onClose, property, refresh }) {
+interface Property {
+  _id?: string;
+  title?: string;
+  description?: string;
+  price?: number;
+  location?: string;
+  latitude?: number;
+  longitude?: number;
+  type?: string;
+  status?: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  sqft?: number;
+  phone?: string;
+  email?: string;
+  images?: string[];
+}
+
+interface PropertyModalFormProps {
+  open: boolean;
+  onClose: () => void;
+  property?: Property | null;
+  refresh: () => void;
+}
+
+export default function PropertyModalForm({ open, onClose, property, refresh }: PropertyModalFormProps) {
   const { register, reset, setValue, watch, handleSubmit, formState: { errors } } = useForm<any>({
     defaultValues: {
       title: "",
@@ -47,9 +72,10 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
     }
   }, [property, reset]);
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
+
     const newImages: string[] = [];
 
     Array.from(files).forEach((file) => {
@@ -63,6 +89,7 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
       reader.readAsDataURL(file);
     });
   };
+
 
   const removeImage = (index: number) => {
     const updated = previewImages.filter((_, i) => i !== index);
@@ -94,7 +121,7 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Input placeholder="Title" {...register("title", { required: true })} className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <Input placeholder="Title" {...register("title", { required: true })} className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
           {errors.title && <p className="text-red-500 text-xs">Title is required</p>}
 
           <textarea {...register("description", { required: true })} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" rows={3} placeholder="Description" />
@@ -139,41 +166,26 @@ export default function PropertyModalForm({ open, onClose, property, refresh }) 
               className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
             />
 
-            <Input type="number" placeholder="Sqft" {...register("sqft")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+            <Input type="number" placeholder="Sqft" {...register("sqft")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
           </div>
 
           {/* CONTACT */}
-          <Input placeholder="Phone" {...register("phone")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
-          <Input type="email" placeholder="Email" {...register("email")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <Input placeholder="Phone" {...register("phone")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+          <Input type="email" placeholder="Email" {...register("email")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
 
           <MapPicker
-            value={
-              watch("latitude") && watch("longitude")
-                ? { lat: watch("latitude"), lng: watch("longitude") }
-                : undefined
-            }
-            onChange={async (pos) => {
+            value={watch("latitude") && watch("longitude") ? { lat: watch("latitude"), lng: watch("longitude") } : undefined}
+            onChange={(pos) => {
               setValue("latitude", pos.lat);
               setValue("longitude", pos.lng);
-
-              // If editing an existing property, save coordinates immediately
-              if (property?._id) {
-                try {
-                  await axios.put(`/api/admin/properties/${property._id}`, {
-                    latitude: pos.lat,
-                    longitude: pos.lng,
-                  });
-                } catch (err) {
-                  console.error("Failed to update map coordinates", err);
-                }
-              }
             }}
           />
+
 
           <p className="text-xs text-gray-500 mt-1">Click on the map to select property location</p>
 
           {/* IMAGE UPLOAD */}
-          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
 
           {/* PREVIEW IMAGES */}
           <div className="grid grid-cols-3 gap-3 mt-2">

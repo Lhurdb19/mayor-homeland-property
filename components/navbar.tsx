@@ -72,7 +72,7 @@ export default function Navbar() {
                     {initials}
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="bg-white p-3 text-black/80 border border-t-0 border-l-0 border-b-blue-500 rounded-2xl">
                   <DropdownMenuItem onClick={() => (window.location.href = "/dashboard/user")}>Profile</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
