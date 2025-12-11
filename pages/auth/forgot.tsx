@@ -27,7 +27,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-white text-black/80">
       <div className="hidden lg:flex w-1/2 bg-gray-100">
         <img src="/office-image.avif" alt="Office" className="object-cover w-full h-full" />
       </div>

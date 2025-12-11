@@ -16,7 +16,7 @@ export default function MortgageCalculator({ price }: any) {
 
   return (
     <div className="border p-4 rounded-xl dark:bg-white dark:text-gray-700 shadow my-6">
-      <h3 className="font-bold text-lg mb-2">Mortgage Calculator</h3>
+      <h3 className="font-bold text-sm mb-2">Mortgage Calculator</h3>
 
       <div className="space-y-3">
         
@@ -24,17 +24,17 @@ export default function MortgageCalculator({ price }: any) {
           type="number"
           value={rate}
           onChange={(e) => setRate(Number(e.target.value))}
-          className="w-full border p-2 rounded"
+          className="w-full text-sm border-b-blue-500 border p-2 rounded-2xl"
         />
         
         <input
           type="number"
           value={years}
           onChange={(e) => setYears(Number(e.target.value))}
-          className="w-full border p-2 rounded"
+          className="w-full text-sm border-b-blue-500 border p-2 rounded-2xl"
         />
 
-        <p className="text-lg font-semibold">
+        <p className="text-sm font-semibold">
           Monthly Payment: ₦{Number(monthlyPayment).toLocaleString()}
         </p>
 

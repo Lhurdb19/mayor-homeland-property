@@ -6,8 +6,12 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Eye } from "lucide-react";
 import SearchSidebar from "@/components/SearchSidebar";
+import { Bed, Bath, RulerDimensionLine } from "lucide-react";
+
+// ⭐ TRUNCATE FUNCTION
+const truncate = (text: string, max = 35) =>
+  text.length > max ? text.substring(0, max) + "..." : text;
 
 interface PropertyType {
   _id: string;
@@ -16,7 +20,9 @@ interface PropertyType {
   price: number;
   status: string;
   images: string[];
-  views: number;
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
 }
 
 type Filters = {
@@ -38,22 +44,14 @@ export default function UserPropertiesPage() {
     maxPrice: "",
   });
 
-  const [searchFilters, setSearchFilters] = useState<Filters>({
-    location: "",
-    type: "any",
-    bedrooms: "",
-    minPrice: "",
-    maxPrice: "",
-  });
-
+  const [searchFilters, setSearchFilters] = useState<Filters>(filters);
   const [properties, setProperties] = useState<PropertyType[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
   const cacheRef = useRef<Map<string, PropertyType[]>>(new Map());
 
-  // Load URL filters ONCE when page loads (Hero search or URL query)
+  // Load URL filters ONCE when page loads
   useEffect(() => {
     const urlFilters: any = {};
     ["location", "type", "bedrooms", "minPrice", "maxPrice"].forEach((key) => {
@@ -65,11 +63,9 @@ export default function UserPropertiesPage() {
       setFilters((prev) => ({ ...prev, ...urlFilters }));
       setSearchFilters((prev) => ({ ...prev, ...urlFilters }));
     }
-  }, []); // empty dependency → run only once
+  }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
@@ -79,11 +75,8 @@ export default function UserPropertiesPage() {
     setPage(1);
   };
 
-  // Fetch properties based on searchFilters
   const fetchProperties = async (currentPage = 1) => {
     const paramsObj: any = { ...searchFilters, limit: 8, page: currentPage };
-
-    // Convert "any" to empty string for API
     Object.keys(paramsObj).forEach((k) => {
       if (paramsObj[k] === "any") paramsObj[k] = "";
     });
@@ -114,7 +107,7 @@ export default function UserPropertiesPage() {
   }, [searchFilters, page]);
 
   return (
-    <div className="py-20 px-4 lg:px-20 max-w-8xl mx-auto">
+    <div className="py-20 px-4 lg:px-20 max-w-8xl mx-auto bg-white text-black/80">
       <h1 className="text-2xl lg:text-4xl font-bold mb-6">Available Properties</h1>
 
       <div className="mb-8">
@@ -125,12 +118,11 @@ export default function UserPropertiesPage() {
         />
       </div>
 
+      {/* GRID */}
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i}>
-              <Skeleton className="h-48 w-full" />
-            </Card>
+            <SkeletonCard key={i} />
           ))}
         </div>
       ) : properties.length === 0 ? (
@@ -139,25 +131,7 @@ export default function UserPropertiesPage() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {properties.map((p) => (
-              <Link key={p._id} href={`/properties/${p._id}`}>
-                <Card className="rounded-xl shadow-md">
-                  <div className="h-50 w-full overflow-hidden">
-                    <img
-                      src={p.images?.[0] || "/placeholder.jpg"}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-
-                  <CardContent className="px-2 space-y-1">
-                    <h2 className="font-semibold">{p.title}</h2>
-                    <p className="text-gray-600 text-sm">{p.location}</p>
-                    <p className="font-bold">₦{p.price.toLocaleString()}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <Eye className="h-4 w-4" /> {p.views} views
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+              <PropertyCard key={p._id} property={p} />
             ))}
           </div>
 
@@ -165,7 +139,7 @@ export default function UserPropertiesPage() {
             <button
               onClick={() => setPage((p) => p - 1)}
               disabled={page === 1}
-              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+              className="px-3 py-1 bg-gray-600 rounded disabled:opacity-50"
             >
               Prev
             </button>
@@ -177,7 +151,7 @@ export default function UserPropertiesPage() {
             <button
               onClick={() => setPage((p) => p + 1)}
               disabled={page === totalPages}
-              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+              className="px-3 py-1 bg-gray-600 rounded disabled:opacity-50"
             >
               Next
             </button>
@@ -185,5 +159,69 @@ export default function UserPropertiesPage() {
         </>
       )}
     </div>
+  );
+}
+
+// ---------------------------------------
+// 🔵 Skeleton Card with specs placeholders
+// ---------------------------------------
+function SkeletonCard() {
+  return (
+    <Card className="overflow-hidden rounded-xl shadow-md border p-0">
+      {/* IMAGE PLACEHOLDER */}
+      <div className="skeleton h-[180px] w-full" />
+
+      <CardContent className="p-3 space-y-2">
+        {/* TITLE */}
+        <div className="skeleton h-4 w-3/4" />
+        {/* PRICE */}
+        <div className="skeleton h-3 w-1/2" />
+        {/* LOCATION */}
+        <div className="skeleton h-3 w-1/3" />
+        {/* SPECS PLACEHOLDER: Bed / Bath / Sqft */}
+        <div className="flex items-center gap-2 mt-2">
+          <div className="skeleton h-3 w-8" />
+          <div className="skeleton h-3 w-8" />
+          <div className="skeleton h-3 w-12" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ---------------------------------------
+// 🟢 Property Card
+// ---------------------------------------
+function PropertyCard({ property }: { property: PropertyType }) {
+  return (
+    <Link href={`/properties/${property._id}`}>
+      <Card className="overflow-hidden rounded-xl shadow-md hover:shadow-xl transition cursor-pointer group">
+        <div className="h-40 w-full overflow-hidden">
+          <img
+            src={property.images?.[0] || "/placeholder.jpg"}
+            className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+        </div>
+
+        <CardContent className="px-3 space-y-1">
+          <h3 className="text-sm font-semibold">{truncate(property.title, 30)}</h3>
+          <p className="text-blue-600 font-bold text-xs">₦{property.price.toLocaleString()}</p>
+          <p className="text-gray-500 text-xs">{truncate(property.location, 25)}</p>
+
+          {/* Specs: Bed / Bath / Sqft */}
+          <div className="flex items-center gap-4 text-xs text-gray-700 mt-2">
+            <span className="flex items-center gap-1 text-[10px]">
+              <Bed size={12} /> {property.bedrooms} Beds
+            </span>
+            <span className="flex items-center gap-1 text-[10px]">
+              <Bath size={12} /> {property.bathrooms} Bath
+            </span>
+            <span className="flex items-center gap-1 text-[10px]">
+              <RulerDimensionLine size={12} /> {property.sqft} sqft
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

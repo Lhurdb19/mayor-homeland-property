@@ -33,7 +33,7 @@ export default function SecuritySettings() {
 
   return (
     <UserProfileLayout>
-      <div className="max-w-2xl min-h-screen p-6 bg-muted/40 mx-auto justify-start items-center text-black dark:text-white">
+      <div className="max-w-2xl min-h-screen p-6 mx-auto justify-start items-center text-black">
 
         <div className="p-6 rounded-xl bg-blue-600 text-white mb-6 ">
           <h1 className="text-2xl font-semibold">Security</h1>
@@ -54,7 +54,7 @@ export default function SecuritySettings() {
                   type="password"
                   value={form.oldPassword}
                   onChange={e => setForm({...form, oldPassword: e.target.value})}
-                  className="border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
+                  className="border-l-0 border-r-0 text-gray-700 border-t-0 border-b-2 border-b-blue-500"
                 />
               </div>
 
@@ -64,7 +64,7 @@ export default function SecuritySettings() {
                   type="password"
                   value={form.newPassword}
                   onChange={e => setForm({...form, newPassword: e.target.value})}
-                  className="border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
+                  className="text-gray-700 border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
                 />
               </div>
 
@@ -74,7 +74,7 @@ export default function SecuritySettings() {
                   type="password"
                   value={form.confirmPassword}
                   onChange={e => setForm({...form, confirmPassword: e.target.value})}
-                  className="border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
+                  className="text-gray-700 border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
                 />
               </div>
 

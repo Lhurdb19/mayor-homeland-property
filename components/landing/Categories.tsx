@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import axios from "axios";
 import {
@@ -12,7 +11,11 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown, MoveRight } from "lucide-react";
+import { ChevronsUpDown, MoveRight, Bed, Bath, Ruler, RulerDimensionLine, } from "lucide-react";
+
+// ⭐ TRUNCATE FUNCTION
+const truncate = (text: string, max = 35) =>
+  text.length > max ? text.substring(0, max) + "..." : text;
 
 const categories = [
   { title: "Homes for Sale", type: "sale" },
@@ -27,21 +30,22 @@ interface Property {
   price: number;
   location: string;
   images: string[];
+  bedrooms: number;
+  bathrooms: number;
+  sqft: number;
 }
-
 
 export default function Categories({
   initialType = "sale",
   showModalButton = false,
-  enablePagination = false, // new prop
+  enablePagination = false,
 }) {
   const [selectedCategory, setSelectedCategory] = useState(initialType);
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Pagination state
   const [page, setPage] = useState(1);
-  const limit = enablePagination ? 8 : 1000; // landing page shows all
+  const limit = enablePagination ? 8 : 1000;
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
@@ -60,17 +64,18 @@ export default function Categories({
         setLoading(false);
       }
     };
+
     fetchProperties();
   }, [selectedCategory, page, enablePagination]);
 
   return (
-    <div className="py-10 px-4 lg:p-25 md:max-w-8xl w-full mx-auto">
+    <div className="py-16 px-4 lg:px-25 md:max-w-8xl w-full mx-auto bg-white text-black/80">
       {/* Title */}
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-2xl lg:text-4xl font-bold text-center mb-10"
+        className="text-xl lg:text-3xl font-bold text-center mb-5"
       >
         Explore {categories.find((c) => c.type === selectedCategory)?.title}
       </motion.h2>
@@ -81,7 +86,7 @@ export default function Categories({
           {categories.map((cat) => (
             <button
               key={cat.type}
-              className={`px-4 py-2 rounded-md font-medium ${
+              className={`px-4 py-2 text-xs rounded-md font-medium ${
                 selectedCategory === cat.type
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
@@ -107,6 +112,7 @@ export default function Categories({
                 <ChevronsUpDown className="ml-2 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent className="w-64">
               {categories.map((cat) => (
                 <DropdownMenuItem
@@ -124,58 +130,79 @@ export default function Categories({
         </div>
       )}
 
-      {/* Properties Grid */}
+      {/* GRID — Skeleton or Data */}
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[...Array(limit)].map((_, i) => (
-            <div key={i} className="border rounded-xl p-4">
-              <Skeleton className="h-40 w-full mb-4" />
-              <Skeleton className="h-4 w-3/4 mb-2" />
-              <Skeleton className="h-4 w-1/2" />
-            </div>
+          {[...Array(4)].map((_, i) => (
+            <Card
+              key={i}
+              className="overflow-hidden rounded-xl shadow-md h-[280px] border p-0"
+            >
+              <div className="skeleton h-[180px] w-full" />
+              <CardContent className="p-4 space-y-3">
+                <div className="skeleton h-[18px] w-3/4" />
+                <div className="skeleton h-[15px] w-2/4" />
+                <div className="skeleton h-[15px] w-1/2" />
+              </CardContent>
+            </Card>
           ))}
         </div>
-      ) : properties.length === 0 ? (
-        <p className="text-center text-gray-500 py-10">
-          No properties found in this category.
-        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {(showModalButton ? properties.slice(0, 4) : properties).map(
-            (property) => (
-              <motion.a
-                key={property._id}
-                href={`/properties/${property._id}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Card className="overflow-hidden rounded-xl shadow-md hover:shadow-xl transition h-80 cursor-pointer group">
-                  <div className="h-40 w-full overflow-hidden">
-                    <img
-                      src={property.images[0] || "/placeholder.jpg"}
-                      className="h-full w-full object-cover group-hover:scale-110 transition duration-500"
-                    />
-                  </div>
-                  <CardContent className="p-3 flex items-center justify-between">
-                    <div>
-                      <h3 className="font-semibold text-md">{property.title}</h3>
-                      <p className="text-blue-600 font-bold">
-                        ₦{property.price.toLocaleString()}
-                      </p>
-                      <p className="text-gray-500 text-sm">{property.location}</p>
-                    </div>
+          {(showModalButton ? properties.slice(0, 4) : properties).map((prop) => (
+            <motion.a
+              key={prop._id}
+              href={`/properties/${prop._id}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card className="overflow-hidden rounded-xl shadow-md hover:shadow-xl transition cursor-pointer group">
+                <div className="h-40 w-full overflow-hidden">
+                  <img
+                    src={prop.images[0] || "/placeholder.jpg"}
+                    className="h-full w-full object-cover group-hover:scale-110 transition duration-500"
+                  />
+                </div>
 
-                    <MoveRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transition" />
-                  </CardContent>
-                </Card>
-              </motion.a>
-            )
-          )}
+                <CardContent className="px-3 space-y-1">
+                  {/* Title */}
+                  <h3 className="font-semibold text-sm">
+                    {truncate(prop.title, 30)}
+                  </h3>
+
+                  {/* Price */}
+                  <p className="text-blue-600 text-xs font-bold">
+                    ₦{prop.price.toLocaleString()}
+                  </p>
+
+                  {/* Location */}
+                  <p className="text-gray-500 text-xs">
+                    {truncate(prop.location, 35)}
+                  </p>
+
+                  {/* ⭐ PROPERTY SPECS */}
+                  <div className="flex items-center gap-4 text-xs mt-2 text-gray-700">
+                    <span className="flex items-center text-[10px] gap-1">
+                      <Bed size={12} /> {prop.bedrooms}Beds
+                    </span>
+
+                    <span className="flex items-center text-[10px] gap-1">
+                      <Bath size={12} /> {prop.bathrooms}Bath
+                    </span>
+
+                    <span className="flex items-center text-[10px] gap-1">
+                      <RulerDimensionLine size={12} /> {prop.sqft} sqft
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.a>
+          ))}
         </div>
       )}
 
-      {/* Pagination for Category Pages Only */}
+      {/* Pagination */}
       {enablePagination && !loading && properties.length > 0 && (
         <div className="flex items-center justify-center gap-5 mt-10">
           <button
@@ -185,9 +212,11 @@ export default function Categories({
           >
             Previous
           </button>
+
           <span className="text-sm">
             Page {page} of {totalPages}
           </span>
+
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}

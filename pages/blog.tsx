@@ -16,7 +16,6 @@ export default function BlogPosts() {
   const [posts, setPosts] = useState<BlogPost[] | null>(null);
 
   useEffect(() => {
-    // simulate loading
     setTimeout(() => {
       setPosts([
         {
@@ -24,7 +23,7 @@ export default function BlogPosts() {
           title: "Top 5 Tips for Finding Affordable Apartments in Lagos",
           excerpt:
             "Discover how to secure the perfect home without breaking your budget using these practical real estate strategies…",
-          image: "/images/blog/blog1.jpg",
+          image: "/keys.avif",
           date: "Oct 27, 2025",
         },
         {
@@ -32,7 +31,7 @@ export default function BlogPosts() {
           title: "How to Know a Legit Real Estate Agency Before Paying",
           excerpt:
             "Avoid scams by following these smart verification steps when dealing with property agents and landlords…",
-          image: "/images/blog/blog2.jpg",
+          image: "/key3.jpg",
           date: "Nov 2, 2025",
         },
         {
@@ -40,7 +39,7 @@ export default function BlogPosts() {
           title: "What to Check Before Renting Any Apartment in Nigeria",
           excerpt:
             "A full checklist of things you MUST inspect before paying for any apartment — electricity, water, security and more…",
-          image: "/images/blog/blog3.jpg",
+          image: "/key.webp",
           date: "Nov 6, 2025",
         },
       ]);
@@ -50,41 +49,34 @@ export default function BlogPosts() {
   const isLoading = !posts;
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-semibold mb-10 text-center">
+    <section className="max-w-8xl py-20 bg-gray-50 text-black/90 px-4 md:px-25">
+      <div className="mx-auto">
+        <h2 className="text-3xl font-bold mb-12 text-center text-gray-900">
           📰 Latest Blog Posts
         </h2>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {/* Blog Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {(isLoading ? Array.from({ length: 3 }) : posts)?.map(
             (post: any, index: number) => (
               <div
                 key={post?.id || index}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
+                className="bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer flex flex-col"
               >
                 {isLoading ? (
                   <>
-                    {/* IMAGE SKELETON */}
-                    <Skeleton className="w-full h-52" />
-
-                    <div className="p-5">
-                      {/* TITLE SKELETON */}
-                      <Skeleton className="h-5 w-3/4 mb-3" />
-
-                      {/* EXCERPT SKELETON */}
+                    <Skeleton className="w-full h-56" />
+                    <div className="p-5 flex-1 flex flex-col">
+                      <Skeleton className="h-6 w-3/4 mb-3" />
                       <Skeleton className="h-4 w-full mb-2" />
                       <Skeleton className="h-4 w-2/3 mb-2" />
-                      <Skeleton className="h-4 w-1/2" />
-
-                      {/* DATE SKELETON */}
-                      <Skeleton className="h-4 w-20 mt-4" />
+                      <Skeleton className="h-4 w-1/2 mb-4" />
+                      <Skeleton className="h-4 w-24 mt-auto" />
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="relative w-full h-52">
+                    <div className="relative w-full h-56">
                       <Image
                         src={post.image}
                         alt={post.title}
@@ -93,12 +85,20 @@ export default function BlogPosts() {
                       />
                     </div>
 
-                    <div className="p-5">
-                      <h3 className="text-lg font-semibold">{post.title}</h3>
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold mb-2 text-gray-900">
+                          {post.title}
+                        </h3>
+                        <p className="text-gray-600 text-sm">{post.excerpt}</p>
+                      </div>
 
-                      <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
-
-                      <p className="text-gray-500 text-xs mt-4">{post.date}</p>
+                      <div className="mt-4 flex justify-between items-center">
+                        <p className="text-gray-500 text-xs">{post.date}</p>
+                        <button className="text-blue-600 text-sm font-medium hover:underline">
+                          Read More →
+                        </button>
+                      </div>
                     </div>
                   </>
                 )}

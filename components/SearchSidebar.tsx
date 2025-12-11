@@ -25,7 +25,7 @@ export default function SearchSidebar({
     <aside
       className="
       w-full p-0 md:p-5 shadow rounded-xl
-      flex flex-col space-y-5
+      flex flex-col space-y-5 text-black/80
       md:flex-row md:space-y-0 md:space-x-5 md:items-end
     "
     >

@@ -20,6 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const userExists = await User.findOne({ email });
   if (userExists) return res.status(400).json({ message: "Email already exists" });
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   const newUser = await User.create({
     firstName,
     lastName,
@@ -27,8 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     phone,
     address,
     role: role || "user",
-    password,
-    isVerified: isVerified ?? false,
+    password: hashedPassword,
+    isVerified: role === "admin" ? true : isVerified ?? false,
   });
 
   return res.status(201).json(newUser);

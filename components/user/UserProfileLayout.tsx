@@ -96,19 +96,18 @@ export default function UserProfileLayout({ children }: { children: React.ReactN
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 dark:bg-gray-800 shadow">
+      <div className="md:hidden flex items-center justify-between px-4 py-3 shadow">
         <button onClick={() => setMobileMenuOpen(true)}>
           <Menu size={26} />
         </button>
         <h2 className="text-lg font-bold">My Account</h2>
       </div>
 
-      <div className="min-h-10 flex flex-col md:flex-row bg-white dark:bg-black">
+      <div className="min-h-10 flex flex-col md:flex-row bg-white">
         <aside
           className={`
           fixed top-0 left-0 h-full lg:max-w-64 xl:w-45 p-4 border-r 
-          border-gray-200 dark:border-gray-800 
-          bg-black/1 text-black dark:text-white dark:bg-gray-900 shadow-md z-50 
+          border-gray-200 dark:border-gray-800 text-black/80 shadow-md z-50 
           transform transition-transform duration-300
           ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
@@ -135,7 +134,7 @@ export default function UserProfileLayout({ children }: { children: React.ReactN
                       <button
                         onClick={() => toggleSection(item.title)}
                         className={`flex items-center justify-between w-full p-2 rounded-md 
-                          text-left hover:bg-gray-100 dark:hover:bg-gray-800 text-xs md:text-xl
+                          text-left text-xs md:text-xl
                           ${isActive ? "bg-gray-200 dark:bg-gray-700 font-semibold text-xs md:text-lg" : ""}`}
                       >
                         <div className="flex items-center gap-2 text-xs md:text-sm">
@@ -188,18 +187,6 @@ export default function UserProfileLayout({ children }: { children: React.ReactN
               );
             })}
           </nav>
-
-          {/* Theme Switcher */}
-          <div className="mt-6">
-            <Button
-              variant="outline"
-              onClick={toggleTheme}
-              className="flex items-center gap-2 w-full justify-center text-xs md:text-sm"
-            >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-              {theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </Button>
-          </div>
 
           {/* Logout */}
           <div className="mt-4">

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation"; // updated for Next.js 13+ App Router
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,46 +17,68 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
 
-  const handleChange = (e: any) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const res = await signIn("credentials", { ...form, redirect: false });
       if (res?.error) {
-        toast.error(res.error === "Email not verified" ? "Please verify your email first." : res.error);
+        toast.error(
+          res.error === "Email not verified"
+            ? "Please verify your email first."
+            : res.error
+        );
       } else {
         toast.success("Logged in successfully!");
         const sessionRes = await fetch("/api/auth/session");
         const session = await sessionRes.json();
-        router.push(session.user.role === "admin" ? "/dashboard/admin" : "/dashboard/user");
+
+        // Redirect based on user role
+        router.push(
+          session.user.role === "admin" ? "/dashboard/admin" : "/dashboard/user"
+        );
       }
     } catch (err) {
-      toast.error("Something went wrong.");
       console.error(err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-white text-black/80">
       {/* Left Image */}
       <div className="hidden lg:flex w-1/2 bg-gray-100">
-        <img src="/office-image.avif" alt="Office" className="object-cover w-full h-full" />
+        <img
+          src="/office-image.avif"
+          alt="Office"
+          className="object-cover w-full h-full"
+        />
       </div>
 
-      {/* Form */}
+      {/* Login Form */}
       <div className="flex w-full lg:w-1/2 items-center justify-center p-6">
         <Card className="w-full max-w-md shadow-xl">
           <CardHeader>
-            <CardTitle className="text-3xl text-center font-bold">Welcome Back</CardTitle>
+            <CardTitle className="text-3xl text-center font-bold">
+              Welcome Back
+            </CardTitle>
           </CardHeader>
+
+          <p className="px-4 text-xs text-center text-gray-700 mb-4">
+            Log in to explore our features, or sign up to find the best apartments in Nigeria.
+          </p>
+
           <CardContent>
             <form className="space-y-4" onSubmit={handleSubmit}>
-              <div className=" space-y-2">
+              {/* Email */}
+              <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <Input
                   id="email"
@@ -65,10 +87,11 @@ export default function Login() {
                   required
                   value={form.email}
                   onChange={handleChange}
-                  className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                  className="w-full border-b-1.5 rounded-2xl border-r-blue-500 border-b-blue-500 p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
+              {/* Password */}
               <div className="relative space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -78,23 +101,32 @@ export default function Login() {
                   required
                   value={form.password}
                   onChange={handleChange}
-                  className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                  className="w-full border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
                 <span
-                  className="absolute right-3 top-7.5 cursor-pointer"
+                  className="absolute right-3 top-7.5 cursor-pointer text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </span>
               </div>
 
+              {/* Forgot Password */}
               <div className="flex justify-end text-sm">
-                <Link href="/auth/forgot" className="text-blue-600 hover:underline">
+                <Link
+                  href="/auth/forgot"
+                  className="text-blue-600 hover:underline"
+                >
                   Forgot Password?
                 </Link>
               </div>
 
-              <Button className="w-full text-black font-bold" type="submit" disabled={loading}>
+              {/* Submit Button */}
+              <Button
+                className="w-full text-black font-bold"
+                type="submit"
+                disabled={loading}
+              >
                 {loading ? "Checking..." : "Login"}
               </Button>
             </form>

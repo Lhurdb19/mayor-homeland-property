@@ -70,31 +70,31 @@ export default function ContactPage() {
     if (status === "loading") return <p className="text-center py-16">Loading...</p>;
 
     return (
-        <div className="max-w-8xl w-full flex flex-col justify-center py-20 px-0 lg:py-20 lg:px-25">
-            <h1 className="text-xl md:text-4xl font-bold text-center mb-0 lg:mb-0">Contact Us</h1>
-
-            <div className="w-full max-w-8xl h-auto md:h-[700px] flex gap-10 mx-auto p-4 space-y-10">
+        <div className="max-w-8xl w-full flex justify-center py-20 px-0 lg:py-0 bg-white text-black/80">
                 {/* Office Info */}
                 <Image width={800} height={600}
                     src="/office-image.avif"
                     alt="Office"
-                    className="hidden md:block rounded-xl border border-gray-200 shadow-md mt-4 w-2/3 h-auto object-cover"
+                    className="hidden md:block border border-gray-200 shadow-md mt-4 w-2/3 h-auto object-cover"
                 />
+
+            <div className="h-auto flex flex-col py-0 md:py-20">
+            <h1 className="text-xl md:text-3xl font-bold text-center mb-0 lg:mb-0">Contact Us</h1>
 
 
                 {/* Contact Form */}
-                <Card className="bg-black w-1/1 lg:w-1/3 shadow-xl rounded-2xl py-4 md:px-2">
+                <Card className=" w-1/1 md:1/1 shadow-xl rounded-2xl py-6 md:pr-16">
                     <CardContent className="space-y-4">
-                        <div className="flex items-center gap-3 text-xs md:text-sm text-gray-400">
-                            <MapPin className="text-blue-500" size={30} />
-                            <span className="text-xs md:text-[16px]"> Amodu Tijani Cl, Victoria Island, Lagos 106104, Lagos, Nigeria</span>
+                        <div className="flex items-center gap-3 text-xs md:text-xs text-gray-700">
+                            <MapPin className="text-blue-500" size={25} />
+                            <span className="text-xs md:text-[12px]"> Amodu Tijani Cl, Victoria Island, Lagos 106104, Lagos, Nigeria</span>
                         </div>
-                        <div className="flex items-center text-xs md:text-[16px] gap-3 text-gray-400">
-                            <Mail className="text-blue-500" size={20} />
+                        <div className="flex items-center text-xs md:text-[12px] gap-3 text-gray-700">
+                            <Mail className="text-blue-500" size={17} />
                             <span>mubarakshittu411@gmail.com</span>
                         </div>
-                        <div className="flex items-center text-xs md:text-[16px] gap-3 text-gray-400">
-                            <Phone className="text-blue-500" size={20}/>
+                        <div className="flex items-center text-xs md:text-[12px] gap-3 text-gray-700">
+                            <Phone className="text-blue-500" size={17}/>
                             <span>+234 816 836 3469</span>
                         </div>
 
@@ -102,7 +102,7 @@ export default function ContactPage() {
 
                     </CardContent>
                     <CardHeader>
-                        <CardTitle className="text-xl md:text-2xl font-semibold">Send a Message</CardTitle>
+                        <CardTitle className="text-xl md:text-xl mt-10 text-black/90 font-semibold">Send a Message</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-5">
                         <div className="relative ">
@@ -110,7 +110,7 @@ export default function ContactPage() {
                                 placeholder="Name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className={`pl-5 md:pl-10 text-xs border-l-0 border-t-0 border-b-2 border-r-0 border-blue-500 md:text-sm ${getInputBorderClass("name")}`}
+                                className={`pl-2 text-black/80 text-xs border-l-0 border-t-0 border-b-2 border-r-0 border-blue-500 md:text-sm ${getInputBorderClass("name")}`}
                             />
                             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                         </div>
@@ -121,7 +121,7 @@ export default function ContactPage() {
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className={`pl-5 md:pl-10 text-xs md:text-sm border-l-0 border-t-0 border-b-2 border-r-0 border-blue-500 ${getInputBorderClass("email")}`}
+                                className={`pl-2 text-black/80 text-xs md:text-sm border-l-0 border-t-0 border-b-2 border-r-0 border-blue-500 ${getInputBorderClass("email")}`}
                             />
                             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                         </div>
@@ -131,7 +131,7 @@ export default function ContactPage() {
                                 placeholder="Phone (optional)"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
-                                className={`pl-5 md:pl-10 text-xs md:text-sm border-l-0 border-t-0 border-b-2 border-r-0 border-blue-500 ${getInputBorderClass("phone")}`}
+                                className={`pl-2 text-black/80 text-xs md:text-sm border-l-0 border-t-0 border-b-2 border-r-0 border-blue-500 ${getInputBorderClass("phone")}`}
                             />
                             {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                         </div>
@@ -141,7 +141,7 @@ export default function ContactPage() {
                                 placeholder="Your message..."
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
-                                className={`h-44 pl-5 md:pl-10 text-xs md:text-sm border-l-0 border-t-0 border-b-2 border-r-0 border-blue-500 ${getInputBorderClass("message")}`}
+                                className={`h-30 text-black/80 pl-2 text-xs md:text-sm border-l-0 border-t-0 border-b-2 border-r-0 border-b-blue-500 ${getInputBorderClass("message")}`}
                             />
                             {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                         </div>
@@ -156,7 +156,7 @@ export default function ContactPage() {
                     </CardContent>
                 </Card>
             </div>
-
+{/* 
             <style jsx>{`
         input.border-red-500, textarea.border-red-500 {
           border-width: 1px !important;
@@ -164,7 +164,7 @@ export default function ContactPage() {
          {
           border-width: 1px !important;
         }
-      `}</style>
+      `}</style> */}
         </div>
     );
 }

@@ -70,16 +70,16 @@ export default function ReviewSection({ id, reviews: initialReviews }: ReviewSec
   };
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-semibold">Reviews</h2>
-      <h3 className="text-lg font-semibold">
+    <div className="space-y-2">
+      <h2 className="text-xl font-semibold">Reviews</h2>
+      <h3 className="text-sm font-semibold">
         Average Rating: {averageRating} ⭐ ({reviews.length} review{reviews.length !== 1 ? "s" : ""})
       </h3>
 
       {/* ⭐ Breakdown */}
-      <Card className="p-4 shadow">
+      <Card className="p-4 shadow text-xs">
         {[5, 4, 3, 2, 1].map((num) => (
-          <div key={num} className="flex justify-between border-b py-1">
+          <div key={num} className="flex justify-between border-b">
             <span className="font-medium">{num} Stars</span>
             <span className="text-muted-foreground">{breakdown[num]}</span>
           </div>
@@ -89,18 +89,18 @@ export default function ReviewSection({ id, reviews: initialReviews }: ReviewSec
       {/* ⭐ Reviews */}
       {reviews.length === 0 && <p className="text-muted-foreground">No reviews yet.</p>}
       {reviews.map((r, i) => (
-        <Card key={i} className="shadow">
+        <Card key={i} className="shadow text-xs">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
+            <CardTitle className="flex items-center gap-1 text-sm">
               {r.name || "Anonymous"}
-              <span className="flex items-center gap-1 text-yellow-500 text-sm">
-                <Star className="h-4 w-4" /> {r.rating}
+              <span className="flex items-center gap-1 text-yellow-500 text-xs">
+                <Star className="h-3 w-3" /> {r.rating}
               </span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p>{r.comment}</p>
-            <p className="text-xs mt-2 text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {new Date(r.createdAt).toLocaleDateString()}
             </p>
           </CardContent>
@@ -109,13 +109,14 @@ export default function ReviewSection({ id, reviews: initialReviews }: ReviewSec
 
       {/* ⭐ Add Review */}
       <Card className="shadow">
-        <CardContent className="space-y-3 p-5">
-          <h3 className="text-xl font-semibold">Add Review</h3>
+        <CardContent className="space-y-2 p-2">
+          <h3 className="text-sm font-semibold">Add Review</h3>
 
           {/* Name input: disabled if logged in */}
           <Input
             type="text"
             placeholder="Your name"
+            className="border-b-blue-500"
             value={session?.user?.name || review.name}
             onChange={(e) => setReview({ ...review, name: e.target.value })}
             disabled={!!session?.user?.name}
@@ -126,14 +127,14 @@ export default function ReviewSection({ id, reviews: initialReviews }: ReviewSec
             {[1, 2, 3, 4, 5].map((num) => (
               <Star
                 key={num}
-                className={`h-7 w-7 cursor-pointer ${num <= review.rating ? "text-yellow-500" : "text-gray-300"}`}
+                className={`h-7 w-7 cursor-pointer ${num <= review.rating ? "text-yellow-500" : "text-gray-500"}`}
                 onClick={() => setReview({ ...review, rating: num })}
               />
             ))}
           </div>
 
           <textarea
-            className="border rounded-md p-3 w-full"
+            className="border border-b-blue-500 rounded-md p-3 w-full"
             placeholder="Write your review..."
             value={review.comment}
             onChange={(e) => setReview({ ...review, comment: e.target.value })}

@@ -112,7 +112,7 @@ export default function UserDashboard() {
 
   return (
     <UserProfileLayout>
-      <div className="min-h-screen w-full bg-muted/40 p-0 sm:p-6 transition-all">
+      <div className="min-h-screen w-full bg-white text-black/80 p-0 sm:p-6 transition-all">
         <div className="max-w-3xl mx-auto space-y-4 sm:space-y-8">
 
           {/* HOME CARD */}

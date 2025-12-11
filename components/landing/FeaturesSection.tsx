@@ -11,8 +11,8 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className=" lg:px-25 px-4 ">
-      <h2 className="text-xl md:text-3xl font-bold text-center mb-5 md:mb-10">Our Services</h2>
+    <section className="lg:py-5 lg:px-25 px-4 ">
+      <h2 className="text-xl md:text-3xl font-bold text-center mb-0 md:mb-2">Our Services</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
         {features.map((feature, i) => (
           <motion.div
@@ -22,10 +22,10 @@ export default function FeaturesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.2 }}
           >
-            <Card className="p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-              <feature.icon className="mx-auto text-blue-600 mb-0 md:mb-4" size={30} />
-              <CardTitle className="text-sm md:text-xl font-bold mb-2">{feature.title}</CardTitle>
-              <CardContent className="text-gray-50 text-xs md:text-sm">{feature.description}</CardContent>
+            <Card className="p-4 text-center shadow-lg hover:shadow-xl transition-shadow">
+              <feature.icon className="mx-auto text-blue-600" size={25} />
+              <CardTitle className="text-sm md:text-xl text-black/80 font-bold">{feature.title}</CardTitle>
+              <CardContent className="text-gray-700 text-xs md:text-sm">{feature.description}</CardContent>
             </Card>
           </motion.div>
         ))}

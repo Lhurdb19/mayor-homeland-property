@@ -12,9 +12,9 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <div className="max-w-7xl mx-auto py-1 px-4 space-y-5">
-      <h1 className="text-xl md:text-4xl font-bold text-center">Our Services</h1>
-      <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mt-5 md:mt-10">
+    <div className="max-w-7xl mx-auto py-1 px-4 space-y-0 text-black/80">
+      <h1 className="text-xl md:text-3xl font-bold text-center">Our Services</h1>
+      <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mt-1 md:mt-5">
         {services.map((s, i) => (
           <motion.div
             key={i}
@@ -23,12 +23,12 @@ export default function ServicesPage() {
             transition={{ delay: i * 0.1 }}
           >
             <Card className="p-2 hover:shadow-lg transition-all rounded-xl text-center">
-              <div className="text-2xl md:text-5xl">{s.icon}</div>
+              <div className="text-xl md:text-3xl">{s.icon}</div>
               <CardHeader>
-                <CardTitle className="text-sm md:text-lg mt-0 md:mt-3">{s.title}</CardTitle>
+                <CardTitle className="text-sm md:text-md mt-0 ">{s.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 text-xs  md:text-sm">{s.desc}</p>
+                <p className="text-gray-600 text-xs">{s.desc}</p>
               </CardContent>
             </Card>
           </motion.div>

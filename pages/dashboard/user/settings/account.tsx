@@ -77,7 +77,7 @@ export default function AccountSettingsPage() {
 
   return (
     <UserProfileLayout>
-      <div className="max-w-3xl mx-auto p-6">
+      <div className="max-w-3xl min-h-screen mx-auto p-6 text-black/80">
         <Card className="shadow-md border rounded-xl">
           <CardHeader>
             <CardTitle className="text-xl font-semibold">
@@ -88,10 +88,10 @@ export default function AccountSettingsPage() {
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-medium">
+                <h3 className="text-sm font-medium">
                   Two-Factor Authentication (2FA)
                 </h3>
-                <p className="text-sm text-gray-500 max-w-sm">
+                <p className="text-xs mt-4 text-gray-500 max-w-sm">
                   Protect your account using Google Authenticator codes.
                 </p>
               </div>
@@ -103,14 +103,15 @@ export default function AccountSettingsPage() {
                   else handleDisable2FA();
                 }}
                 disabled={isLoading}
+                className="text-black bg-black border border-blue-500"
               />
             </div>
 
             <div className="mt-3">
               {twoFAEnabled ? (
-                <p className="text-green-600 font-medium">2FA is enabled.</p>
+                <p className="text-green-600 text-sm font-medium">2FA is enabled.</p>
               ) : (
-                <p className="text-red-600 font-medium">2FA is disabled.</p>
+                <p className="text-red-600 text-sm font-medium">2FA is disabled.</p>
               )}
             </div>
           </CardContent>

@@ -58,7 +58,7 @@ Message: ${form.message || "No message"}
   };
 
   return (
-    <Card className="mb-6 shadow-md dark:bg-gray-700 dark:text-gray-800">
+    <Card className="mb-6 shadow-md dark:text-gray-800">
       <CardHeader>
         <CardTitle className="text-xl font-bold">Schedule a Visit</CardTitle>
       </CardHeader>
@@ -70,6 +70,7 @@ Message: ${form.message || "No message"}
             type="text"
             name="name"
             placeholder="Your Name"
+            className="border outline-none border-b-blue-500"
             required
             value={form.name}
             onChange={handleChange}
@@ -79,6 +80,7 @@ Message: ${form.message || "No message"}
             type="email"
             name="email"
             placeholder="Email Address"
+            className="border outline-none border-b-blue-500"
             required
             value={form.email}
             onChange={handleChange}
@@ -88,6 +90,7 @@ Message: ${form.message || "No message"}
             type="text"
             name="phone"
             placeholder="Phone Number"
+            className="border outline-none border-b-blue-500"
             required
             value={form.phone}
             onChange={handleChange}
@@ -96,6 +99,7 @@ Message: ${form.message || "No message"}
           <Input
             type="date"
             name="date"
+            className="border outline-none border-b-blue-500"
             value={form.date}
             onChange={handleChange}
           />
@@ -105,6 +109,7 @@ Message: ${form.message || "No message"}
             placeholder="Message (optional)"
             value={form.message}
             onChange={handleChange}
+            className="border outline-none border-b-blue-500"
           />
 
           <Button type="submit" className="w-full">

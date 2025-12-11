@@ -52,7 +52,7 @@ export default function Hero() {
         className="relative z-20 w-full max-w-4xl text-center px-5"
       >
         <h1 className="text-3xl md:text-6xl font-bold text-white drop-shadow-xl">
-          Discover Your <span className="text-blue-400">Dream Home</span>
+          Discover Your <span className="text-blue-500">Dream Home</span>
         </h1>
 
         <p className="text-xs md:text-xl mt-4 text-gray-200">
@@ -63,7 +63,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.3 }}
-          className="mt-5 md:mt-8 p-5 rounded-2xl bg-white/10 backdrop-blur-sm shadow-xl"
+          className="mt-5 md:mt-10 bottom-0 p-5 rounded-2xl bg-white/90 border-blue-500 border-4 "
         >
           <SearchSidebar
             filters={filters}

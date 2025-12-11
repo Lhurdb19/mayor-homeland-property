@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: "Invalid email" });
     }
 
-    // Check duplicate
+    // Prevent duplicates
     const exists = await Newsletter.findOne({ email });
     if (exists) {
       return res.status(400).json({ message: "Email already subscribed" });
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const newsletter = await Newsletter.create({ email, userId });
 
-    // Send notification to admin
+    // Admin notification
     await sendNotification({
       recipientType: "admin",
       title: "New Newsletter Subscription",
@@ -35,15 +35,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       type: "info",
     });
 
-    // Optional: send welcome email
+    // Auto-response email to subscriber
     try {
       await sendEmail(
         email,
-        "Welcome to Dream Land Newsletter",
-        `<p>Hi! Thanks for subscribing to Dream Land newsletter.</p>`
+        "🎉 Welcome to Mayor HomeLand Property Newsletter",
+        `
+          <h2 style="color:#0070f3; margin-bottom:10px;">Welcome to Mayor Homeland Property!</h2>
+          <p>Hi there,</p>
+          <p>Thanks for subscribing to our newsletter! You will now receive:</p>
+
+          <ul>
+            <li>🔥 Exclusive property listings</li>
+            <li>🏡 Real estate market insights</li>
+            <li>💼 Investment opportunities</li>
+            <li>📩 Early access to new updates</li>
+          </ul>
+
+          <p>We’re excited to have you on board.</p>
+
+          <p style="margin-top:20px;">
+            Warm regards,  
+            <br/><strong>Mayor Homeland Property Team</strong>
+          </p>
+        `
       );
     } catch (err) {
-      console.log("Email send failed", err);
+      console.log("Welcome email failed:", err);
     }
 
     return res.status(200).json({

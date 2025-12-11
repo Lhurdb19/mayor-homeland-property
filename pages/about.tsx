@@ -28,7 +28,7 @@ export default function AboutPage() {
 
   if (loading) {
     return (
-      <div className="max-w-8xl mx-auto py-20 space-y-8">
+      <div className="max-w-8xl bg-white text-black/80 mx-auto py-20 space-y-8">
         <Skeleton className="h-10 w-1/3" />
         <Skeleton className="h-[400px] w-full rounded-xl" />
       </div>
@@ -44,7 +44,7 @@ export default function AboutPage() {
   }
 
   return (
-    <div className="max-w-8xl mx-auto py-17 md:py-20 px-4 lg:px-25 space-y-20">
+    <div className="max-w-8xl mx-auto py-17 md:py-20 px-4 lg:px-25 space-y-20 bg-white">
 
       {/* ===========================
           HERO BANNER
@@ -65,10 +65,10 @@ export default function AboutPage() {
         )}
 
         <div className="absolute inset-0 flex flex-col items-center text-center justify-center text-white px-6">
-          <h1 className="text-2xl md:text-4xl font-bold tracking-tight drop-shadow-lg">
+          <h1 className="text-2xl md:text-4xl font-bold text-white tracking-tight drop-shadow-lg">
             {about.ownerName || "Our Company"}
           </h1>
-          <p className="mt-4 text-sm md:text-xl text-gray-100 max-w-2xl text-center">
+          <p className="mt-2 text-sm md:text-xl text-gray-100 max-w-2xl text-center">
             Building trust through quality, integrity and excellence.
           </p>
         </div>
@@ -78,17 +78,17 @@ export default function AboutPage() {
       {/* ===========================
           STORY + FOUNDER COLUMN
       ============================ */}
-      <div className="grid md:grid-cols-3 gap-12">
+      <div className="grid md:grid-cols-3 gap-12 text-black">
 
         {/* Top Mobile Responsive (founder card) */}
         <motion.aside
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-6 block md:hidden"
+          className="space-y-4 block md:hidden"
         >
-          <Card className="p-4 shadow-md backdrop-blur bg-white/80">
-            <h3 className="font-semibold text-lg">Founded</h3>
-            <p className="text-gray-600">
+          <Card className="p-4 shadow- text-gray-700 bg-white/80">
+            <h3 className="font-semibold text-black/80 text-sm">Founded</h3>
+            <p className="text-gray-700 text-sm">
               {about.foundedYear} — {about.foundedLocation}
             </p>
           </Card>
@@ -99,10 +99,10 @@ export default function AboutPage() {
               <img
                 src={about.ownerImage}
                 alt="owner"
-                className="w-35 h-35 rounded-full mx-auto object-cover shadow"
+                className="w-30 h-30 rounded-full mx-auto object-cover shadow"
               />
             )}
-            <p className="font-medium text-gray-800 text-lg">{about.ownerName}</p>
+            <p className="font-medium text-gray-800 text-sm">{about.ownerName}</p>
           </Card>
         </motion.aside>
 
@@ -113,26 +113,26 @@ export default function AboutPage() {
           className="md:col-span-2 space-y-2"
         >
           <h2 className="text-xl md:text-3xl font-semibold">Our Story</h2>
-          <p className="text-gray-400 leading-relaxed text-sm md:text-lg">
+          <p className="text-gray-400 leading-relaxed text-xs md:text-sm">
             {about.story}
           </p>
 
-          <div className="grid sm:grid-cols-2 gap-6 pt-4">
+          <div className="grid sm:grid-cols-2 gap-6 pt-6">
             <Card className="hover:shadow-md transition-all">
               <CardHeader>
-                <CardTitle className="text-xl -my-4">Mission</CardTitle>
+                <CardTitle className="text-xl -my-4 text-black/80">Mission</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="leading-relaxed text-xs md:text-lg text-gray-500">{about.mission}</p>
+                <p className="leading-relaxed text-xs md:text-sm text-gray-700">{about.mission}</p>
               </CardContent>
             </Card>
 
             <Card className="hover:shadow-md transition-all">
               <CardHeader>
-                <CardTitle className="text-xl -my-4">Vision</CardTitle>
+                <CardTitle className="text-xl -my-4 text-black/80">Vision</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="leading-relaxed text-xs md:text-lg text-gray-500">{about.vision}</p>
+                <p className="leading-relaxed text-xs md:text-sm text-gray-700">{about.vision}</p>
               </CardContent>
             </Card>
           </div>
@@ -169,65 +169,7 @@ export default function AboutPage() {
       {/* ===========================
           TEAM SECTION
       ============================ */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="space-y-6"
-      >
-        <h2 className="text-3xl font-semibold">Meet the Team</h2>
-
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {(about.team || []).map((m: any, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-lg p-5 shadow hover:shadow-xl transition-all hover:-translate-y-1"
-            >
-              <div className="w-40 h-40 mx-auto rounded-full overflow-hidden shadow">
-                {m.image && (
-                  <img
-                    src={m.image}
-                    alt={m.name}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-
-              <div className="text-center mt-4">
-                <h3 className="font-semibold text-lg">{m.name}</h3>
-                <p className="text-gray-500 text-sm">{m.role}</p>
-              </div>
-
-              {/* Socials */}
-              <div className="flex justify-center gap-4 mt-4 text-xl text-gray-600">
-                {m.facebook && (
-                  <a href={m.facebook} target="_blank">
-                    <FaFacebook className="hover:text-blue-600" />
-                  </a>
-                )}
-                {m.instagram && (
-                  <a href={m.instagram} target="_blank">
-                    <FaInstagram className="hover:text-pink-600" />
-                  </a>
-                )}
-                {m.twitter && (
-                  <a href={m.twitter} target="_blank">
-                    <FaTwitter className="hover:text-sky-500" />
-                  </a>
-                )}
-                {m.linkedin && (
-                  <a href={m.linkedin} target="_blank">
-                    <FaLinkedin className="hover:text-blue-700" />
-                  </a>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-
+    
       <ServicesPage />
     </div>
   );

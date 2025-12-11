@@ -6,5 +6,10 @@ export const metadata = {
 };
 
 export default function LandPage() {
-  return <Categories initialType="land" showModalButton={false} enablePagination={true}/>;
+  return (
+    <div>
+  <Categories initialType="land" showModalButton={false} enablePagination={true}/>
+    </div>
+
+)
 }

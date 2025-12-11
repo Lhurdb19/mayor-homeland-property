@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 export default function SecuritySettings() {
   const [saving, setSaving] = useState(false);
@@ -23,7 +24,7 @@ export default function SecuritySettings() {
 
     setSaving(true);
     try {
-      await axios.put("/api/users/change-password", form);
+      await axios.put("/api/admin/change-password", form);
       toast.success("Password updated!");
     } catch {
       toast.error("Error updating password");
@@ -32,7 +33,8 @@ export default function SecuritySettings() {
   };
 
   return (
-    <UserProfileLayout>
+    <AdminLayout>
+
       <div className="max-w-2xl min-h-screen p-6 bg-muted/40 mx-auto justify-start items-center">
 
         <div className="p-6 rounded-xl bg-blue-600 text-white mb-6 ">
@@ -48,37 +50,37 @@ export default function SecuritySettings() {
             </CardHeader>
             <CardContent className="space-y-4">
 
-              <div  className="space-y-2">
+              <div className="space-y-2">
                 <Label>Old Password</Label>
-                <Input 
+                <Input
                   type="password"
                   value={form.oldPassword}
-                  onChange={e => setForm({...form, oldPassword: e.target.value})}
+                  onChange={e => setForm({ ...form, oldPassword: e.target.value })}
                   className="border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
                 />
               </div>
 
-              <div  className="space-y-2">
+              <div className="space-y-2">
                 <Label>New Password</Label>
-                <Input 
+                <Input
                   type="password"
                   value={form.newPassword}
-                  onChange={e => setForm({...form, newPassword: e.target.value})}
+                  onChange={e => setForm({ ...form, newPassword: e.target.value })}
                   className="border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
                 />
               </div>
 
-              <div  className="space-y-2">
+              <div className="space-y-2">
                 <Label>Confirm New Password</Label>
-                <Input 
+                <Input
                   type="password"
                   value={form.confirmPassword}
-                  onChange={e => setForm({...form, confirmPassword: e.target.value})}
+                  onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
                   className="border-l-0 border-r-0 border-t-0 border-b-2 border-b-blue-500"
                 />
               </div>
 
-              <Button 
+              <Button
                 className="w-full font-bold text-gray-50 bg-blue-600 hover:bg-blue-700"
                 onClick={submit}
                 disabled={saving}
@@ -91,6 +93,6 @@ export default function SecuritySettings() {
 
         </div>
       </div>
-    </UserProfileLayout>
+    </AdminLayout>
   );
 }

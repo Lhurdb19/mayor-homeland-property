@@ -1,18 +1,22 @@
-// lib/mail.ts
 import nodemailer from "nodemailer";
 
-// Hosted logo URL
 const LOGO_URL = `${process.env.NEXTAUTH_URL}/mayor.png`;
 
 export const sendEmail = async (to: string, subject: string, bodyHtml: string) => {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || !process.env.EMAIL_FROM || !process.env.EMAIL_HOST || !process.env.EMAIL_PORT) {
+  if (
+    !process.env.EMAIL_USER ||
+    !process.env.EMAIL_PASS ||
+    !process.env.EMAIL_FROM ||
+    !process.env.EMAIL_HOST ||
+    !process.env.EMAIL_PORT
+  ) {
     throw new Error("Missing email credentials in .env");
   }
 
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: Number(process.env.EMAIL_PORT),
-    secure: false, // false for port 587
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -20,42 +24,45 @@ export const sendEmail = async (to: string, subject: string, bodyHtml: string) =
   });
 
   const html = `
-  <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color:#f4f6f8; padding: 30px;">
-    <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-      
-      <!-- Logo Section -->
-      <div style="text-align: center; padding: 25px; background-color: #0070f3;">
-        <img src="${LOGO_URL}" alt="Mayor Homeland Property" style="width: 160px; height: auto; object-fit: contain;" />
+  <div style="font-family:Arial, sans-serif; background:#f2f4f7; padding:30px;">
+    <div style="
+      max-width:600px;
+      margin:auto;
+      background:white;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    ">
+
+      <!-- Header -->
+      <div style="background:#0070f3; padding:25px; text-align:center;">
+        <img src="${LOGO_URL}" alt="Mayor Homeland Property"
+          style="width:170px; height:auto; object-fit:contain;" />
+        <h2 style="color:white; margin-top:15px; font-size:20px; font-weight:600;">
+          Response From Mayor Homeland Property
+        </h2>
       </div>
 
-      <!-- Body Section -->
-      <div style="padding: 30px; color: #333; line-height: 1.6;">
+      <!-- Body -->
+      <div style="padding:30px; color:#333; line-height:1.7; font-size:15px;">
         ${bodyHtml}
       </div>
 
-      <!-- Button / CTA -->
-      <div style="padding: 0 30px 30px; text-align: center;">
-        <a href="${bodyHtml.includes('href') ? '' : '#'}" 
-          style="display: inline-block; padding: 12px 25px; background-color: #0070f3; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px;">
-          ${bodyHtml.includes('href') ? '' : 'Click Here'}
-        </a>
-      </div>
-
       <!-- Footer -->
-      <div style="padding: 20px; background-color: #f9f9f9; text-align: center; font-size: 12px; color: #888;">
-        If you didn’t request this email, you can safely ignore it.
+      <div style="background:#f9fafb; padding:20px; text-align:center; color:#888; font-size:12px;">
+        <p style="margin:0;">© ${new Date().getFullYear()} Mayor Homeland Property.</p>
+        <p style="margin:5px 0;">Ayekale, Osogbo, Osun State</p>
+        <p style="margin:0;">If you didn’t request this message, you may safely ignore it.</p>
       </div>
 
     </div>
   </div>
   `;
 
-  const info = await transporter.sendMail({
+  return transporter.sendMail({
     from: `"Mayor Homeland Property" <${process.env.EMAIL_FROM}>`,
     to,
     subject,
     html,
   });
-
-  return info;
 };

@@ -100,9 +100,9 @@ useEffect(() => {
 }
 
     return (
-        <div className={`flex h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
+        <div className="flex h-screen bg-white text-black/80">
             {/* Sidebar */}
-            <aside className={`bg-white dark:bg-gray-800 shadow-md transition-all duration-300 ${sidebarOpen ? "w-64" : "w-16"} flex flex-col`}>
+            <aside className={`bg-white shadow-md transition-all duration-300 ${sidebarOpen ? "w-64" : "w-16"} flex flex-col`}>
                 <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
                     {sidebarOpen && <h1 className="font-bold text-lg">Admin Panel</h1>}
                     <div className="flex items-center gap-2">
@@ -126,12 +126,6 @@ useEffect(() => {
                             {sidebarOpen && <span>{item.name}</span>}
                         </Link>
                     ))}
-                    <button
-                        onClick={() => setDarkMode(!darkMode)}
-                        className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition flex items-center gap-2 w-full"
-                    >
-                        {darkMode ? <Sun size={20} /> : <Moon size={20} />} {sidebarOpen && <span>Theme</span>}
-                    </button>
                 </nav>
             </aside>
 

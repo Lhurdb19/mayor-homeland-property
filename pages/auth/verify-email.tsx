@@ -26,7 +26,7 @@ export default function VerifyEmail() {
   }, [token, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-white text-black/80">
       <h1 className="text-xl font-bold">{loading ? "Verifying your email..." : "Verification failed."}</h1>
     </div>
   );

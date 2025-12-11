@@ -47,12 +47,12 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <div className="py-20 px-6 max-w-6xl mx-auto">
+    <div className="py-16 px-6 max-w-6xl mx-auto text-black/80">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="text-3xl md:text-4xl font-bold text-center mb-6"
+        className="text-2xl md:text-3xl font-bold text-center mb-6"
       >
         How It Works
       </motion.h2>
@@ -80,14 +80,14 @@ function StepCard({ step }: { step: StepType }) {
     <Card className="rounded-xl shadow-md p-4 text-center hover:shadow-xl transition-all">
       <div className="flex justify-center ">{step.icon}</div>
 
-      <div className="flex justify-center items-center">
-        <span className="h-5 md:h-10 w-5 md:w-10 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs md:text-lg">
+      <div className="flex justify-center items-center h-10">
+        <span className="h-5 md:h-8 w-5 md:w-8 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs md:text-lg">
           {step.step}
         </span>
       </div>
 
-      <h3 className="text-sm md:text-xl font-semibold mt-0 md:mt-2">{step.title}</h3>
-      <p className="text-gray-300 text-xs md:text-sm">{step.description}</p>
+      <h3 className="text-sm md:text-xl font-semibold">{step.title}</h3>
+      <p className="text-gray-700 text-xs md:text-xs">{step.description}</p>
     </Card>
   );
 }

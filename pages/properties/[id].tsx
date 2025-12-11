@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import ReviewSection from "@/components/ReviewSection";
 import VisitForm from "@/components/VisitForm";
 import { ChevronLeft, ChevronRight, Heart, MapPin } from "lucide-react";
@@ -16,6 +16,7 @@ import MortgageCalculator from "@/components/calculator/MortgageCalculator";
 import SearchProperty from "@/components/SearchProperty";
 import PropertyMap from "@/components/PropertyMap";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { toast } from "sonner";
 
 // Dynamically import react-leaflet components (client-side only)
 const MapContainer = dynamic(() => import("react-leaflet").then(mod => mod.MapContainer), { ssr: false });
@@ -26,7 +27,7 @@ const Popup = dynamic(() => import("react-leaflet").then(mod => mod.Popup), { ss
 interface ReviewType {
   user: string;
   rating: number;
-  name: string;   // <--- add this
+  name: string;
   comment: string;
   createdAt: string;
 }
@@ -91,10 +92,8 @@ export default function PropertyDetailPage() {
     return () => clearInterval(interval);
   }, [id]);
 
-  // --- CONDITIONAL RENDER ---
   if (loading || !property) return <p className="p-6">Loading...</p>;
 
-  // --- FUNCTIONS ---
   const handlePrev = () => setActiveIndex((prev) => (prev === 0 ? property.images.length - 1 : prev - 1));
   const handleNext = () => setActiveIndex((prev) => (prev === property.images.length - 1 ? 0 : prev + 1));
 
@@ -115,41 +114,53 @@ export default function PropertyDetailPage() {
     router.push(`/properties?${query.toString()}`);
   };
 
-  // const [isFavorite, setIsFavorite] = useState(false);
-
   const handleFavorite = async () => {
     try {
       if (!isFavorite) {
         await axios.post("/api/favorites", { propertyId: property._id });
         setIsFavorite(true);
+        toast.success("Added to favorites!")
       } else {
         await axios.delete("/api/favorites", { data: { propertyId: property._id } });
         setIsFavorite(false);
+        toast.warning("Removed from favorites!")
       }
     } catch (err) {
       console.error(err);
     }
   };
 
-
   return (
-    <div className="py-20 px-2 lg:p-25 max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
+    <div className="py-20 px-2 lg:p-25 max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 bg-white text-black/80">
       {/* MAIN LEFT CONTENT */}
       <div className="lg:col-span-2 space-y-6">
         {/* Title & Price */}
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-lg md:text-4xl font-bold tracking-tight mb-2">{property.title}</h1>
-            <p className="text-gray-600 flex items-center gap-1 text-sm"><MapPin className="w-3 h-3 md:w-6 md:h-6" /> {property.location}</p>
+            <h1 className="text-lg md:text-xl font-bold tracking-tight mb-2">{property.title}</h1>
+            <p className="text-gray-600 flex items-center gap-1 text-sm">
+              <MapPin className="w-3 h-3 md:w-6 md:h-6" /> {property.location}
+            </p>
           </div>
-          <p className="text-lg md:text-2xl font-semibold text-red-500">
+          <p className="text-lg md:text-xl font-semibold text-red-500">
             ₦{property.price.toLocaleString()}
           </p>
         </div>
 
         {/* Image Gallery */}
-        <div className="relative h-[600px] rounded-xl overflow-hidden">
-          <img src={property.images[activeIndex]} className="w-full h-full object-cover" />
+        <div className="relative h-[400px] rounded-xl overflow-hidden">
+          <img src={property.images[activeIndex]} className="w-full h-full object-cover relative" />
+
+          {/* Favorite Heart at Top Right */}
+          <button
+            onClick={handleFavorite}
+            className={`flex items-center z-10 absolute top-3 right-3 gap-2 px-4 py-2 rounded-md border 
+            ${isFavorite ? "bg-red-500 text-white" : "bg-white text-gray-700"}`}
+          >
+            <Heart className={`w-5 h-5 ${isFavorite ? "fill-white" : "text-red-500"}`} />
+            {isFavorite ? "Remove Favorite" : "Add to Favorite"}
+          </button>
+
           <button onClick={handlePrev} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition">
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -173,15 +184,7 @@ export default function PropertyDetailPage() {
 
         {/* Tabs */}
         <div className="mt-8">
-          <button
-            onClick={handleFavorite}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md border 
-    ${isFavorite ? "bg-red-500 text-white" : "bg-white text-gray-700"}`}>
-            <Heart className={`w-5 h-5 ${isFavorite ? "fill-white" : "text-red-500"}`} />
-            {isFavorite ? "Remove Favorite" : "Add to Favorite"}
-          </button>
-
-          <div className="flex border-b mb-6 gap-4">
+          <div className="flex border-b gap-2 py-0 m-0">
             <button
               className={`px-4 py-2 font-semibold ${activeTab === "details" ? "border-b-2 border-blue-600" : ""}`}
               onClick={() => setActiveTab("details")}
@@ -200,29 +203,29 @@ export default function PropertyDetailPage() {
           {activeTab === "details" && (
             <Card className="mb-6 shadow-md">
               <CardContent className="p-2 md:p-4 space-y-1">
-                <p className="text-[12px] md:text-lg"><strong>Type:</strong> {property.type ?? "N/A"}</p>
-                <p className="text-[10px] md:text-lg"><strong>Bedrooms:</strong> {property.bedrooms ?? "N/A"}</p>
-                <p className="text-[10px] md:text-lg"><strong>Bathrooms:</strong> {property.bathrooms ?? "N/A"}</p>
-                <p className="text-[10px] md:text-lg"><strong>Sqft:</strong> {property.sqft ?? "N/A"}</p>
-                <p className="text-[10px] md:text-lg">
+                <p className="text-[12px] md:text-sm"><strong>Type:</strong> {property.type ?? "N/A"}</p>
+                <p className="text-[10px] md:text-sm"><strong>Bedrooms:</strong> {property.bedrooms ?? "N/A"}</p>
+                <p className="text-[10px] md:text-sm"><strong>Bathrooms:</strong> {property.bathrooms ?? "N/A"}</p>
+                <p className="text-[10px] md:text-sm"><strong>Sqft:</strong> {property.sqft ?? "N/A"}</p>
+                <p className="text-[10px] md:text-sm">
                   <strong>Agent Phone:</strong>{" "}
-                  <a href={`tel:${property.phone}`} className="text-blue-600 underline">
+                  <a href={`tel:${property.phone}`} className="text-blue-600 underline text-[10px] md:text-sm">
                     {property.phone}
                   </a>
                 </p>
-                <p className="text-[10px] md:text-lg">
+                <p className="text-[10px] md:text-sm">
                   <strong>Agent Email:</strong>{" "}
-                  <a href={`mailto:${property.email}`} className="text-blue-600 underline">
+                  <a href={`mailto:${property.email}`} className="text-blue-600 underline text-[10px] md:text-sm">
                     {property.email}
                   </a>
                 </p>
 
-                <h3 className="font-semibold mt-4 mb-2 text-[12px] md:text-lg">Description</h3>
-                <p className="text-[10px] md:text-lg">{property.description}</p>
+                <h3 className="font-semibold mt-5 mb-2 text-[12px] md:text-lg">Description</h3>
+                <p className="text-[10px] md:text-sm">{property.description}</p>
 
                 <div className="grid grid-cols-2 mt-4 text-sm text-muted-foreground">
-                  <p className="text-[10px] md:text-lg">Status: <span className="font-medium text-[10px] md:text-lg">{property.status}</span></p>
-                  <p className="text-[10px] md:text-lg">Views: <span className="font-medium ">{property.views}</span></p>
+                  <p className="text-[10px] md:text-sm">Status: <span className="font-medium text-[10px] md:text-sm">{property.status}</span></p>
+                  <p className="text-[10px] md:text-sm">Views: <span className="font-medium text-[10px] md:text-sm">{property.views}</span></p>
                   <WhatsAppButton title="Property Visit Inquiry" />
                 </div>
               </CardContent>
@@ -248,19 +251,9 @@ export default function PropertyDetailPage() {
 
       {/* RIGHT SIDEBAR — SEARCH PROPERTY */}
       <div className="lg:col-span-1">
-        {/* Visit Form */}
         <VisitForm propertyId={property._id} />
-
-        {/* WhatsApp Button */}
-        {/* {property.phone && <WhatsAppButton phone={property.phone} title={property.title} />} */}
-
-        {/* Share Buttons */}
         <ShareButtons title={property.title} />
-
-        {/* Mortgage Calculator */}
         <MortgageCalculator price={property.price} />
-
-        {/* <div className="border rounded-xl shadow-md p-6 bg-gray-50"> */}
         <SearchProperty
           filters={filters}
           handleChange={handleChange}

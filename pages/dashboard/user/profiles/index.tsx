@@ -42,7 +42,7 @@ export default function UserProfilePage() {
 
   return (
     <UserProfileLayout>
-      <div className="min-h-screen bg-muted/40 p-0 md:p-6  text-black dark:text-white">
+      <div className="min-h-screen p-0 md:p-6  text-black dark:text-white">
         <div className="max-w-6xl lg:max-w-5xl xl:max-w-3xl w-full mx-auto space-y-2 md:space-y-6">
 
           {/* HEADER SECTION */}
@@ -111,7 +111,7 @@ export default function UserProfilePage() {
                 <User className="text-blue-600" />
                 <div>
                   <p className="text-xs text-muted-foreground">Full Name</p>
-                  <p className="font-medium">{user.firstName} {user.lastName}</p>
+                  <p className="font-medium text-sm text-gray-600">{user.firstName} {user.lastName}</p>
                 </div>
               </CardContent>
             </Card>
@@ -121,7 +121,7 @@ export default function UserProfilePage() {
                 <Mail className="text-blue-600 w-5 h-10" />
                 <div>
                   <p className="text-xs text-muted-foreground">Email</p>
-                  <p className="font-medium break-after-auto break-all text-sm">{user.email}</p>
+                  <p className="font-medium text-gray-700 break-after-auto break-all text-sm">{user.email}</p>
                 </div>
               </CardContent>
             </Card>
@@ -131,7 +131,7 @@ export default function UserProfilePage() {
                 <Phone className="text-blue-600" />
                 <div>
                   <p className="text-xs text-muted-foreground">Phone Number</p>
-                  <p className="font-medium">{user.phone || "Not provided"}</p>
+                  <p className="font-medium text-sm text-gray-600">{user.phone || "Not provided"}</p>
                 </div>
               </CardContent>
             </Card>
@@ -141,7 +141,7 @@ export default function UserProfilePage() {
                 <MapPin className="text-blue-600" />
                 <div>
                   <p className="text-xs text-muted-foreground">Address</p>
-                  <p className="font-medium">{user.address || "No address added"}</p>
+                  <p className="font-medium text-sm text-gray-600">{user.address || "No address added"}</p>
                 </div>
               </CardContent>
             </Card>
@@ -151,7 +151,7 @@ export default function UserProfilePage() {
                 <ShieldCheck className="text-blue-600" />
                 <div>
                   <p className="text-xs text-muted-foreground">Account Created</p>
-                  <p className="font-medium">{format(new Date(user.createdAt), "PPP")}</p>
+                  <p className="font-medium text-sm text-gray-600">{format(new Date(user.createdAt), "PPP")}</p>
                 </div>
               </CardContent>
             </Card>
@@ -161,7 +161,7 @@ export default function UserProfilePage() {
                 <ShieldCheck className="text-blue-600" />
                 <div>
                   <p className="text-xs text-muted-foreground">Last Updated</p>
-                  <p className="font-medium">{format(new Date(user.updatedAt), "PPP")}</p>
+                  <p className="font-medium text-sm text-gray-600">{format(new Date(user.updatedAt), "PPP")}</p>
                 </div>
               </CardContent>
             </Card>

@@ -86,7 +86,7 @@ export default function EditPage() {
 
   return (
     <UserProfileLayout>
-      <div className="min-h-screen bg-muted/40 py-0 flex flex-col justify-center items-center w-8xl">
+      <div className="min-h-screen text-black/80 py-0 flex flex-col justify-center items-center w-8xl">
         <div className="max-w-full lg:max-w-full">
 
           {/* MAIN CONTENT */}
@@ -126,7 +126,7 @@ export default function EditPage() {
                   <Input
                     value={user.firstName}
                     onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-                    className="border-l-0 text-xs border-t-0 border-b-1 border-blue-500 focus:outline-none"
+                    className="border-l-0 text-xs border-t-0 border-b-blue-500 focus:outline-none"
                   />
                 </div>
                 <div className="space-y-2">
@@ -134,7 +134,7 @@ export default function EditPage() {
                   <Input
                     value={user.lastName}
                     onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-                    className="text-xs border-l-0 border-t-0 border-b-1 border-blue-500 focus:outline-none"
+                    className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
                   />
                 </div>
                 <div className="space-y-2">
@@ -142,7 +142,7 @@ export default function EditPage() {
                   <Input
                     value={user.phone || ""}
                     onChange={(e) => setUser({ ...user, phone: e.target.value })}
-                    className="text-xs border-l-0 border-t-0 border-b-1 border-blue-500 focus:outline-none"
+                    className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
                   />
                 </div>
                 <div className="space-y-2">
@@ -150,12 +150,12 @@ export default function EditPage() {
                   <Input
                     value={user.address || ""}
                     onChange={(e) => setUser({ ...user, address: e.target.value })}
-                    className="text-xs border-l-0 border-t-0 border-b-1 border-blue-500 focus:outline-none"
+                    className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
                   />
                 </div>
                 <div className="md:col-span-2 space-y-2">
                   <Label className="text-xs md:text-sm">Email (not editable)</Label>
-                  <Input disabled value={user.email} className="text-xs border-l-0 border-t-0 border-b-1 border-blue-500 focus:outline-none"
+                  <Input disabled value={user.email} className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
                   />
                 </div>
               </div>

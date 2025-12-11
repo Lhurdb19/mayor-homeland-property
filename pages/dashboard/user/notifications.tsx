@@ -50,7 +50,7 @@ export default function UserNotificationsPage() {
 
   return (
     <UserProfileLayout>
-      <div className="min-h-screen w-full bg-muted/40 p-0 sm:p-6 transition-all text-black dark:text-white">
+      <div className="min-h-screen w-full p-0 sm:p-6 transition-all text-black/80">
 
         <div className="max-w-3xl mx-auto space-y-4 sm:space-y-8">
 

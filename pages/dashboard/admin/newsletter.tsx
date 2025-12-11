@@ -38,7 +38,7 @@ export default function AdminNewsletterPage() {
 
     return (
         <AdminLayout>
-            <Card className="w-full">
+            <Card className="w-full text-black/80">
                 <CardHeader>
                     <CardTitle className="text-lg font-semibold">
                         Newsletter Subscribers
@@ -68,9 +68,9 @@ export default function AdminNewsletterPage() {
                         </div>
                     ) : (
                         <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>#</TableHead>
+                            <TableHeader className="text-black/80">
+                                <TableRow className="text-black/80">
+                                    <TableHead className="text-black/80">#</TableHead>
                                     <TableHead>Email</TableHead>
                                     <TableHead>Subscribed At</TableHead>
                                 </TableRow>
