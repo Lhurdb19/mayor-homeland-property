@@ -113,7 +113,7 @@ export default function EditPage() {
                   <Input
                     type="file"
                     accept="image/*"
-                    className="mt-2"
+                    className="mt-2 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                     onChange={handleFileChange}
                   />
                 </div>
@@ -126,7 +126,7 @@ export default function EditPage() {
                   <Input
                     value={user.firstName}
                     onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-                    className="border-l-0 text-xs border-t-0 border-b-blue-500 focus:outline-none"
+                    className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                   />
                 </div>
                 <div className="space-y-2">
@@ -134,7 +134,7 @@ export default function EditPage() {
                   <Input
                     value={user.lastName}
                     onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-                    className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
+                    className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                   />
                 </div>
                 <div className="space-y-2">
@@ -142,7 +142,7 @@ export default function EditPage() {
                   <Input
                     value={user.phone || ""}
                     onChange={(e) => setUser({ ...user, phone: e.target.value })}
-                    className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
+                    className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                   />
                 </div>
                 <div className="space-y-2">
@@ -150,12 +150,12 @@ export default function EditPage() {
                   <Input
                     value={user.address || ""}
                     onChange={(e) => setUser({ ...user, address: e.target.value })}
-                    className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
+                    className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                   />
                 </div>
                 <div className="md:col-span-2 space-y-2">
                   <Label className="text-xs md:text-sm">Email (not editable)</Label>
-                  <Input disabled value={user.email} className="text-xs border-l-0 border-t-0 border-b-blue-500 focus:outline-none"
+                  <Input disabled value={user.email} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                   />
                 </div>
               </div>

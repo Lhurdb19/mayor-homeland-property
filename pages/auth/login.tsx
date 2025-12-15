@@ -79,7 +79,7 @@ export default function Login() {
             <form className="space-y-4" onSubmit={handleSubmit}>
               {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                <Label className="text-xs" htmlFor="email">Email Address</Label>
                 <Input
                   id="email"
                   name="email"
@@ -87,13 +87,13 @@ export default function Login() {
                   required
                   value={form.email}
                   onChange={handleChange}
-                  className="w-full border-b-1.5 rounded-2xl border-r-blue-500 border-b-blue-500 p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
               </div>
 
               {/* Password */}
               <div className="relative space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label className="text-xs" htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   name="password"
@@ -101,10 +101,10 @@ export default function Login() {
                   required
                   value={form.password}
                   onChange={handleChange}
-                  className="w-full border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
                 <span
-                  className="absolute right-3 top-7.5 cursor-pointer text-gray-600"
+                  className="absolute right-3 top-9 cursor-pointer text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -123,7 +123,7 @@ export default function Login() {
 
               {/* Submit Button */}
               <Button
-                className="w-full text-black font-bold"
+                className="w-full text-black/70 font-bold"
                 type="submit"
                 disabled={loading}
               >

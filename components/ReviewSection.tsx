@@ -116,7 +116,7 @@ export default function ReviewSection({ id, reviews: initialReviews }: ReviewSec
           <Input
             type="text"
             placeholder="Your name"
-            className="border-b-blue-500"
+            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             value={session?.user?.name || review.name}
             onChange={(e) => setReview({ ...review, name: e.target.value })}
             disabled={!!session?.user?.name}
@@ -134,7 +134,7 @@ export default function ReviewSection({ id, reviews: initialReviews }: ReviewSec
           </div>
 
           <textarea
-            className="border border-b-blue-500 rounded-md p-3 w-full"
+            className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             placeholder="Write your review..."
             value={review.comment}
             onChange={(e) => setReview({ ...review, comment: e.target.value })}

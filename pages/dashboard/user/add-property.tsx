@@ -8,6 +8,9 @@ import UserProfileLayout from "@/components/user/UserProfileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 export default function AddPropertyPage() {
   const router = useRouter();
@@ -148,35 +151,35 @@ export default function AddPropertyPage() {
 
   return (
     <UserProfileLayout>
-      <div className="max-w-3xl dark:bg-black dark:shadow-[#2e2e2e] mx-auto p-6 bg-white text-black/80 dark:text-white rounded-xl shadow-lg">
+      <div className="max-w-3xl mx-auto p-6 bg-white text-black/80 rounded-xl shadow-lg">
         <h1 className="text-sm md:text-lg font-bold mb-6">Add New Property</h1>
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="space-y-2">
-            <label className="block font-medium text-sm">Title</label>
-            <input type="text" name="title" value={form.title} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" required />
+            <Label className="block font-medium text-sm">Title</Label>
+            <Input type="text" name="title" value={form.title} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
           </div>
 
           <div className="space-y-2">
-            <label className="block font-medium text-sm">Description</label>
-            <textarea name="description" value={form.description} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" rows={4} />
+            <Label className="block font-medium text-sm">Description</Label>
+            <Textarea name="description" value={form.description} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" rows={4} />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="block font-medium text-sm">Price (₦)</label>
-              <input type="number" name="price" value={form.price} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" required />
+              <Label className="block font-medium text-sm">Price (₦)</Label>
+              <Input type="number" name="price" value={form.price} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
             </div>
 
             <div className="space-y-2">
-              <label className="block font-medium text-sm">Location</label>
-              <input type="text" name="location" value={form.location} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" required />
+              <Label className="block font-medium text-sm">Location</Label>
+              <Input type="text" name="location" value={form.location} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <label className="block font-medium text-sm">Type</label>
-              <select name="type" value={form.type} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" required>
+            <div className="space-y-2 text-sm">
+              <Label className="block font-medium text-sm">Type</Label>
+              <select name="type" value={form.type} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 py-2.5 focus:outline-none focus:ring-0" required>
                 <option value="">Select type</option>
                 <option value="sale">Sale</option>
                 <option value="rent">Rent</option>
@@ -186,34 +189,34 @@ export default function AddPropertyPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="block font-medium text-sm">Bedrooms</label>
-              <input type="number" name="bedrooms" value={form.bedrooms} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+              <Label className="block font-medium text-sm">Bedrooms</Label>
+              <Input type="number" name="bedrooms" value={form.bedrooms} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
             </div>
 
             <div className="space-y-2">
-              <label className="block font-medium text-sm">Bathrooms</label>
-              <input type="number" name="bathrooms" value={form.bathrooms} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+              <Label className="block font-medium text-sm">Bathrooms</Label>
+              <Input type="number" name="bathrooms" value={form.bathrooms} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="block font-medium text-sm">Square Footage</label>
-            <input type="number" name="sqft" value={form.sqft} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+            <Label className="block font-medium text-sm">Square Footage</Label>
+            <Input type="number" name="sqft" value={form.sqft} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
           </div>
 
           <div className="space-y-2">
-            <label className="block font-medium text-sm">Phone</label>
-            <input type="text" name="phone" value={form.phone} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+            <Label className="block font-medium text-sm">Phone</Label>
+            <Input type="text" name="phone" value={form.phone} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
           </div>
 
           <div className="space-y-2">
-            <label className="block font-medium text-sm">Email</label>
-            <input type="email" name="email" value={form.email} onChange={handleChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+            <Label className="block font-medium text-sm">Email</Label>
+            <Input type="email" name="email" value={form.email} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
           </div>
 
           <div className="space-y-2">
-            <label className="block font-medium text-sm">Property Images</label>
-            <input type="file" multiple accept="image/*" onChange={handleImageChange} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" required />
+            <Label className="block font-medium text-sm">Property Images</Label>
+            <Input type="file" multiple accept="image/*" onChange={handleImageChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
           </div>
 
           <button type="submit" disabled={uploading} className="bg-blue-600 text-white px-4 py-1 text-sm rounded-md hover:bg-blue-700 transition">

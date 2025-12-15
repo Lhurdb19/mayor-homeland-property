@@ -69,7 +69,7 @@ export default function Categories({
   }, [selectedCategory, page, enablePagination]);
 
   return (
-    <div className="py-16 px-4 lg:px-25 md:max-w-8xl w-full mx-auto bg-white text-black/80">
+    <div className="py-16 px-4 lg:px-25 md:max-w-8xl w-full mx-auto bg-white/95 text-black/80">
       {/* Title */}
       <motion.h2
         initial={{ opacity: 0, y: 20 }}

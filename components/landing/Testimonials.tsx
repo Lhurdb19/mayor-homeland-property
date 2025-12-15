@@ -1,113 +1,93 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Skeleton } from "@/components/ui/skeleton";
+import useSWR from "swr";
+import axios from "axios";
 import { Star } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 interface Testimonial {
   id: number;
   name: string;
-  image: string;
   review: string;
   rating: number;
 }
 
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
 export default function Testimonials() {
-  const [testimonials, setTestimonials] = useState<Testimonial[] | null>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setTestimonials([
-        {
-          id: 1,
-          name: "Michael Adewale",
-          image: "/images/users/user1.jpg",
-          review:
-            "I found the perfect apartment easily. Smooth experience and very reliable service!",
-          rating: 5,
-        },
-        {
-          id: 2,
-          name: "Sarah Johnson",
-          image: "/images/users/user2.jpg",
-          review:
-            "Super professional! The listings were accurate and the agents were very helpful.",
-          rating: 4,
-        },
-        {
-          id: 3,
-          name: "Emeka Chukwu",
-          image: "/images/users/user3.jpg",
-          review:
-            "Best platform I’ve used for house hunting. Everything was seamless and fast.",
-          rating: 4,
-        },
-      ]);
-    }, 2200);
-  }, []);
-
-  const isLoading = !testimonials;
+  const { data, isLoading } = useSWR<Testimonial[]>(
+    "/api/testimonials",
+    fetcher,
+    {
+      refreshInterval: 5000, // 🔥 auto refresh every 5s
+      revalidateOnFocus: true,
+    }
+  );
 
   return (
-    <section className="py-20 lg:px-25 px-4">
-      <div className="max-w-6xl mx-auto px-4">
+    <section className="py-20 px-4 bg-gray-50">
+      <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-semibold mb-10 text-center">
           🔥 What Our Clients Say
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {(isLoading ? Array.from({ length: 3 }) : testimonials)?.map(
-            (item: any, index: number) => (
-              <div
-                key={item?.id || index}
-                className="border p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300"
-              >
-                {isLoading ? (
-                  <>
-                    {/* Image skeleton */}
-                    <Skeleton className="w-16 h-16 rounded-full mx-auto mb-4" />
-
-                    {/* Name skeleton */}
-                    <Skeleton className="h-5 w-32 mx-auto mb-2" />
-
-                    {/* Rating skeleton */}
-                    <div className="flex justify-center gap-1 mb-4">
-                      <Skeleton className="h-4 w-4" />
-                      <Skeleton className="h-4 w-4" />
-                      <Skeleton className="h-4 w-4" />
-                    </div>
-
-                    {/* Review skeleton */}
-                    <Skeleton className="h-4 w-full mb-2" />
-                    <Skeleton className="h-4 w-3/4" />
-                  </>
-                ) : (
-                  <>
-                    <div className="flex justify-center">
-                     
-                    </div>
-
-                    <h3 className="text-center font-semibold text-lg">
-                      {item.name}
-                    </h3>
-
-                    <div className="flex justify-center text-yellow-500 ">
-                      {Array.from({ length: item.rating }).map((_, i) => (
-                        <Star key={i} />
-                      ))}
-                    </div>
-
-                    <p className="text-center text-gray-600 mt-2 text-sm">
-                      {item.review}
-                    </p>
-                  </>
-                )}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="border p-8 rounded-2xl bg-white">
+                <Skeleton className="h-5 w-32 mb-3" />
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-3/4" />
               </div>
-            )
-          )}
-        </div>
+            ))}
+          </div>
+        ) : data && data.length > 0 ? (
+          <Swiper
+            modules={[Autoplay, Pagination]}
+            spaceBetween={30}
+            slidesPerView={1}
+            autoplay={{ delay: 4500 }}
+            pagination={{ clickable: true }}
+            breakpoints={{
+              640: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+            }}
+          >
+            {data.map((item) => (
+              <SwiperSlide key={item.id} className="flex gap-20">
+                <div className="border h-40 py-3 rounded-2xl bg-white flex flex-col items-center shadow-sm hover:shadow-lg transition">
+                  <h3 className="font-semibold text-lg text-center">
+                    {item.name}
+                  </h3>
+
+                  <div className="flex justify-center text-yellow-500 my-1">
+                    {Array.from({ length: item.rating }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className="h-4 w-4 fill-yellow-500"
+                      />
+                    ))}
+                  </div>
+
+                  <p className="text-center text-gray-600 text-xs md:text-sm">
+                    “{item.review}”
+                  </p>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <p className="text-center text-gray-500">
+            No testimonials yet. Be the first to leave a review!
+          </p>
+        )}
       </div>
     </section>
   );

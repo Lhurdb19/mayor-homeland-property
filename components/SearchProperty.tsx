@@ -41,7 +41,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
             value={filters.location}
             onChange={handleChange}
             placeholder="Enter location (e.g Lagos)"
-            className="text-xs border border-b-blue-500"
+            className="text-xs rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
           />
         </div>
 
@@ -53,11 +53,11 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
               handleChange({ target: { name: "category", value: val } })
             }
           >
-            <SelectTrigger className="space-y-2 text-xs border border-b-blue-500 w-full">
+            <SelectTrigger className="space-y-2 text-xsrounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0 w-full">
               <SelectValue placeholder="Select category" 
-            className="text-xs border border-b-blue-500"/>
+            className="text-xs border rounded border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
             </SelectTrigger>
-            <SelectContent className="space-y-4 text-xs border border-b-blue-500">
+            <SelectContent className="space-y-4 text-xs rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0">
               <SelectItem value="any">Any</SelectItem>
               <SelectItem value="rent">Rent</SelectItem>
               <SelectItem value="sale">Sale</SelectItem>
@@ -75,7 +75,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
             value={filters.bedroom}
             onChange={handleChange}
             placeholder="1, 2, 3..."
-            className="text-xs border border-b-blue-500"
+            className="text-xs rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
           />
         </div>
 
@@ -87,7 +87,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
             value={filters.minPrice}
             onChange={handleChange}
             placeholder="₦ Minimum"
-            className="text-xs border border-b-blue-500"
+            className="text-xs rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
           />
         </div>
 
@@ -99,7 +99,7 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
             value={filters.maxPrice}
             onChange={handleChange}
             placeholder="₦ Maximum"
-            className="text-xs border border-b-blue-500"
+            className="text-xs rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
           />
         </div>
 
@@ -111,11 +111,11 @@ export default function SearchProperty({ filters, handleChange, handleSearch }: 
               handleChange({ target: { name: "time", value: val } })
             }
           >
-            <SelectTrigger className="space-y-2 w-full text-xs border border-b-blue-500">
+            <SelectTrigger className="space-y-2 w-full text-xs rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0">
               <SelectValue placeholder="Anytime" 
-            className="text-xs w-full border border-b-blue-500" />
+            className="text-xs w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
             </SelectTrigger>
-            <SelectContent className="text-xs border border-b-blue-500">
+            <SelectContent className="text-xs rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0">
               <SelectItem value="any">Anytime</SelectItem>
               <SelectItem value="24">Last 24 hours</SelectItem>
               <SelectItem value="7">Last 7 days</SelectItem>

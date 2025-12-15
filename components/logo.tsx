@@ -2,6 +2,9 @@ import Image from "next/image";
 
 export default function Logo() {
     return (
-        <Image width={200} height={100} alt="logo" src={'/mayor.png'} className="w-[100%] h-[250px] object-cover -ml-3 -translate-y-27" />
+        <div className="w-70 md:w-100 md:overflow-hidden h-13 pl-4">
+
+        <Image width={500} height={200} alt="logo" src={'/mayo.png'} className="w-90 overflow-hidden object-cover -ml-29 -translate-y-14" />
+        </div>
     )
 }

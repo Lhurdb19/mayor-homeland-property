@@ -211,33 +211,33 @@ export default function AdminAboutPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="text-sm font-medium">Founded Year</label>
-                                    <Input value={foundedYear} onChange={(e) => setFoundedYear(e.target.value)} placeholder="e.g. 2018" className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                                    <Input value={foundedYear} onChange={(e) => setFoundedYear(e.target.value)} placeholder="e.g. 2018" className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
                                 </div>
                                 <div>
                                     <label className="text-sm font-medium">Founded Location</label>
-                                    <Input value={foundedLocation} onChange={(e) => setFoundedLocation(e.target.value)} placeholder="City, Country" className=" rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                                    <Input value={foundedLocation} onChange={(e) => setFoundedLocation(e.target.value)} placeholder="City, Country" className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
                                 </div>
                             </div>
 
                             <div>
                                 <label className="text-sm font-medium">Mission</label>
-                                <Textarea value={mission} onChange={(e) => setMission(e.target.value)} placeholder="Short mission statement" className="h-20 rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+                                <Textarea value={mission} onChange={(e) => setMission(e.target.value)} placeholder="Short mission statement" className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
                             </div>
 
                             <div>
                                 <label className="text-sm font-medium">Vision</label>
-                                <Textarea value={vision} onChange={(e) => setVision(e.target.value)} placeholder="Vision statement" className="h-20 rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
+                                <Textarea value={vision} onChange={(e) => setVision(e.target.value)} placeholder="Vision statement" className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
                             </div>
 
                             <div>
                                 <label className="text-sm font-medium">Our Story (detailed)</label>
-                                <Textarea value={story} onChange={(e) => setStory(e.target.value)} placeholder="Longer company story" className="h-36 rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                                <Textarea value={story} onChange={(e) => setStory(e.target.value)} placeholder="Longer company story" className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                                 <div>
                                     <label className="text-sm font-medium">Owner / Founder Name</label>
-                                    <Input value={ownerName} onChange={(e) => setOwnerName(e.target.value)} placeholder="Owner name" className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"/>
+                                    <Input value={ownerName} onChange={(e) => setOwnerName(e.target.value)} placeholder="Owner name" className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
                                     <div className="mt-3 flex items-center gap-4">
                                         <div className="w-28 h-28 rounded overflow-hidden bg-gray-100 border">
                                             {ownerPreview ? <img src={ownerPreview} alt="owner" className="w-full h-full object-cover" /> : <div className="p-3 text-sm text-gray-500">No image</div>}
@@ -266,6 +266,7 @@ export default function AdminAboutPage() {
                                             }}
                                             accept="image/*"
                                             type="file"
+                                            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                                         />
                                     </div>
                                 </div>

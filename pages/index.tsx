@@ -16,7 +16,7 @@ export default function LandingPage() {
   const isGuest = !session; // true if not logged in
 
   return (
-    <main className="bg-white text-black/80">
+    <main className="text-black/80">
       <HeroSection />
       <Categories initialType="sale" showModalButton={true} enablePagination={false} />
       <FeaturedListings />

@@ -124,11 +124,11 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
         </DialogHeader>
 
         <div className="space-y-3 mt-2">
-          <Input name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} />
-          <Input name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} />
-          <Input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} />
-          <Input name="phone" placeholder="Phone" value={form.phone} onChange={handleChange} />
-          <Input name="address" placeholder="Address" value={form.address} onChange={handleChange} />
+          <Input name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
+          <Input name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
+          <Input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
+          <Input name="phone" placeholder="Phone" value={form.phone} onChange={handleChange} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
+          <Input name="address" placeholder="Address" value={form.address} onChange={handleChange} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
 
           {!user && (
             <Input
@@ -137,6 +137,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
+              className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             />
           )}
 
@@ -144,7 +145,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
             name="role"
             value={form.role}
             onChange={handleChange}
-            className="rounded px-2 py-1 w-full border border-gray-300"
+            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
@@ -156,6 +157,7 @@ export default function UserModalForm({ open, onClose, user, refresh }: UserModa
               name="isVerified"
               checked={form.isVerified}
               onChange={handleChange}
+              className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             />
             <label className="text-sm font-medium">Verified</label>
           </div>

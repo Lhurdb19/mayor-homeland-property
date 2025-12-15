@@ -24,14 +24,14 @@ export default function MortgageCalculator({ price }: any) {
           type="number"
           value={rate}
           onChange={(e) => setRate(Number(e.target.value))}
-          className="w-full text-sm border-b-blue-500 border p-2 rounded-2xl"
+          className="w-full text-sm rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
         />
         
         <input
           type="number"
           value={years}
           onChange={(e) => setYears(Number(e.target.value))}
-          className="w-full text-sm border-b-blue-500 border p-2 rounded-2xl"
+          className="w-full text-sm rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
         />
 
         <p className="text-sm font-semibold">

@@ -49,7 +49,7 @@ export default function WhyChooseUs() {
   }, []);
 
   return (
-    <div className="py-10 px-4 md:px-25 max-w-7xl mx-auto">
+    <div className="py-10 px-4 md:px-25 max-w-7xl mx-auto bg-white">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

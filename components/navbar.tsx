@@ -60,13 +60,13 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Navbar */}
-      <nav className="hidden md:flex w-full bg-white shadow-md fixed top-0 z-50 h-16 items-center px-6 lg:px-20">
-        <div className="flex justify-between w-full items-center text-black">
-          <Link href="/" className="w-[189px] h-[39px]">
+      <nav className="hidden max-w-screen md:flex w-full bg-white shadow-md fixed top-0 z-50 h-16 items-center px-6 lg:px-20">
+        <div className="w-full flex justify-between items-center text-black gap-10">
+          <Link href="/" className="w-[180px] h-[15px] -translate-y-5 z-10">
             <Logo />
           </Link>
 
-          <div className="flex space-x-8">
+          <div className="flex space-x-4 z-20">
             <Link href="/sale" className="hover:text-blue-600 text-sm font-medium">For Sale</Link>
             <Link href="/rent" className="hover:text-blue-600 text-sm font-medium">For Rent</Link>
             <Link href="/lease" className="hover:text-blue-600 text-sm font-medium">For Lease</Link>
@@ -101,7 +101,7 @@ export default function Navbar() {
 
       {/* Mobile: Top Logo */}
       <div className="md:hidden fixed top-0 left-0 w-full bg-white shadow-md z-50 flex justify-center py-2">
-        <Link href="/" className="w-[190px] h-[30px]">
+        <Link href="/" className="w-full h-[50px] translate-x-25 pt-5">
           <Logo />
         </Link>
       </div>

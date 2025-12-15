@@ -158,7 +158,7 @@ export default function PropertyDetailPage() {
             ${isFavorite ? "bg-red-500 text-white" : "bg-white text-gray-700"}`}
           >
             <Heart className={`w-5 h-5 ${isFavorite ? "fill-white" : "text-red-500"}`} />
-            {isFavorite ? "Remove Favorite" : "Add to Favorite"}
+            {isFavorite ? "" : ""}
           </button>
 
           <button onClick={handlePrev} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full hover:bg-black/60 transition">

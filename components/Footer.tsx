@@ -128,21 +128,21 @@ export default function Footer() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-8 w-full border border-gray-600"
+                  className="h-11 w-full border border-gray-600"
                 />
                 <Button
                   onClick={handleSubscribe}
-                  className="h-8 px-4 bg-blue-600 hover:bg-blue-700 text-gray-50"
+                  className="h-11 px-4 bg-blue-600 hover:bg-blue-700 text-gray-50"
                 >
                   Subscribe
                 </Button>
               </div>
 
               <div className="flex space-x-3 mt-4 text-sm">
-                <a href="#" aria-label="Facebook "><FacebookIcon className="w-4 h-4" /></a>
-                <a href="#" aria-label="Twitter"><Twitter className="w-4 h-4" /></a>
-                <a href="#" aria-label="Instagram"><Instagram className="w-4 h-4" /></a>
-                <a href="#" aria-label="LinkedIn"><Linkedin className="w-4 h-4" /></a>
+                <a href="#" aria-label="Facebook "><FacebookIcon className="w-4 h-4 hover:text-blue-500" /></a>
+                <a href="#" aria-label="Twitter"><Twitter className="w-4 h-4 hover:text-gray-500" /></a>
+                <a href="#" aria-label="Instagram"><Instagram className="w-4 h-4 hover:text-pink-900" /></a>
+                <a href="#" aria-label="LinkedIn"><Linkedin className="w-4 h-4 hover:text-blue-700" /></a>
               </div>
             </>
           )}
@@ -150,13 +150,30 @@ export default function Footer() {
 
       </div>
 
-      <div className="mt-12 border-t border-gray-700 pt-4 text-center text-gray-500 text-sm">
-        {loading ? (
-          <Skeleton className="h-4 w-1/3 mx-auto" />
-        ) : (
-          <p>© {new Date().getFullYear()} Dream Land. All rights reserved.</p>
-        )}
-      </div>
+     <div className="relative mt-12 border-t border-gray-700 pt-2 pb-10 md:pb-0 text-gray-500 text-sm overflow-hidden">
+
+  {loading ? (
+    <Skeleton className="h-4 w-full" />
+  ) : (
+    <div className="relative z-10 flex flex-col md:flex-row items-center text-center justify-between gap-2">
+      <p>
+        © {new Date().getFullYear()} Mayor Homeland Property. All rights reserved.
+      </p>
+
+      <p className="text-xs">
+        Powered by{" "}
+        <a
+          href="https://hejidev.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-blue-400 hover:text-blue-600 transition-colors duration-200"
+        >
+          HejiDev
+        </a>
+      </p>
+    </div>
+  )}
+</div>
     </footer>
   );
 }

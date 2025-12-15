@@ -52,7 +52,7 @@ export default function AdminNewsletterPage() {
                             placeholder="Search email..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="max-w-sm rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                            className="max-w-sm rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                         />
                         <Button onClick={() => setQuery("")} variant="outline">
                             Clear

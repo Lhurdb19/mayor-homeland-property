@@ -60,7 +60,7 @@ const ResetPassword = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="pr-10 border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                  className="pr-10 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
                 <span
                   className="absolute right-3 top-7.5 cursor-pointer"

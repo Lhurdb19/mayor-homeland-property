@@ -22,90 +22,85 @@ export default function SearchSidebar({
   handleSearch,
 }: SearchSidebarProps) {
   return (
-    <aside
-      className="
-      w-full p-0 md:p-5 shadow rounded-xl
-      flex flex-col space-y-5 text-black/80
-      md:flex-row md:space-y-0 md:space-x-5 md:items-end
-    "
-    >
+    <aside className="w-full grid grid-cols-1 md:grid-cols-6 gap-4 items-end text-black/80">
       {/* LOCATION */}
-      <div className="w-full md:w-1/6 flex flex-col items-start">
-        <label className="font-semibold text-xs md:text-sm mb-1">Location</label>
+      <div className="flex flex-col">
         <input
           type="text"
-          className="text-sm border p-2 w-full h-8 md:h-10 rounded border-l-0 border-r-0 border-t-0 border-b-blue-500"
-          placeholder="e.g Lagos"
           name="location"
+          placeholder="Location"
           value={filters.location}
           onChange={handleChange}
+          className="h-9 px-4 rounded border border-gray-200 outline-none text-sm 
+          bg-white md:bg-transparent placeholder:text-gray-400 md:placeholder:text-black"
         />
       </div>
 
-      {/* PROPERTY TYPE */}
-      <div className="w-full md:w-1/6 flex flex-col items-start">
-        <label className="font-semibold text-xs md:text-sm mb-1">Property Type</label>
+      {/* TYPE */}
+      <div className="flex flex-col">
         <select
-          className="border p-2 w-full rounded h-8 md:h-10 text-xs border-l-0 border-r-0 border-t-0 border-b-blue-500"
           name="type"
           value={filters.type}
           onChange={handleChange}
+          className="h-9 px-4 rounded border border-gray-200 outline-none text-sm
+          bg-white md:bg-transparent placeholder:text-gray-400 md:placeholder:text-black"
         >
-          <option value="any" className=" text-black/80">Any</option>
-          <option value="rent" className=" text-black/80">Rent</option>
-          <option value="sale" className=" text-black/80">Sale</option>
-          <option value="lease" className=" text-black/80">Lease</option>
-          <option value="land" className=" text-black/80">Land</option>
+          <option value="any">Property Type</option>
+          <option value="rent">Rent</option>
+          <option value="sale">Sale</option>
+          <option value="lease">Lease</option>
+          <option value="land">Land</option>
         </select>
       </div>
 
       {/* BEDROOMS */}
-      <div className="w-full md:w-1/6 flex flex-col items-start">
-        <label className="font-semibold text-xs md:text-sm mb-1">Bedrooms</label>
+      <div className="flex flex-col">
         <select
-          className="border p-2 w-full rounded h-8 md:h-10 text-xs border-l-0 border-r-0 border-t-0 border-b-blue-500"
           name="bedrooms"
           value={filters.bedrooms}
           onChange={handleChange}
+          className="h-9 px-4 rounded border border-gray-200 outline-none text-sm
+          bg-white md:bg-transparent placeholder:text-gray-400 md:placeholder:text-black"
         >
-          <option value="">Any</option>
-          <option value="1" className=" text-black/80">1</option>
-          <option value="2" className=" text-black/80">2</option>
-          <option value="3" className=" text-black/80">3</option>
-          <option value="4" className=" text-black/80">4+</option>
+          <option value="">Bedrooms</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4+</option>
         </select>
       </div>
 
-      {/* PRICE RANGE */}
-      <div className="w-full md:w-2/6 flex flex-col items-start">
-        <label className="font-semibold text-xs md:text-sm mb-1">Price Range (₦)</label>
-        <div className="flex md:flex-row gap-5 ">
-          <input
-            type="number"
-            placeholder="Min"
-            className="border p-2 w-full rounded h-8 md:h-10 text-xs border-l-0 border-r-0 border-t-0 border-b-blue-500"
-            name="minPrice"
-            value={filters.minPrice}
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            placeholder="Max"
-            className="border p-2 w-full rounded h-8 md:h-10 text-xs border-l-0 border-r-0 border-t-0 border-b-blue-500"
-            name="maxPrice"
-            value={filters.maxPrice}
-            onChange={handleChange}
-          />
-        </div>
+      {/* MIN PRICE */}
+      <div className="flex flex-col">
+        <input
+          type="number"
+          name="minPrice"
+          placeholder="Min Price"
+          value={filters.minPrice}
+          onChange={handleChange}
+          className="h-9 px-4 rounded border border-gray-200 outline-none text-sm
+          bg-white md:bg-transparent placeholder:text-gray-400 md:placeholder:text-black"
+        />
+      </div>
+
+      {/* MAX PRICE */}
+      <div className="flex flex-col">
+        <input
+          type="number"
+          name="maxPrice"
+          placeholder="Max Price"
+          value={filters.maxPrice}
+          onChange={handleChange}
+          className="h-9 px-4 rounded border border-gray-200 outline-none text-sm
+          bg-white md:bg-transparent placeholder:text-gray-400 md:placeholder:text-black"
+        />
       </div>
 
       {/* SEARCH BUTTON */}
       <button
-        className="
-        bg-blue-600 text-white rounded font-medium
-        w-full md:w-1/6 py-3 h-8 md:h-10 text-xs items-center flex justify-center
-      "
         onClick={handleSearch}
+        className="h-9 rounded bg-blue-600 text-white font-semibold text-[13px]
+        hover:bg-blue-700 transition-all shadow-lg flex items-center justify-center p-2"
       >
         Search
       </button>

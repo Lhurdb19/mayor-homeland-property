@@ -70,7 +70,7 @@ Message: ${form.message || "No message"}
             type="text"
             name="name"
             placeholder="Your Name"
-            className="border outline-none border-b-blue-500"
+            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             required
             value={form.name}
             onChange={handleChange}
@@ -80,7 +80,7 @@ Message: ${form.message || "No message"}
             type="email"
             name="email"
             placeholder="Email Address"
-            className="border outline-none border-b-blue-500"
+            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             required
             value={form.email}
             onChange={handleChange}
@@ -90,7 +90,7 @@ Message: ${form.message || "No message"}
             type="text"
             name="phone"
             placeholder="Phone Number"
-            className="border outline-none border-b-blue-500"
+            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             required
             value={form.phone}
             onChange={handleChange}
@@ -99,7 +99,7 @@ Message: ${form.message || "No message"}
           <Input
             type="date"
             name="date"
-            className="border outline-none border-b-blue-500"
+            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             value={form.date}
             onChange={handleChange}
           />
@@ -109,7 +109,7 @@ Message: ${form.message || "No message"}
             placeholder="Message (optional)"
             value={form.message}
             onChange={handleChange}
-            className="border outline-none border-b-blue-500"
+            className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
           />
 
           <Button type="submit" className="w-full">

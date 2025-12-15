@@ -55,7 +55,7 @@ export default function Register() {
       </div>
 
       {/* Registration Form */}
-      <div className="flex w-full lg:w-1/2 items-center md:mt-10 py-16 justify-center p-6">
+      <div className="flex w-full lg:w-1/2 items-center md:mt-10 py-16 justify-center p-4">
         <Card className="w-full max-w-md shadow-xl">
           <CardHeader>
             <CardTitle className="text-2xl md:text-3xl text-center font-bold">
@@ -68,36 +68,39 @@ export default function Register() {
           </p>
 
           <CardContent>
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              {/* First Name */}
-              <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+            <form className="w-full space-y-4" onSubmit={handleSubmit}>
+              <div className="w-full flex justify-between gap-5">
+
+              <div className="space-y-2 w-full">
+                <Label className="text-xs" htmlFor="firstName">First Name</Label>
                 <Input
                   id="firstName"
                   name="firstName"
                   value={form.firstName}
                   onChange={handleChange}
                   required
-                  className="border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
               </div>
 
               {/* Last Name */}
-              <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+              <div className="space-y-2 w-full">
+                <Label className="text-xs" htmlFor="lastName">Last Name</Label>
                 <Input
                   id="lastName"
                   name="lastName"
                   value={form.lastName}
                   onChange={handleChange}
                   required
-                  className="border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
               </div>
+                  </div>
 
-              {/* Email */}
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
+                  
+              <div className="w-full flex gap-5">
+              <div className="space-y-2 w-full">
+                <Label className="text-xs" htmlFor="email">Email Address</Label>
                 <Input
                   id="email"
                   name="email"
@@ -105,33 +108,13 @@ export default function Register() {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className="border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
-              </div>
-
-              {/* Password */}
-              <div className="relative space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                  className="border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                />
-                <span
-                  className="absolute right-3 top-7.5 cursor-pointer text-gray-600"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </span>
               </div>
 
               {/* Phone */}
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
+              <div className="space-y-2 w-full">
+                <Label className="text-xs" htmlFor="phone">Phone Number</Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -140,13 +123,17 @@ export default function Register() {
                   onChange={handleChange}
                   placeholder="e.g. 08012345678"
                   required
-                  className="border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
               </div>
+                  </div>
 
+
+                  
+              <div className="w-full flex gap-5">
               {/* Address */}
-              <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
+              <div className="space-y-2 w-full">
+                <Label className="text-xs" htmlFor="address">Address</Label>
                 <Input
                   id="address"
                   name="address"
@@ -154,30 +141,35 @@ export default function Register() {
                   value={form.address}
                   onChange={handleChange}
                   required
-                  className="border-b-1.5 border-r-blue-500 border-b-blue-500 rounded-2xl p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
               </div>
 
-              {/* Role
-              <div className="space-y-2">
-                <Label htmlFor="role">Select Role</Label>
-                <select
-                  id="role"
-                  name="role"
-                  value={form.role}
+              <div className="relative space-y-2 w-full">
+                <Label className="text-xs" htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
                   onChange={handleChange}
-                  className="w-full border rounded-md p-2 border-b-1.5 border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div> */}
+                  required
+                  className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                  />
+                <span
+                  className="absolute right-3 top-9 cursor-pointer text-gray-600"
+                  onClick={() => setShowPassword(!showPassword)}
+                  >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </span>
+              </div>
+                  </div>
 
               {/* Submit Button */}
               <div className="flex justify-end">
                 <Button
                   type="submit"
-                  className="w-36 font-bold"
+                  className="w-full font-bold text-black/70"
                   disabled={loading}
                 >
                   {loading ? "Creating..." : "Register"}

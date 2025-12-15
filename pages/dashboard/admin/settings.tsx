@@ -103,25 +103,25 @@ export default function SettingsPage() {
                 placeholder="Last Name"
                 value={adminData.lastName}
                 onChange={(e) => setAdminData({ ...adminData, lastName: e.target.value })}
-                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
               <Input
                 placeholder="Email"
                 value={adminData.email}
                 onChange={(e) => setAdminData({ ...adminData, email: e.target.value })}
-                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
               <Input
                 placeholder="Phone"
                 value={adminData.phone}
                 onChange={(e) => setAdminData({ ...adminData, phone: e.target.value })}
-                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
               <Input
                 type="password"
                 placeholder="Password (leave blank to keep current)"
                 onChange={(e) => setAdminData({ ...adminData, password: e.target.value })}
-                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
             </CardContent>
           </Card>

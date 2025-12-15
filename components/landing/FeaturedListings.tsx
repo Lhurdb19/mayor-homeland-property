@@ -44,7 +44,7 @@ export default function FeaturedListings() {
   }, []);
 
   return (
-    <div className="py-5 px-4 lg:px-25 max-w-8xl mx-auto">
+    <div className="py-5 lg:py-20 px-4 lg:px-25 max-w-8xl mx-auto bg-white">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

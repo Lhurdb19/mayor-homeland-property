@@ -47,7 +47,7 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <div className="py-16 px-6 max-w-6xl mx-auto text-black/80">
+    <div className="py-16 px-6 max-w-8xl mx-auto text-black/80 bg-white">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
