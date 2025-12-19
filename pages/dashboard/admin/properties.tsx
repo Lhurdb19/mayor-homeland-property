@@ -47,6 +47,7 @@ interface PropertyType {
   sqft: number;
   images: string[];
   views: number;
+  description: string; // ← missing before
 }
 
 const PROPERTY_TYPES: Array<PropertyType["type"]> = [
