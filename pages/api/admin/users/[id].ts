@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
+import Notification from "@/models/Notification";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await connectDB();
@@ -21,6 +22,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (typeof isVerified === "boolean") {
     user.isVerified = isVerified;
+
+      await Notification.create({
+        recipient: user._id,
+        recipientType: "user",
+        title: isVerified ? "Account Verified" : "Account Rejected",
+        message: isVerified
+          ? "Your account has been successfully verified."
+          : "Your account verification was rejected.",
+        type: isVerified ? "success" : "error",
+      })
   }
 
   await user.save();

@@ -1,4 +1,3 @@
-// pages/api/properties/user.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
@@ -46,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: "At least one image is required" });
       }
 
-      // Upload images to Cloudinary
+      // Upload images
       const uploadedImages = await Promise.all(
         images.map(async (img: string) => {
           const uploaded = await uploadImage(img);
@@ -54,13 +53,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         })
       );
 
-      // Save property
+      // Save property as pending
       const property = await Property.create({
         title,
         description,
         price: Number(price),
         location,
-        type: type.toLowerCase(), // sale, rent, lease, land
+        type: type.toLowerCase(),
         bedrooms: bedrooms ? Number(bedrooms) : undefined,
         bathrooms: bathrooms ? Number(bathrooms) : undefined,
         sqft: sqft ? Number(sqft) : undefined,
@@ -71,7 +70,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         featured: !!featured,
         images: uploadedImages,
         createdBy: session.user.id,
-        status: "available", // immediate visibility
+        status: "pending", // NEW: pending approval
       });
 
       return res.status(201).json(property);
@@ -80,12 +79,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(500).json({ message: "Failed to add property" });
     }
   } else if (req.method === "GET") {
-    // Optional: fetch all user's properties
     try {
       const userProperties = await Property.find({ createdBy: session.user.id })
         .sort({ createdAt: -1 })
         .lean();
-
       return res.status(200).json(userProperties);
     } catch (err) {
       console.error(err);

@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Trash2, Check, Mail } from "lucide-react";
@@ -13,6 +20,14 @@ import { toast, Toaster } from "sonner";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { MoreHorizontal } from "lucide-react";
 
 interface InquiryType {
   _id: string;
@@ -31,7 +46,6 @@ export default function InquiriesPage() {
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-
   const [rowHighlight, setRowHighlight] = useState<{ [key: string]: string }>({});
 
   // Reply modal states
@@ -61,7 +75,6 @@ export default function InquiriesPage() {
       await axios.put(`/api/admin/inquiries/${id}`, { status: "handled" });
       toast.success("Inquiry marked as handled");
 
-      // highlight row blue for 2s
       setRowHighlight((prev) => ({ ...prev, [id]: "bg-blue-100" }));
       setTimeout(() => setRowHighlight((prev) => ({ ...prev, [id]: "" })), 2000);
 
@@ -89,7 +102,6 @@ export default function InquiriesPage() {
     }
   };
 
-  // Open reply modal
   const openReplyModal = (inquiry: InquiryType) => {
     setSelectedInquiry(inquiry);
     setSubject("");
@@ -97,7 +109,6 @@ export default function InquiriesPage() {
     setReplyOpen(true);
   };
 
-  // Send reply email
   const handleSendReply = async () => {
     if (!selectedInquiry) return;
 
@@ -121,10 +132,16 @@ export default function InquiriesPage() {
     }
   };
 
+  // Helper to truncate text
+  const truncateText = (text: string, length = 12) => {
+    if (!text) return "-";
+    return text.length > length ? `...${text.slice(length)}` : text;
+  };
+
+
   return (
     <AdminLayout>
       <Toaster position="top-right" />
-
       <h1 className="text-3xl font-bold mb-6">Inquiries / Leads</h1>
 
       {loading ? (
@@ -134,70 +151,77 @@ export default function InquiriesPage() {
           ))}
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Property</TableHead>
-              <TableHead>Message</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {inquiries.map((inq) => (
-              <TableRow
-                key={inq._id}
-                className={`transition-colors duration-500 ${rowHighlight[inq._id] ?? ""}`}
-              >
-                <TableCell>{inq.name}</TableCell>
-                <TableCell>{inq.email}</TableCell>
-                <TableCell>{inq.phone || "-"}</TableCell>
-                <TableCell>{inq.propertyId?.title || "-"}</TableCell>
-                <TableCell>{inq.message}</TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm ${
-                      inq.status === "handled"
+        <div className="overflow-x-auto w-full">
+          <Table className="min-w-[800px] table-auto">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Phone</TableHead>
+                <TableHead>Property</TableHead>
+                <TableHead>Message</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {inquiries.map((inq) => (
+                <TableRow
+                  key={inq._id}
+                  className={`transition-colors duration-500 ${rowHighlight[inq._id] ?? ""}`}
+                >
+                  <TableCell className="break-words max-w-[150px]">{inq.name}</TableCell>
+                  <TableCell className="break-words max-w-[200px]">{inq.email}</TableCell>
+                  <TableCell className="break-words max-w-[120px]">{inq.phone || "-"}</TableCell>
+                  <TableCell className="break-words max-w-[150px] truncate">
+                    {truncateText(inq.propertyId?.title, 12)}
+                  </TableCell>
+                  <TableCell className="break-words max-w-[250px] truncate">
+                    {truncateText(inq.message, 15)}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-2 py-1 rounded-full text-sm ${inq.status === "handled"
                         ? "bg-blue-100 text-blue-800"
                         : "bg-yellow-100 text-yellow-800"
-                    }`}
-                  >
-                    {inq.status}
-                  </span>
-                </TableCell>
-                <TableCell className="flex gap-2">
-                  {inq.status === "pending" && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleMarkHandled(inq._id)}
+                        }`}
                     >
-                      <Check size={16} />
-                    </Button>
-                  )}
+                      {inq.status}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button size="sm" variant="outline">
+                          <MoreHorizontal size={16} />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {inq.status === "pending" && (
+                          <DropdownMenuItem onClick={() => handleMarkHandled(inq._id)}>
+                            <Check size={16} className="mr-2" /> Mark Handled
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuItem onClick={() => openReplyModal(inq)}>
+                          <Mail size={16} className="mr-2" /> Reply
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setDeleteId(inq._id);
+                            setDialogOpen(true);
+                          }}
+                        >
+                          <Trash2 size={16} className="mr-2" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
 
-                  <Button size="sm" variant="default" onClick={() => openReplyModal(inq)}>
-                    <Mail size={16} />
-                  </Button>
-
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => {
-                      setDeleteId(inq._id);
-                      setDialogOpen(true);
-                    }}
-                  >
-                    <Trash2 size={16} />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+          </Table>
+        </div>
       )}
 
       {/* Delete Confirmation Dialog */}
@@ -210,12 +234,21 @@ export default function InquiriesPage() {
 
       {/* Reply Modal */}
       <Dialog open={replyOpen} onOpenChange={setReplyOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg w-full">
           <DialogHeader>
-            <DialogTitle>Reply to Inquiry</DialogTitle>
+            <DialogTitle className="text-black">Reply to Inquiry</DialogTitle>
             <p className="text-sm text-gray-500">
               Sending message to:{" "}
               <span className="font-semibold">{selectedInquiry?.email}</span>
+            </p>
+            <p className="text-sm text-gray-700 mt-1">
+              <span className="font-semibold">Name:</span> {selectedInquiry?.name}
+            </p>
+            <p className="text-sm text-gray-700 mt-1">
+              <span className="font-semibold">Property:</span> {selectedInquiry?.propertyId.title}
+            </p>
+            <p className="text-sm text-gray-700 mt-1">
+              <span className="font-semibold">Message:</span> {selectedInquiry?.message}
             </p>
           </DialogHeader>
 
@@ -224,17 +257,17 @@ export default function InquiriesPage() {
               placeholder="Email subject"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
+              className="w-full p-2 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
-
             <Textarea
               placeholder="Type your reply..."
-              className="min-h-[140px]"
               value={replyMessage}
               onChange={(e) => setReplyMessage(e.target.value)}
+              className="w-full min-h-[140px] p-2 border rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
-          <DialogFooter className="mt-4">
+          <DialogFooter className="mt-4 flex justify-end gap-2">
             <Button variant="outline" onClick={() => setReplyOpen(false)}>
               Cancel
             </Button>
@@ -242,6 +275,7 @@ export default function InquiriesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
     </AdminLayout>
   );
 }

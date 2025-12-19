@@ -4,13 +4,18 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { MonitorX } from "lucide-react";
 import { motion } from "framer-motion";
+import { signOut } from "next-auth/react";
 
 export default function SmallScreenBlocker() {
-
   useEffect(() => {
+    // 🔒 IMMEDIATE LOGOUT
+    signOut({ redirect: false });
+
+    // Optional redirect after logout
     const timer = setTimeout(() => {
       window.location.href = "/";
-    }, 5000);
+    }, 2000);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -26,11 +31,14 @@ export default function SmallScreenBlocker() {
           <MonitorX size={60} className="text-red-500" />
         </div>
 
-        <h1 className="text-2xl text-black/80 font-bold mb-2">Screen Too Small</h1>
+        <h1 className="text-2xl text-black/80 font-bold mb-2">
+          Screen Too Small
+        </h1>
 
         <p className="text-gray-600 text-sm leading-relaxed mb-6">
-          Access to the admin dashboard is restricted on small screens.  
-          Please use a tablet, laptop, or desktop device to continue.
+          Admin access is restricted on small screens.
+          <br />
+          You have been logged out for security reasons.
         </p>
 
         <Link
@@ -40,8 +48,9 @@ export default function SmallScreenBlocker() {
           Go Back to Home
         </Link>
 
-        {/* OPTIONAL: auto redirect message */}
-        <p className="text-xs text-gray-400 mt-3">Redirecting in 5 seconds...</p>
+        <p className="text-xs text-gray-400 mt-3">
+          Logging out & redirecting…
+        </p>
       </motion.div>
     </div>
   );

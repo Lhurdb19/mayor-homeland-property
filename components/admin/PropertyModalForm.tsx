@@ -4,12 +4,27 @@ import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-// Dynamic import of MapPicker (client-only)
-const MapPicker = dynamic(() => import("../admin/MapPicker"), { ssr: false });
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Property {
   _id?: string;
@@ -29,42 +44,26 @@ interface Property {
   images?: string[];
 }
 
-interface PropertyModalFormProps {
+interface Props {
   open: boolean;
   onClose: () => void;
   property?: Property | null;
   refresh: () => void;
 }
 
-export default function PropertyModalForm({ open, onClose, property, refresh }: PropertyModalFormProps) {
-  const { register, reset, setValue, watch, handleSubmit, formState: { errors } } = useForm<any>({
-    defaultValues: {
-      title: "",
-      description: "",
-      price: "",
-      location: "",
-      latitude: null,
-      longitude: null,
-      type: "sale",
-      status: "available",
-      bedrooms: "",
-      bathrooms: "",
-      sqft: "",
-      phone: "",
-      email: "",
-      images: [],
-    },
-  });
-
+export default function PropertyModalForm({
+  open,
+  onClose,
+  property,
+  refresh,
+}: Props) {
+  const { register, reset, setValue, watch, handleSubmit } = useForm<any>();
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (property) {
-      reset({
-        ...property,
-        images: property.images || [],
-      });
+      reset(property);
       setPreviewImages(property.images || []);
     } else {
       reset();
@@ -76,20 +75,16 @@ export default function PropertyModalForm({ open, onClose, property, refresh }: 
     const files = e.target.files;
     if (!files) return;
 
-    const newImages: string[] = [];
-
     Array.from(files).forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {
         const base64 = reader.result as string;
-        newImages.push(base64);
         setPreviewImages((prev) => [...prev, base64]);
-        setValue("images", [...previewImages, ...newImages]);
+        setValue("images", [...previewImages, base64]);
       };
       reader.readAsDataURL(file);
     });
   };
-
 
   const removeImage = (index: number) => {
     const updated = previewImages.filter((_, i) => i !== index);
@@ -100,11 +95,10 @@ export default function PropertyModalForm({ open, onClose, property, refresh }: 
   const onSubmit = async (data: any) => {
     setLoading(true);
     try {
-      if (property) {
-        await axios.put(`/api/admin/properties/${property._id}`, data);
-      } else {
-        await axios.post(`/api/admin/properties`, data);
-      }
+      property
+        ? await axios.put(`/api/admin/properties/${property._id}`, data)
+        : await axios.post(`/api/admin/properties`, data);
+
       refresh();
       onClose();
     } catch (err) {
@@ -115,110 +109,104 @@ export default function PropertyModalForm({ open, onClose, property, refresh }: 
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto p-6">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">{property ? "Edit Property" : "Add Property"}</DialogTitle>
+      <DialogContent className="max-w-2xl p-0">
+        <DialogHeader className="p-6 pb-0">
+          <DialogTitle className="text-black">
+            {property ? "Edit Property" : "Add Property"}
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Input placeholder="Title" {...register("title", { required: true })} className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
-          {errors.title && <p className="text-red-500 text-xs">Title is required</p>}
+        <ScrollArea className="max-h-[80vh] px-6 pb-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2 text-black">
+                <Label className="text-black">Title</Label>
+              <Input {...register("title", { required: true })} 
+              className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              />
+            </div>
 
-          <textarea {...register("description", { required: true })} className="w-full border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" rows={3} placeholder="Description" />
-          {errors.description && <p className="text-red-500 text-xs">Description is required</p>}
+            <div className="space-y-2 text-black">
+                <Label className="text-black">Description</Label>
+              <Textarea {...register("description", { required: true })} 
+              className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              />
+            </div>
 
-          <Input type="number" placeholder="Price" {...register("price", { required: true })} />
-
-          <Input placeholder="Location" {...register("location", { required: true })} />
-
-          {/* SELECTS */}
-          <div className="grid grid-cols-2 gap-3">
-            <select
-              {...register("status")}
-              className="border rounded p-2 w-full border-l-0 border-r-0 border-t-0 border-blue-500"
-            >
-              <option value="available">Available</option>
-              <option value="sold">Sold</option>
-              <option value="rented">Rented</option>
-            </select>
-
-            <select {...register("type")} className="border rounded p-2 w-full border-l-0 border-r-0 border-t-0 border-blue-500">
-              <option value="sale">For Sale</option>
-              <option value="rent">For Rent</option>
-              <option value="lease">Lease</option>
-              <option value="land">Land</option>
-            </select>
-          </div>
-
-          {/* DETAILS */}
-          <div className="grid grid-cols-3 gap-3">
-            <Input
-              type="number"
-              placeholder="Bedrooms"
-              {...register("bedrooms")}
-              className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
-            />
-
-            <Input
-              type="number"
-              placeholder="Bathrooms"
-              {...register("bathrooms")}
-              className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
-            />
-
-            <Input type="number" placeholder="Sqft" {...register("sqft")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
-          </div>
-
-          {/* CONTACT */}
-          <Input placeholder="Phone" {...register("phone")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
-          <Input type="email" placeholder="Email" {...register("email")} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
-
-          <MapPicker
-            value={watch("latitude") && watch("longitude") ? { lat: watch("latitude"), lng: watch("longitude") } : undefined}
-            onChange={(pos) => {
-              setValue("latitude", pos.lat);
-              setValue("longitude", pos.lng);
-            }}
-          />
-
-
-          <p className="text-xs text-gray-500 mt-1">Click on the map to select property location</p>
-
-          {/* IMAGE UPLOAD */}
-          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="border rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500" />
-
-          {/* PREVIEW IMAGES */}
-          <div className="grid grid-cols-3 gap-3 mt-2">
-            {previewImages.map((img, i) => (
-              <div key={i} className="relative">
-                <img
-                  src={img}
-                  className="w-full h-24 object-cover rounded border"
+            <div className="grid grid-cols-2 gap-4 text-black">
+              <div className="space-y-2">
+                <Label className="text-black">Price</Label>
+                <Input type="number" {...register("price")} 
+                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
-                <button
-                  type="button"
-                  onClick={() => removeImage(i)}
-                  className="absolute top-1 right-1 bg-black/70 text-white px-1 rounded"
-                >
-                  ✕
-                </button>
               </div>
+              <div className="space-y-2">
+                <Label className="text-black">Location</Label>
+                <Input {...register("location")} 
+                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                />
+              </div>
+            </div>
 
-            ))}
+            <div className="w-full grid grid-cols-2 gap-4">
+              <Select
+                defaultValue={property?.status || "available"}
+                onValueChange={(v) => setValue("status", v)}
+              >
+                <SelectTrigger className="w-full text-black border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="available">Available</SelectItem>
+                  <SelectItem value="sold">Sold</SelectItem>
+                  <SelectItem value="rented">Rented</SelectItem>
+                </SelectContent>
+              </Select>
 
-          </div>
+              <Select
+                defaultValue={property?.type || "sale"}
+                onValueChange={(v) => setValue("type", v)}
+              >
+                <SelectTrigger className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0 text-black">
+                  <SelectValue placeholder="Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sale">Sale</SelectItem>
+                  <SelectItem value="rent">Rent</SelectItem>
+                  <SelectItem value="lease">Lease</SelectItem>
+                  <SelectItem value="land">Land</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-          {/* ACTION BUTTONS */}
-          <div className="flex justify-end gap-3 pt-4">
-            <Button variant="outline" type="button" onClick={onClose}>
-              Cancel
-            </Button>
+            <Input type="file" multiple accept="image/*" onChange={handleFileChange} 
+            className="w-full text-black placeholder:text-black border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+            />
 
-            <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : property ? "Update" : "Create"}
-            </Button>
-          </div>
-        </form>
+            <div className="grid grid-cols-3 gap-3">
+              {previewImages.map((img, i) => (
+                <div key={i} className="relative">
+                  <img src={img} className="h-24 w-full object-cover rounded" />
+                  <Button
+                    type="button"
+                    onClick={() => removeImage(i)}
+                    className="absolute top-1 right-1 bg-black/70 text-white px-2 rounded"
+                  >
+                    ✕
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4">
+              <Button variant="outline" type="button" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? "Saving..." : property ? "Update" : "Create"}
+              </Button>
+            </div>
+          </form>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

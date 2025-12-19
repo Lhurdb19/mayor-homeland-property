@@ -7,16 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
-import Image from "next/image";
 import UserProfileLayout from "@/components/user/UserProfileLayout";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { User, Mail, Phone, MapPin } from "lucide-react";
 
 export default function EditPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [user, setUser] = useState<any>(null);
-
-  const [file, setFile] = useState<File | null>(null);
-  const [previewImg, setPreviewImg] = useState("");
 
   // Fetch user info
   useEffect(() => {
@@ -24,7 +22,6 @@ export default function EditPage() {
       try {
         const res = await axios.get("/api/users/profile");
         setUser(res.data);
-        setPreviewImg(res.data.image || "/avatar-placeholder.png");
       } catch (err) {
         console.error(err);
         toast.error("Failed to load profile.");
@@ -37,92 +34,66 @@ export default function EditPage() {
 
   if (loading) return <p className="p-6 text-center">Loading...</p>;
 
-  const handleFileChange = (e: any) => {
-    const img = e.target.files[0];
-    if (!img) return;
-    setFile(img);
-    setPreviewImg(URL.createObjectURL(img));
-  };
-
- const handleSave = async () => {
-  setSaving(true);
-
-  try {
-    let imageUrl = user.image;
-
-    // Upload avatar if file selected
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const uploadRes = await axios.post("/api/users/upload-avatar", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await axios.put("/api/users/profile", {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        address: user.address,
       });
-
-      imageUrl = uploadRes.data.url;
+      setUser(res.data);
+      toast.success("Profile updated successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update profile.");
     }
-
-    // Send only fields you want to update
-    const res = await axios.put("/api/users/profile", {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      phone: user.phone,
-      address: user.address,
-      image: imageUrl,
-    });
-
-    setUser(res.data);
-    setPreviewImg(res.data.image);
-    setFile(null);
-
-    toast.success("Profile updated successfully!");
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to update profile.");
-  }
-
-  setSaving(false);
-};
+    setSaving(false);
+  };
 
   return (
     <UserProfileLayout>
-      <div className="min-h-screen text-black/80 py-0 flex flex-col justify-center items-center w-8xl">
-        <div className="max-w-full lg:max-w-full">
+      <div className="min-h-screen p-4 md:px-6 bg-gray-50 space-y-4">
 
-          {/* MAIN CONTENT */}
-          <Card className="col-span-2 w-full shadow-md border rounded-xl m-0 p-5">
-            <CardHeader>
-              <CardTitle className="text-md md:text-lg font-semibold">Profile Information</CardTitle>
-            </CardHeader>
+        {/* HEADER */}
+        <div className="flex items-center justify-between bg-linear-to-r from-blue-500 to-indigo-600 p-4 md:p-6 rounded-lg shadow-md text-white">
+          <div>
+            <h1 className="text-xl md:text-3xl font-bold">Edit Profile</h1>
+            <p className="text-xs md:text-base">Update your personal information</p>
+          </div>
+        </div>
 
-            <CardContent className="space-y-6 m-0 p-0">
+        {/* TABS */}
+        <Tabs defaultValue="personal" className="space-y-4">
+          <TabsList className="grid grid-cols-4 w-full border-b bg-white text-black/80 shadow">
+            <TabsTrigger className="flex items-center gap-1" value="personal">
+              <User className="w-5 h-5" />
+              <span className="hidden md:inline">Personal Info</span>
+            </TabsTrigger>
 
-              {/* Avatar */}
-              <div className="flex flex-col md:flex-row items-center gap-6 bg-linear-to-r from-blue-400 to-indigo-600 p-4 rounded-lg">
-                <div className="relative w-24 h-24 md:w-28 md:h-28">
-                  <Image
-                    src={previewImg}
-                    alt="Avatar"
-                    fill
-                    className="rounded-full  object-cover border shadow-md bg-gray-300"
-                  />
-                </div>
+            <TabsTrigger className="flex items-center gap-1" value="account">
+              <Mail className="w-5 h-5" />
+              <span className="hidden md:inline">Account</span>
+            </TabsTrigger>
 
-                <div className="flex-1 space-y-1">
-                  <Label className="font-medium">Profile Photo</Label>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    className="mt-2 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
-                    onChange={handleFileChange}
-                  />
-                </div>
-              </div>
+            <TabsTrigger className="flex items-center gap-1" value="privacy">
+              <Phone className="w-5 h-5" />
+              <span className="hidden md:inline">Privacy</span>
+            </TabsTrigger>
 
-              {/* Editable Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <TabsTrigger className="flex items-center gap-1" value="activities">
+              <MapPin className="w-5 h-5" />
+              <span className="hidden md:inline">Activities</span>
+            </TabsTrigger>
+          </TabsList>
+
+          {/* PERSONAL INFO */}
+          <TabsContent value="personal">
+            <Card className="p-4">
+              <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-xs md:text-sm">First Name</Label>
+                  <Label>First Name</Label>
                   <Input
                     value={user.firstName}
                     onChange={(e) => setUser({ ...user, firstName: e.target.value })}
@@ -130,7 +101,7 @@ export default function EditPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs md:text-sm">Last Name</Label>
+                  <Label>Last Name</Label>
                   <Input
                     value={user.lastName}
                     onChange={(e) => setUser({ ...user, lastName: e.target.value })}
@@ -138,7 +109,7 @@ export default function EditPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs md:text-sm">Phone Number</Label>
+                  <Label>Phone</Label>
                   <Input
                     value={user.phone || ""}
                     onChange={(e) => setUser({ ...user, phone: e.target.value })}
@@ -146,7 +117,7 @@ export default function EditPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-xs md:text-sm">Address</Label>
+                  <Label>Address</Label>
                   <Input
                     value={user.address || ""}
                     onChange={(e) => setUser({ ...user, address: e.target.value })}
@@ -154,23 +125,36 @@ export default function EditPage() {
                   />
                 </div>
                 <div className="md:col-span-2 space-y-2">
-                  <Label className="text-xs md:text-sm">Email (not editable)</Label>
-                  <Input disabled value={user.email} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
-                  />
+                  <Label>Email (not editable)</Label>
+                  <Input disabled value={user.email} className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"/>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              <Button
-                onClick={handleSave}
-                disabled={saving}
-                className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 flex items-center justify-center gap-2 text-xs md:text-sm"
-              >
-                {saving ? "Saving..." : "Save Changes"}
-              </Button>
+            <Button
+              onClick={handleSave}
+              disabled={saving}
+              className="w-full md:w-auto mt-4"
+            >
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
+          </TabsContent>
 
-            </CardContent>
-          </Card>
-        </div>
+          {/* ACCOUNT */}
+          <TabsContent value="account">
+            <p className="text-gray-700">Account-related settings go here.</p>
+          </TabsContent>
+
+          {/* PRIVACY */}
+          <TabsContent value="privacy">
+            <p className="text-gray-700">Privacy settings go here.</p>
+          </TabsContent>
+
+          {/* ACTIVITIES */}
+          <TabsContent value="activities">
+            <p className="text-gray-700">Recent activities go here.</p>
+          </TabsContent>
+        </Tabs>
       </div>
     </UserProfileLayout>
   );

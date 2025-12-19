@@ -5,9 +5,10 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "@/lib/mail";
 import { NextApiRequest, NextApiResponse } from "next";
+import Notification from "@/models/Notification";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") 
+  if (req.method !== "POST")
     return res.status(405).json({ message: "Method not allowed" });
 
   await connectDB();
@@ -15,19 +16,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Validate Nigerian phone number
   const phoneRegex = /^(?:\+234|0)[789]\d{9}$/;
-  if (!phoneRegex.test(phone)) 
+  if (!phoneRegex.test(phone))
     return res.status(400).json({ message: "Invalid Nigerian phone number" });
 
   // Check if user exists
   const userExists = await User.findOne({ email });
-  if (userExists) 
+  if (userExists)
     return res.status(400).json({ message: "Email already exists" });
 
   // Hash password and generate verification token
   const hashedPassword = await bcrypt.hash(password, 12);
   const verificationToken = crypto.randomBytes(32).toString("hex");
 
-  await User.create({
+  const user = await User.create({
     firstName,
     lastName,
     email,
@@ -36,6 +37,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     phone,
     address,
     emailVerificationToken: verificationToken,
+  });
+
+
+  // 🔔 ADMIN NOTIFICATION
+  await Notification.create({
+    recipientType: "admin",
+    title: "New User Registration",
+    message: `${firstName} ${lastName} registered and needs verification.`,
+    link: `/admin/users/${user._id}`,
+    type: "info",
   });
 
   const verifyUrl = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${verificationToken}`;

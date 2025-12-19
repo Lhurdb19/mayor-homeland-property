@@ -98,6 +98,7 @@ export default function SettingsPage() {
                 placeholder="First Name"
                 value={adminData.firstName}
                 onChange={(e) => setAdminData({ ...adminData, firstName: e.target.value })}
+                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
               <Input
                 placeholder="Last Name"
@@ -137,7 +138,7 @@ export default function SettingsPage() {
                 onChange={(e) =>
                   setSiteSettings({ ...siteSettings, commissionRate: Number(e.target.value) })
                 }
-                className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
               <label className="flex items-center gap-2">
                 <input
@@ -146,7 +147,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setSiteSettings({ ...siteSettings, featuredListings: e.target.checked })
                   }
-                  className="rounded-md p-2 border-l-0 border-r-0 border-t-0 border-blue-500"
+                  className="border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
                 Featured Listings Enabled
               </label>

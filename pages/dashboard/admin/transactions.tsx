@@ -8,15 +8,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import TransactionModalForm from "@/components/admin/TransactionModalForm";
-
+import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
 
 interface TransactionType {
   _id: string;
-  propertyId: { title: string; location: string; price: number };
-  userId: { firstName: string; lastName: string; email: string };
+  user: { firstName: string; lastName: string; email: string };
+  type: "credit" | "debit";
   amount: number;
-  status: string;
-  method: string;
+  status: "success" | "pending" | "failed";
+  description: string;
+  reference: string;
   createdAt: string;
 }
 
@@ -25,6 +26,10 @@ export default function TransactionsPage() {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editTransaction, setEditTransaction] = useState<TransactionType | null>(null);
+
+  // Delete Dialog state
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [selectedTransactionId, setSelectedTransactionId] = useState<string | null>(null);
 
   const fetchTransactions = async () => {
     setLoading(true);
@@ -41,10 +46,16 @@ export default function TransactionsPage() {
     fetchTransactions();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this transaction?")) return;
-    await axios.delete(`/api/admin/transactions/${id}`);
-    fetchTransactions();
+  const handleDelete = async () => {
+    if (!selectedTransactionId) return;
+    try {
+      await axios.delete(`/api/admin/transactions/${selectedTransactionId}`);
+      fetchTransactions();
+      setDeleteOpen(false);
+      setSelectedTransactionId(null);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -70,28 +81,34 @@ export default function TransactionsPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {transactions.map((t) => (
-            <Card key={t._id} className="p-4 flex flex-col justify-between">
+            <Card key={t._id} className="p-2 flex flex-col justify-between">
               <CardHeader>
-                <CardTitle>{t.propertyId.title}</CardTitle>
+                <CardTitle>{t.type.toUpperCase()}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p>User: {t.userId.firstName} {t.userId.lastName}</p>
-                <p>Email: {t.userId.email}</p>
+              <CardContent className="text-sm">
+                <p>User: {t.user.firstName} {t.user.lastName}</p>
+                <p>Email: {t.user.email}</p>
                 <p>Amount: ₦{t.amount}</p>
                 <p>Status: {t.status}</p>
-                <p>Method: {t.method}</p>
+                <p>Description: {t.description}</p>
+                <p>Reference: {t.reference}</p>
                 <p className="text-xs text-gray-400">{new Date(t.createdAt).toLocaleString()}</p>
               </CardContent>
               <div className="flex gap-2 mt-4">
-                <Button
+                {/* <Button
                   size="sm"
-                  variant="outline"
-                  className="bg-blue-600 text-white"
+                  variant="secondary"
+                  className=" text-white"
                   onClick={() => { setEditTransaction(t); setModalOpen(true); }}
                 >
                   <Edit size={16} />
-                </Button>
-                <Button size="sm" variant="destructive" onClick={() => handleDelete(t._id)}>
+                </Button> */}
+
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => { setSelectedTransactionId(t._id); setDeleteOpen(true); }}
+                >
                   <Trash2 size={16} />
                 </Button>
               </div>
@@ -100,6 +117,7 @@ export default function TransactionsPage() {
         </div>
       )}
 
+      {/* Transaction Modal */}
       {modalOpen && (
         <TransactionModalForm
           open={modalOpen}
@@ -108,6 +126,14 @@ export default function TransactionsPage() {
           refresh={fetchTransactions}
         />
       )}
+
+      {/* Delete Dialog */}
+      <DeleteConfirmDialog
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete Transaction"
+        />
     </AdminLayout>
   );
 }

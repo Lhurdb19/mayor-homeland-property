@@ -1,11 +1,19 @@
 // components/admin/Navbar.tsx
 "use client";
 import { signOut, useSession } from "next-auth/react";
+import NotificationBell from "./NotificationBell";
+
+
 
 export default function AdminNavbar() {
+   
+
   const { data: session } = useSession();
   return (
-    <header className="flex justify-end p-4 bg-white shadow-md sticky top-0 z-10">
+    <header className="flex justify-between p-4 bg-white shadow-md sticky top-0 z-10">
+
+       <NotificationBell recipientType="admin"/>
+
       <div className="flex items-center space-x-4">
         {session ? (
           <>

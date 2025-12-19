@@ -17,6 +17,7 @@ export interface IUser extends Document {
   theme: string;
   twoFAEnabled: boolean;
   twoFASecret?: string | null;
+  walletBalance: { type: Number, default: 0};
 }
 
 const UserSchema = new Schema<IUser>(
@@ -28,6 +29,7 @@ const UserSchema = new Schema<IUser>(
     role: { type: String, default: "user" },
     phone: { type: String, required: true },
     address: { type: String, required: true },
+    walletBalance: { type: Number, default: 0 }, // <-- added
     isVerified: { type: Boolean, default: false },
     emailVerificationToken: { type: String },
     resetToken: { type: String },
@@ -38,6 +40,7 @@ const UserSchema = new Schema<IUser>(
   },
   { timestamps: true }
 );
+
 
 // Virtual field for full name
 UserSchema.virtual("name").get(function () {

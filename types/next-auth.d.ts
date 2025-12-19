@@ -7,6 +7,7 @@ declare module "next-auth" {
     lastName: string;
     role: string;
     isVerified: boolean;
+    lastLogin?: string;
   }
 
   interface Session {
@@ -16,6 +17,7 @@ declare module "next-auth" {
       lastName: string;
       role: string;
       isVerified: boolean;
+      lastLogin?: string;
     } & DefaultSession["user"];
   }
 }
@@ -27,5 +29,6 @@ declare module "next-auth/jwt" {
     lastName: string;
     role: string;
     isVerified: boolean;
+    lastLogin?: string;
   }
 }

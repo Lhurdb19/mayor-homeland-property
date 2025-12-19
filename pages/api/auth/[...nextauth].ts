@@ -41,6 +41,7 @@ export const authOptions: AuthOptions = {
           role: user.role,
           name: `${user.firstName} ${user.lastName}`,
           isVerified: user.isVerified,
+           lastLogin: user.lastLogin,
         };
       },
     }),
@@ -55,6 +56,7 @@ export const authOptions: AuthOptions = {
         token.role = user.role;
         token.name = user.name;
         token.isVerified = user.isVerified;
+        token.lastLogin = user.lastLogin;
       }
       return token;
     },
@@ -67,6 +69,7 @@ export const authOptions: AuthOptions = {
         session.user.role = token.role as string;
         session.user.name = token.name as string;
         session.user.isVerified = token.isVerified as boolean;
+        session.user.lastLogin = token.lastLogin as string;
       }
       return session;
     },

@@ -1,19 +1,41 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import axios from "axios";
+import Link from "next/link";
 import { toast } from "sonner";
+
 import UserProfileLayout from "@/components/user/UserProfileLayout";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
+
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import DeleteConfirmDialog from "@/components/DeleteConfirmDialog";
+
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+
+import { Wallet, ArrowUpRight, Home, Bell } from "lucide-react";
 
 export default function AddPropertyPage() {
-  const router = useRouter();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const [form, setForm] = useState({
     title: "",
@@ -31,13 +53,12 @@ export default function AddPropertyPage() {
   const [images, setImages] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
 
-   // User properties state
+  // User properties
   const [userProperties, setUserProperties] = useState<any[]>([]);
   const [loadingProperties, setLoadingProperties] = useState(true);
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null);
-
+  const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null);
 
   const fetchUserProperties = async () => {
     setLoadingProperties(true);
@@ -56,7 +77,9 @@ export default function AddPropertyPage() {
     fetchUserProperties();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -75,18 +98,19 @@ export default function AddPropertyPage() {
     try {
       setUploading(true);
 
-      // Convert images to base64
       const base64Images: string[] = await Promise.all(
-        images.map(file => new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = error => reject(error);
-        }))
+        images.map(
+          (file) =>
+            new Promise<string>((resolve, reject) => {
+              const reader = new FileReader();
+              reader.readAsDataURL(file);
+              reader.onload = () => resolve(reader.result as string);
+              reader.onerror = (err) => reject(err);
+            })
+        )
       );
 
-      // Submit property to user API
-      const res = await axios.post("/api/properties/user", {
+      await axios.post("/api/properties/user", {
         ...form,
         price: Number(form.price),
         bedrooms: Number(form.bedrooms),
@@ -96,7 +120,7 @@ export default function AddPropertyPage() {
       });
 
       toast.success("Property added successfully!");
-       setForm({
+      setForm({
         title: "",
         description: "",
         price: "",
@@ -109,7 +133,7 @@ export default function AddPropertyPage() {
         email: "",
       });
       setImages([]);
-      fetchUserProperties(); // Refresh list
+      fetchUserProperties();
     } catch (err) {
       console.error(err);
       toast.error("Failed to add property");
@@ -148,137 +172,188 @@ export default function AddPropertyPage() {
     }
   };
 
-
   return (
     <UserProfileLayout>
-      <div className="max-w-3xl mx-auto p-6 bg-white text-black/80 rounded-xl shadow-lg">
-        <h1 className="text-sm md:text-lg font-bold mb-6">Add New Property</h1>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="space-y-2">
-            <Label className="block font-medium text-sm">Title</Label>
-            <Input type="text" name="title" value={form.title} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="block font-medium text-sm">Description</Label>
-            <Textarea name="description" value={form.description} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" rows={4} />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="block font-medium text-sm">Price (₦)</Label>
-              <Input type="number" name="price" value={form.price} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="block font-medium text-sm">Location</Label>
-              <Input type="text" name="location" value={form.location} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            <div className="space-y-2 text-sm">
-              <Label className="block font-medium text-sm">Type</Label>
-              <select name="type" value={form.type} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 py-2.5 focus:outline-none focus:ring-0" required>
-                <option value="">Select type</option>
-                <option value="sale">Sale</option>
-                <option value="rent">Rent</option>
-                <option value="lease">Lease</option>
-                <option value="land">Land</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <Label className="block font-medium text-sm">Bedrooms</Label>
-              <Input type="number" name="bedrooms" value={form.bedrooms} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="block font-medium text-sm">Bathrooms</Label>
-              <Input type="number" name="bathrooms" value={form.bathrooms} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label className="block font-medium text-sm">Square Footage</Label>
-            <Input type="number" name="sqft" value={form.sqft} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="block font-medium text-sm">Phone</Label>
-            <Input type="text" name="phone" value={form.phone} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="block font-medium text-sm">Email</Label>
-            <Input type="email" name="email" value={form.email} onChange={handleChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="block font-medium text-sm">Property Images</Label>
-            <Input type="file" multiple accept="image/*" onChange={handleImageChange} className="w-full rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0" required />
-          </div>
-
-          <button type="submit" disabled={uploading} className="bg-blue-600 text-white px-4 py-1 text-sm rounded-md hover:bg-blue-700 transition">
-            {uploading ? "Uploading..." : "Add Property"}
-          </button>
-        </form>
-      </div>
+    <Card className="mb-6 border-none overflow-hidden">
+  <CardContent className="p-0">
+    <div className="bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-md">
+      
+      {/* LEFT: Back button + Title */}
+      <div className="flex flex-col md:flex-row md:items-center gap-4">
        
-       <div className="max-w-3xl mx-auto mt-8 text-black/80 dark:text-white">
-        <h2 className="text-sm md:text-lg font-bold">Your Posted Properties</h2>
 
-        {loadingProperties ? (
-          <p>Loading your properties...</p>
-        ) : userProperties.length === 0 ? (
-          <p>You haven't posted any properties yet.</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-            {userProperties.map((property: any) => (
-              <Card key={property._id} className="overflow-hidden rounded-xl shadow-md relative p-2 gap-1">
-                <div className="h-30 w-full overflow-hidden">
-                  <img
-                    src={property.images[0] || "/placeholder.jpg"}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <CardContent className="p-0">
-                  <h3 className="font-semibold text-sm">{property.title}</h3>
-                  <p className="text-blue-600 text-xs font-bold">₦{property.price.toLocaleString()}</p>
-                  <p className="text-gray-500 text-[11px]">{property.location}</p>
-                  <div className="flex gap-2 mt-2 justify-between">
-                    <Button
-                      variant="secondary"
-                      onClick={() => handleEdit(property)}
-                      className="text-xs"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => {
-                        setPropertyToDelete(property._id);
-                        setDeleteDialogOpen(true);
-                      }}
-                      className="text-[10px]"
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+        <div className="flex flex-col">
+          <h2 className="text-lg md:text-2xl font-semibold leading-tight">
+            Add New Property
+          </h2>
+          <p className="text-sm text-blue-100">
+            Fill in the details below to post your property and reach potential buyers or tenants.
+          </p>
+        </div>
       </div>
 
-        {/* Delete Confirmation Overlay */}
+      {/* RIGHT: Optional Icon */}
+      <div className="hidden md:flex items-center justify-center">
+        <Link href="/">
+        <Home className="h-10 w-10 text-white opacity-70" />
+          </Link>
+      </div>
+
+    </div>
+  </CardContent>
+</Card>
+
+
+      {/* ADD PROPERTY FORM */}
+      <Card className="max-w-3xl mx-auto mb-8 p-6 bg-white rounded-xl shadow-lg">
+        <CardHeader>
+          <CardTitle>Add New Property</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Title</Label>
+              <Input name="title" value={form.title} onChange={handleChange} required 
+              className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Description</Label>
+              <Textarea name="description" value={form.description} onChange={handleChange} rows={4} 
+              className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Price (₦)</Label>
+                <Input type="number" name="price" value={form.price} onChange={handleChange} required 
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Location</Label>
+                <Input name="location" value={form.location} onChange={handleChange} required 
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label>Type</Label>
+                <Select
+                  value={form.type}
+                  onValueChange={(value) => setForm({ ...form, type: value })}
+                >
+                  <SelectTrigger className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0 w-full">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white text-black/70 w-full">
+                    <SelectItem value="sale" className="hover:bg-blue-300">Sale</SelectItem>
+                    <SelectItem value="rent">Rent</SelectItem>
+                    <SelectItem value="lease">Lease</SelectItem>
+                    <SelectItem value="land">Land</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Bedrooms</Label>
+                <Input type="number" name="bedrooms" value={form.bedrooms} onChange={handleChange} 
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Bathrooms</Label>
+                <Input type="number" name="bathrooms" value={form.bathrooms} onChange={handleChange} 
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Square Footage</Label>
+              <Input type="number" name="sqft" value={form.sqft} onChange={handleChange} 
+              className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Phone</Label>
+                <Input name="phone" value={form.phone} onChange={handleChange} 
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Email</Label>
+                <Input type="email" name="email" value={form.email} onChange={handleChange} 
+                className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Property Images</Label>
+              <Input type="file" multiple accept="image/*" onChange={handleImageChange} required 
+              className="rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              />
+            </div>
+
+            <Button type="submit" disabled={uploading} className="w-full">
+              {uploading ? "Uploading..." : "Add Property"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      {/* USER PROPERTIES */}
+      <Card className="max-w-6xl mx-auto mb-6 p-6 bg-white rounded-xl shadow-lg">
+        <CardHeader>
+          <CardTitle>Your Posted Properties</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {loadingProperties
+            ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-40 w-full" />)
+            : userProperties.length === 0
+            ? <p>You haven't posted any properties yet.</p>
+            : userProperties.map((property: any) => (
+                <Card key={property._id} className="overflow-hidden rounded-xl shadow-md">
+                  <div className="h-40 w-full overflow-hidden">
+                    <img src={property.images[0] || "/placeholder.jpg"} className="h-full w-full object-cover" />
+                  </div>
+                  <CardContent className="p-2">
+                    <h3 className="font-semibold text-sm">{property.title}</h3>
+                    <p className="text-blue-600 text-xs font-bold">₦{property.price.toLocaleString()}</p>
+                    <p className="text-gray-500 text-[11px]">{property.location}</p>
+                    <div className="flex gap-2 mt-2 justify-between">
+                      <Button variant="secondary" size="sm" onClick={() => handleEdit(property)}>Edit</Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => {
+                          setPropertyToDelete(property._id);
+                          setDeleteDialogOpen(true);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+        </CardContent>
+      </Card>
+
+      {/* DELETE CONFIRM */}
       <DeleteConfirmDialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={handleDelete}
       />
-
     </UserProfileLayout>
   );
 }
