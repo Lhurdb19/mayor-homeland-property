@@ -51,6 +51,8 @@ export default function UserPropertiesPage() {
   const [totalPages, setTotalPages] = useState(1);
   const cacheRef = useRef<Map<string, PropertyType[]>>(new Map());
 
+  const [sessionSeed] = useState(() => Math.floor(Math.random() * 10000));
+
   // Load URL filters ONCE when page loads
   useEffect(() => {
     const urlFilters: any = {};
@@ -70,13 +72,14 @@ export default function UserPropertiesPage() {
   };
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSearchFilters(filters);
-    setPage(1);
-  };
+  e.preventDefault();
+  cacheRef.current.clear(); // 🗑️ Clear cache on new search to force a fresh shuffle
+  setSearchFilters(filters);
+  setPage(1);
+};
 
   const fetchProperties = async (currentPage = 1) => {
-    const paramsObj: any = { ...searchFilters, limit: 8, page: currentPage };
+    const paramsObj: any = { ...searchFilters, limit: 8, page: currentPage,  seed: sessionSeed };
     Object.keys(paramsObj).forEach((k) => {
       if (paramsObj[k] === "any") paramsObj[k] = "";
     });
@@ -91,13 +94,14 @@ export default function UserPropertiesPage() {
     setLoading(true);
     try {
       const res = await axios.get("/api/properties", { params: paramsObj });
-      const data = Array.isArray(res.data.data) ? res.data.data : [];
-      setProperties(data);
-      setTotalPages(Math.ceil(res.data.meta.total / res.data.meta.perPage));
-      cacheRef.current.set(cacheKey, data);
+      // const data = Array.isArray(res.data.data) ? res.data.data : [];
+      setProperties(res.data.data);
+      // setTotalPages(Math.ceil(res.data.meta.total / res.data.meta.perPage));
+      setTotalPages(res.data.meta.totalPages);
+      // cacheRef.current.set(cacheKey, data);
     } catch (err) {
       console.error(err);
-      setProperties([]);
+      // setProperties([]);
     }
     setLoading(false);
   };

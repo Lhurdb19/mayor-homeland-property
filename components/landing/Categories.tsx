@@ -48,25 +48,34 @@ export default function Categories({
   const limit = enablePagination ? 8 : 1000;
   const [totalPages, setTotalPages] = useState(1);
 
+  const [sessionSeed] = useState(() => Math.floor(Math.random() * 10000));
+
   useEffect(() => {
-    const fetchProperties = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(
-          `/api/properties?type=${selectedCategory}&page=${page}&limit=${limit}`
-        );
+  const fetchProperties = async () => {
+    setLoading(true);
+    try {
+      // Ensure params are clean
+      const res = await axios.get("/api/properties", {
+        params: {
+          type: selectedCategory,
+          page,
+          limit,
+          seed: sessionSeed, // sessionSeed stays same during pagination
+        }
+      });
 
-        setProperties(res.data.data);
-        if (enablePagination) setTotalPages(res.data.totalPages || 1);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setProperties(res.data.data);
+      // ⭐ RE-ENABLE THIS:
+      setTotalPages(res.data.meta.totalPages || 1);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchProperties();
-  }, [selectedCategory, page, enablePagination]);
+  fetchProperties();
+}, [selectedCategory, page, sessionSeed]);
 
   return (
     <div className="py-16 px-4 lg:px-25 md:max-w-8xl w-full mx-auto bg-white/95 text-black/80">
