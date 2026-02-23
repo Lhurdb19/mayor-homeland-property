@@ -65,13 +65,12 @@ export default function UserProfilePage() {
             <p className="text-xs md:text-base">Manage your personal information</p>
           </div>
           <Link href="/dashboard/user/profiles/edit">
-            <Button className="flex gap-2 text-[8px] md:text-sm">
-              <Edit className="w-4 h-4" /> Edit Profile
+            <Button className="flex gap-2 text-[8px] md:text-sm bg-white text-blue-600">
+              <Edit className="w-4 h-4 text-blue-600" /> Edit Profile
             </Button>
           </Link>
         </div>
 
-        {/* AVATAR + NAME */}
         <Card className="shadow-sm border">
           <CardContent className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
 
@@ -91,25 +90,24 @@ export default function UserProfilePage() {
           </CardContent>
         </Card>
 
-        {/* TABS */}
         <Tabs defaultValue="personal" className="space-y-4">
           <TabsList className="grid grid-cols-4 w-full border-b bg-white text-black/80 shadow">
-            <TabsTrigger value="personal" className="flex items-center gap-1">
+            <TabsTrigger value="personal" className="flex items-center gap-1 text-black">
               <User className="w-5 h-5" />
               <span className="hidden md:inline">Personal Info</span>
             </TabsTrigger>
 
-            <TabsTrigger value="account" className="flex items-center gap-1">
+            <TabsTrigger value="account" className="flex items-center gap-1 text-black">
               <ShieldCheck className="w-5 h-5" />
               <span className="hidden md:inline">Account</span>
             </TabsTrigger>
 
-            <TabsTrigger value="privacy" className="flex items-center gap-1">
+            <TabsTrigger value="privacy" className="flex items-center gap-1 text-black">
               <Lock className="w-5 h-5" />
               <span className="hidden md:inline">Privacy</span>
             </TabsTrigger>
 
-            <TabsTrigger value="activities" className="flex items-center gap-1">
+            <TabsTrigger value="activities" className="flex items-center gap-1 text-black">
               <Activity className="w-5 h-5" />
               <span className="hidden md:inline">Activities</span>
             </TabsTrigger>

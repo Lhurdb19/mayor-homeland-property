@@ -58,21 +58,19 @@ export default function UserNotificationsPage() {
 
   return (
     <UserProfileLayout>
-      <div className="min-h-screen w-full p-0 sm:p-6 text-black/80 space-y-6">
+      <div className="min-h-screen w-full pt-18 sm:p-6 text-black/80 space-y-6">
 
-        {/* HEADER */}
         <div className="flex items-center justify-between bg-linear-to-r from-blue-500 to-indigo-600 p-4 md:p-6 rounded-lg shadow-md text-white">
           <div>
             <h1 className="text-xl md:text-3xl font-bold">Notifications</h1>
             <p className="text-xs md:text-base">View and manage your notifications</p>
           </div>
-          <Button onClick={markAllAsRead} size="sm" className="text-xs md:text-sm">
+          <Button onClick={markAllAsRead} size="sm" className="text-xs md:text-sm bg-white text-blue-500 p-1">
             Mark all as read
           </Button>
         </div>
 
-        {/* NOTIFICATIONS LIST */}
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="max-w-8xl mx-auto space-y-4">
           {notifications.length === 0 ? (
             <p className="text-gray-500 text-sm">No notifications yet.</p>
           ) : (
@@ -94,8 +92,8 @@ export default function UserNotificationsPage() {
                     </Button>
                   )}
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{n.message}</p>
+                <CardContent className="p-0">
+                  <p className="text-gray-600 text-sm lg:text-xl">{n.message}</p>
                   <p className="text-xs text-gray-400 mt-2">
                     {new Date(n.createdAt).toLocaleString()}
                   </p>

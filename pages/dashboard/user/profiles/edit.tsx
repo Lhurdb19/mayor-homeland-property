@@ -54,7 +54,7 @@ export default function EditPage() {
 
   return (
     <UserProfileLayout>
-      <div className="min-h-screen p-4 md:px-6 bg-gray-50 space-y-4">
+      <div className="min-h-screen p-4 md:px-6 bg-gray-50 space-y-4 pt-18">
 
         {/* HEADER */}
         <div className="flex items-center justify-between bg-linear-to-r from-blue-500 to-indigo-600 p-4 md:p-6 rounded-lg shadow-md text-white">
@@ -68,29 +68,29 @@ export default function EditPage() {
         <Tabs defaultValue="personal" className="space-y-4">
           <TabsList className="grid grid-cols-4 w-full border-b bg-white text-black/80 shadow">
             <TabsTrigger className="flex items-center gap-1" value="personal">
-              <User className="w-5 h-5" />
-              <span className="hidden md:inline">Personal Info</span>
+              <User className="w-5 h-5 text-black" />
+              <span className="hidden md:inline text-black">Personal Info</span>
             </TabsTrigger>
 
-            <TabsTrigger className="flex items-center gap-1" value="account">
-              <Mail className="w-5 h-5" />
-              <span className="hidden md:inline">Account</span>
+            <TabsTrigger className="flex items-center gap-1 text-black" value="account">
+              <Mail className="w-5 h-5 text-black" />
+              <span className="hidden md:inline text-black">Account</span>
             </TabsTrigger>
 
-            <TabsTrigger className="flex items-center gap-1" value="privacy">
+            <TabsTrigger className="flex items-center gap-1 text-black" value="privacy">
               <Phone className="w-5 h-5" />
               <span className="hidden md:inline">Privacy</span>
             </TabsTrigger>
 
-            <TabsTrigger className="flex items-center gap-1" value="activities">
+            <TabsTrigger className="flex items-center gap-1 text-black" value="activities">
               <MapPin className="w-5 h-5" />
               <span className="hidden md:inline">Activities</span>
             </TabsTrigger>
           </TabsList>
 
           {/* PERSONAL INFO */}
-          <TabsContent value="personal">
-            <Card className="p-4">
+          <TabsContent value="personal" className="p-0">
+            <Card className="px-0">
               <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>First Name</Label>

@@ -119,7 +119,7 @@ export default function AddPropertyPage() {
         images: base64Images,
       });
 
-      toast.success("Property added successfully!");
+      toast.success("Property added successfully, wait for admin review.");
       setForm({
         title: "",
         description: "",
@@ -174,13 +174,11 @@ export default function AddPropertyPage() {
 
   return (
     <UserProfileLayout>
-    <Card className="mb-6 border-none overflow-hidden">
+    <Card className="mb-6 border-none overflow-hidden pt-20">
   <CardContent className="p-0">
     <div className="bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-lg p-5 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-md">
       
-      {/* LEFT: Back button + Title */}
       <div className="flex flex-col md:flex-row md:items-center gap-4">
-       
 
         <div className="flex flex-col">
           <h2 className="text-lg md:text-2xl font-semibold leading-tight">
@@ -204,12 +202,11 @@ export default function AddPropertyPage() {
 </Card>
 
 
-      {/* ADD PROPERTY FORM */}
-      <Card className="max-w-3xl mx-auto mb-8 p-6 bg-white rounded-xl shadow-lg">
+      <Card className="max-w-8xl w-full mb-8 p-2 lg:p-6 bg-white rounded-xl shadow-lg">
         <CardHeader>
           <CardTitle>Add New Property</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-0">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label>Title</Label>
@@ -310,8 +307,7 @@ export default function AddPropertyPage() {
         </CardContent>
       </Card>
 
-      {/* USER PROPERTIES */}
-      <Card className="max-w-6xl mx-auto mb-6 p-6 bg-white rounded-xl shadow-lg">
+      <Card className="max-w-8xl mx-auto mb-6 p-6 bg-white rounded-xl shadow-lg">
         <CardHeader>
           <CardTitle>Your Posted Properties</CardTitle>
         </CardHeader>

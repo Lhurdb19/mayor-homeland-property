@@ -25,7 +25,7 @@ export default function DeleteAccountPage() {
 
   return (
     <UserProfileLayout>
-      <div className="max-w-lg min-h-screen mx-auto mt-10 bg-white">
+      <div className="max-w-lg min-h-screen flex flex-col items-center text-center mx-auto mt-10 bg-white">
         <h1 className="text-2xl font-bold mb-4 text-red-600">Delete Account</h1>
         <p className="text-gray-700 text-lg mb-6">
           This action is permanent and cannot be undone. All your data will be removed.

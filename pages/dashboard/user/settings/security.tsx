@@ -4,12 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import UserProfileLayout from "@/components/user/UserProfileLayout";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,7 +14,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function SecuritySettingsUnified() {
-  // Password change state
   const [passwordForm, setPasswordForm] = useState({
     oldPassword: "",
     newPassword: "",
@@ -28,7 +21,6 @@ export default function SecuritySettingsUnified() {
   });
   const [savingPassword, setSavingPassword] = useState(false);
 
-  // 2FA state
   const [twoFAEnabled, setTwoFAEnabled] = useState(false);
   const [qrImage, setQrImage] = useState("");
   const [secret, setSecret] = useState("");
@@ -38,7 +30,6 @@ export default function SecuritySettingsUnified() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user profile
   useEffect(() => {
     async function loadUser() {
       try {
@@ -53,14 +44,12 @@ export default function SecuritySettingsUnified() {
     loadUser();
   }, []);
 
-  // Load 2FA status
   useEffect(() => {
     axios.get("/api/users/2fa/status").then((res) => {
       setTwoFAEnabled(res.data.twoFAEnabled);
     });
   }, []);
 
-  // Password change
   const handlePasswordChange = async () => {
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       return toast.error("Passwords do not match");
@@ -76,7 +65,6 @@ export default function SecuritySettingsUnified() {
     setSavingPassword(false);
   };
 
-  // Enable 2FA
   const handleEnable2FA = async () => {
     try {
       setIsLoading2FA(true);
@@ -90,7 +78,6 @@ export default function SecuritySettingsUnified() {
     }
   };
 
-  // Verify 2FA
   const handleVerify2FA = async () => {
     try {
       await axios.post("/api/users/2fa/verify", { token: verifyCode, secret });
@@ -103,7 +90,6 @@ export default function SecuritySettingsUnified() {
     }
   };
 
-  // Disable 2FA
   const handleDisable2FA = async () => {
     try {
       await axios.put("/api/users/2fa/disable");
@@ -124,26 +110,23 @@ export default function SecuritySettingsUnified() {
 
   return (
     <UserProfileLayout>
-      <div className="max-w-4xl mx-auto min-h-screen p-6 space-y-6">
-
-        {/* HEADER */}
-        <div className="flex items-center justify-between bg-linear-to-r from-blue-500 to-indigo-600 p-4 md:p-6 rounded-lg shadow-md text-white">
+      <div className="max-w-8xl mx-auto min-h-screen pt-18 lg:p-6 space-y-6">
+        <div className="flex items-center justify-between bg-linear-to-r from-blue-500 to-indigo-600 py-4 px-2 md:p-6 rounded-lg shadow-md text-white">
           <div>
-            <h1 className="text-xl md:text-3xl font-bold">Security Settings</h1>
+            <h1 className="text-md md:text-3xl font-bold">Security Settings</h1>
             <p className="text-xs md:text-base">Manage your password and two-factor authentication</p>
           </div>
           <Link href="/dashboard/user/profiles/edit">
-            <Button className="flex gap-2 text-[8px] md:text-sm">
+            <Button className="flex gap-2 text-[8px] md:text-sm bg-white text-blue-500">
               <Edit className="w-4 h-4" /> Edit Profile
             </Button>
           </Link>
         </div>
 
-        {/* TABS */}
         <Tabs defaultValue="password" className="space-y-4">
-          <TabsList className="grid grid-cols-2 w-full gap-10 border-b mb-4 bg-white shadow-lg">
-            <TabsTrigger value="password">Change Password</TabsTrigger>
-            <TabsTrigger value="2fa">Two-Factor Auth</TabsTrigger>
+          <TabsList className="grid grid-cols-2 w-full gap-10 border-b mb-4 bg-white shadow-lg text-black">
+            <TabsTrigger value="password" className="text-black">Change Password</TabsTrigger>
+            <TabsTrigger value="2fa" className="text-black">Two-Factor Auth</TabsTrigger>
           </TabsList>
 
           {/* Password Tab */}
@@ -186,7 +169,6 @@ export default function SecuritySettingsUnified() {
             </Button>
           </TabsContent>
 
-          {/* 2FA Tab */}
           <TabsContent value="2fa" className="space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-sm text-gray-700 max-w-sm">
@@ -205,7 +187,6 @@ export default function SecuritySettingsUnified() {
               {twoFAEnabled ? "2FA is enabled" : "2FA is disabled"}
             </p>
 
-            {/* QR Section */}
             {qrImage && (
               <div className="flex flex-col items-center gap-4 mt-4">
                 <Image src={qrImage} alt="QR Code" width={140} height={140} className="border rounded-lg" />

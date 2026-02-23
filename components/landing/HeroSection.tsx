@@ -58,7 +58,6 @@ export default function Hero() {
       <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/50 to-black/80" />
 
       <div className="relative z-10 w-full max-w-8xl mx-auto py-10 grid grid-cols-1 lg:grid-cols-4 gap-10 items-center">
-         {/* TOP LOCATIONS – FLOAT RIGHT */}
         <motion.aside
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -83,7 +82,6 @@ export default function Hero() {
           </ul>
         </motion.aside>
 
-        {/* MAIN CONTENT */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,8 +93,8 @@ export default function Hero() {
             <span className="text-blue-500">Anywhere in Nigeria</span>
           </h1>
 
-          <p className="mt-4 text-sm md:text-xl text-gray-200 max-w-2xl">
-            Discover verified properties for rent, sale, and investment —
+          <p className="mt-4 text-sm md:text-xl text-gray-200 max-w-2xl ">
+            Discover verified properties for rent, sale, and investment
             transparent pricing, trusted listings, zero stress.
           </p>
 

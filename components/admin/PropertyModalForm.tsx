@@ -71,6 +71,13 @@ export default function PropertyModalForm({
     }
   }, [property, reset]);
 
+  useEffect(() => {
+  if (!property) {
+    setValue("type", "sale");
+    setValue("status", "available");
+  }
+}, [property, setValue]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -79,8 +86,11 @@ export default function PropertyModalForm({
       const reader = new FileReader();
       reader.onload = () => {
         const base64 = reader.result as string;
-        setPreviewImages((prev) => [...prev, base64]);
-        setValue("images", [...previewImages, base64]);
+        setPreviewImages((prev) => {
+          const updated = [...prev, base64];
+          setValue("images", updated);
+          return updated;
+        });
       };
       reader.readAsDataURL(file);
     });
@@ -119,30 +129,30 @@ export default function PropertyModalForm({
         <ScrollArea className="max-h-[80vh] px-6 pb-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2 text-black">
-                <Label className="text-black">Title</Label>
-              <Input {...register("title", { required: true })} 
-              className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              <Label className="text-black">Title</Label>
+              <Input {...register("title", { required: true })}
+                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
             </div>
 
             <div className="space-y-2 text-black">
-                <Label className="text-black">Description</Label>
-              <Textarea {...register("description", { required: true })} 
-              className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+              <Label className="text-black">Description</Label>
+              <Textarea {...register("description", { required: true })}
+                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-black">
               <div className="space-y-2">
                 <Label className="text-black">Price</Label>
-                <Input type="number" {...register("price")} 
-                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                <Input type="number" {...register("price")}
+                  className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
               </div>
               <div className="space-y-2">
                 <Label className="text-black">Location</Label>
-                <Input {...register("location")} 
-                className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+                <Input {...register("location")}
+                  className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
                 />
               </div>
             </div>
@@ -163,7 +173,7 @@ export default function PropertyModalForm({
               </Select>
 
               <Select
-                defaultValue={property?.type || "sale"}
+                value={watch("type") || "sale"}
                 onValueChange={(v) => setValue("type", v)}
               >
                 <SelectTrigger className="w-full border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0 text-black">
@@ -178,8 +188,8 @@ export default function PropertyModalForm({
               </Select>
             </div>
 
-            <Input type="file" multiple accept="image/*" onChange={handleFileChange} 
-            className="w-full text-black placeholder:text-black border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
+            <Input type="file" multiple accept="image/*" onChange={handleFileChange}
+              className="w-full text-black placeholder:text-black border-b-1.5 rounded border border-gray-200 outline-none p-2 focus:outline-none focus:ring-0"
             />
 
             <div className="grid grid-cols-3 gap-3">

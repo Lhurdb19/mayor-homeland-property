@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "POST") {
     try {
       const { title, description, price, location, status, type, images, bedrooms, bathrooms, sqft, phone, email, latitude, longitude, featured } = req.body;
-      if (!title || !description || !price || !location || !status || !type) return res.status(400).json({ message: "Missing required fields" });
+      if (!title || !description || price == null || !location || !type) return res.status(400).json({ message: "Missing required fields" });
       if (!images || !Array.isArray(images) || images.length === 0) return res.status(400).json({ message: "At least one image is required" });
 
       const uploadedImages = await Promise.all(images.map(async (img: string) => (await uploadImage(img)).secure_url));
@@ -75,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         description,
         price: Number(price),
         location,
-        status,
+        status: status || "available",
         type: type.toLowerCase(),
         bedrooms: bedrooms ? Number(bedrooms) : undefined,
         bathrooms: bathrooms ? Number(bathrooms) : undefined,
@@ -91,6 +91,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(201).json(property);
     } catch (err) {
+      console.log("SESSION:", session);
       console.error("POST /admin/properties error:", err);
       return res.status(500).json({ message: "Failed to create property" });
     }

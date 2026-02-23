@@ -66,49 +66,46 @@ export default function ContactPage() {
     if (status === "loading") return <p className="text-center py-16">Loading...</p>;
 
     return (
-        <div className="max-w-7xl w-full mx-auto py-20 px-5 md:px-20 flex flex-col items-center gap-5 text-black/80 bg-white">
+        <div className="max-w-8xl w-full mx-auto py-20 px-5 md:px-20 flex flex-col items-center gap-5 text-black/80 bg-white">
             
-            {/* TOP TEXT SECTION */}
-            <h2 className="text-black/70">Contact Us</h2>
-            <div className="flex lg:flex-row gap-10">
-                 {/* RIGHT: Contact Info */}
-                <div className="flex-1 flex flex-col gap-6 justify-start shadow-lg p-4 rounded-xl">
-                <h1 className="text-3xl md:text-4xl font-bold text-black/80">Get in Touch with Us</h1>
-                <p className="text-gray-600 md:text-sm">
+            <h2 className="text-black/70 text-2xl lg:text-4xl lg:pt-10">Contact Us</h2>
+            <div className="flex flex-col lg:flex-row gap-10">
+                <div className="flex-1 flex flex-col gap-2 lg-gap-5 justify-start shadow-lg p-4 rounded-xl">
+                <h1 className="text-xl md:text-4xl font-bold text-center text-black/80">Get in Touch with Us</h1>
+                <p className="text-gray-600 text-sm lg:text-xl">
                     Have a question or want to discuss your property needs? Send us a message and we'll get back to you promptly.
                 </p>
                     
                     <div className="flex items-center gap-3 mt-10 text-gray-700 text-sm md:text-base">
                         <MapPin className="text-blue-500" size={22} />
-                        <span>Amodu Tijani Cl, Victoria Island, Lagos 106104, Nigeria</span>
+                        <span className="text-[12px] lg:text-xl">Amodu Tijani Cl, Victoria Island, Lagos 106104, Nigeria</span>
                     </div>
 
                     <div className="flex items-center gap-3 text-gray-700 text-sm md:text-base">
                         <Mail className="text-blue-500" size={20} />
-                        <span>mubarakshittu411@gmail.com</span>
+                        <span className="text-[12px] lg:text-xl">mubarakshittu411@gmail.com</span>
                     </div>
 
                     <div className="flex items-center gap-3 text-gray-700 text-sm md:text-base">
                         <Phone className="text-blue-500" size={20} />
-                        <span>+234 816 836 3469</span>
+                        <span className="text-[12px] lg:text-xl">+234 816 836 3469</span>
                     </div>
 
                     <WhatsAppButton title="Property" />
                 </div>
 
-                {/* LEFT: Contact Form */}
                 <div className="flex-1">
                     <Card className="shadow-xl rounded-2xl py-6 px-2 md:px-0">
                         <CardHeader>
-                            <CardTitle className="text-2xl font-semibold text-black/90 mb-4">Send a Message</CardTitle>
+                            <CardTitle className="text-2xl font-semibold text-black/90 p-0">Send a Message</CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-5">
+                        <CardContent className="space-y-5 p-0 m-0">
                             <div className="relative">
                                 <Input
                                     placeholder="Name"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className={`pl-2 text-black/80 px-4 rounded-xl border border-gray-200 focus-border-0 outline-none text-sm ${getInputBorderClass("name")}`}
+                                    className={`pl-2 text-black/80 px-2 rounded-md border border-gray-200 focus-border-0 outline-none text-sm ${getInputBorderClass("name")}`}
                                 />
                                 {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                             </div>
@@ -119,7 +116,7 @@ export default function ContactPage() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className={`pl-2 text-black/80 px-4 rounded-xl border border-gray-200 focus-border-0 outline-none text-sm ${getInputBorderClass("email")}`}
+                                    className={`pl-2 text-black/80 px-4 rounded-md border border-gray-200 focus-border-0 outline-none text-sm ${getInputBorderClass("email")}`}
                                 />
                                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                             </div>
@@ -129,7 +126,7 @@ export default function ContactPage() {
                                     placeholder="Phone (optional)"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    className={`pl-2 text-black/80 px-4 rounded-xl border border-gray-200 focus-border-0 outline-none text-sm ${getInputBorderClass("phone")}`}
+                                    className={`pl-2 text-black/80 px-4 rounded-md border border-gray-200 focus-border-0 outline-none text-sm ${getInputBorderClass("phone")}`}
                                 />
                                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
                             </div>
@@ -139,7 +136,7 @@ export default function ContactPage() {
                                     placeholder="Your message..."
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    className={`h-28 text-black/80 pl-2 px-4 rounded-xl border border-gray-200 focus:border-0 outline-none text-sm ${getInputBorderClass("message")}`}
+                                    className={`h-28 text-black/80 pl-2 px-4 rounded-md border border-gray-200 focus:border-0 outline-none text-sm ${getInputBorderClass("message")}`}
                                 />
                                 {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                             </div>

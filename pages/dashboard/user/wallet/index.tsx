@@ -226,7 +226,6 @@ export default function WalletPage() {
         <UserProfileLayout>
             <div className="min-h-screen py-16 md:p-4 space-y-6 bg-gray-50">
 
-                {/* HEADER */}
                 <div className="flex flex-col md:flex-row items-center justify-between bg-linear-to-r from-blue-500 to-indigo-600 p-4 md:p-6 rounded-lg shadow-md text-white gap-4">
                     <div>
                         <h1 className="text-xl md:text-3xl font-bold">My Wallet</h1>
@@ -235,7 +234,7 @@ export default function WalletPage() {
 
                     {/* Desktop: Amount input + buttons */}
                     <div className="hidden md:flex items-center gap-2">
-                        <Input
+                        {/* <Input
                             type="number"
                             placeholder="Amount"
                             value={topupAmount}
@@ -247,7 +246,7 @@ export default function WalletPage() {
                         </Button>
                         <Button variant="outline" className="flex items-center gap-2 hover:text-blue-500">
                             <ArrowDown className="w-4 h-4" /> Withdraw
-                        </Button>
+                        </Button> */}
                     </div>
 
                     {/* Mobile Dropdown */}
@@ -267,7 +266,7 @@ export default function WalletPage() {
                                         onChange={(e) => setTopupAmount(Number(e.target.value))}
                                     />
                                 </div>
-                                <DropdownMenuItem className="flex items-center gap-2" onClick={handleFlutterwave}>
+                                {/* <DropdownMenuItem className="flex items-center gap-2" onClick={handleFlutterwave}>
                                     <Plus className="w-4 h-4 text-blue-600" /> Add Funds
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="flex items-center gap-2">
@@ -275,14 +274,14 @@ export default function WalletPage() {
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="flex items-center gap-2">
                                     <Repeat className="w-4 h-4 text-blue-600" /> Transfer
-                                </DropdownMenuItem>
+                                </DropdownMenuItem> */}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
                 </div>
 
                 {/* BALANCE CARDS */}
-                <Card className="bg-white shadow-md rounded-xl">
+                {/* <Card className="bg-white shadow-md rounded-xl">
                     <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                         <Card className="p-4">
                             <p className="text-gray-500 text-sm flex items-center gap-1">
@@ -309,11 +308,11 @@ export default function WalletPage() {
                             }
                         </Card>
                     </CardContent>
-                </Card>
+                </Card> */}
 
-                {/* TRANSACTIONS TABS */}
-                <Tabs defaultValue="transactions" className="space-y-4">
-                    <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full border-b bg-white text-black/80 shadow">
+                <Tabs defaultValue="transactions" className="space-y-4 flex items-center">
+                    <h3 className="text-2xl">Not Available For Now</h3>
+                    {/* <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full border-b bg-white text-black/80 shadow">
                         <TabsTrigger className="flex items-center gap-1" value="transactions">
                             <ArrowUpRight className="w-5 h-5" />
                             <span className="hidden md:inline">Transactions</span>
@@ -322,15 +321,15 @@ export default function WalletPage() {
                             <CreditCard className="w-5 h-5" />
                             <span className="hidden md:inline">Settings</span>
                         </TabsTrigger>
-                    </TabsList>
+                    </TabsList> */}
 
-                    <TabsContent value="transactions">
-                        <Card className="bg-white shadow-md rounded-xl">
-                            <CardHeader>
+                    {/* <TabsContent value="transactions"> */}
+                        {/* <Card className="bg-white shadow-md rounded-xl"> */}
+                            {/* <CardHeader>
                                 <CardTitle>Transaction History</CardTitle>
-                            </CardHeader>
+                            </CardHeader> */}
 
-                            <CardContent className="overflow-x-auto">
+                            {/* <CardContent className="overflow-x-auto">
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="hover:bg-black/10">
@@ -358,7 +357,6 @@ export default function WalletPage() {
                                         ) : (
                                             Object.entries(groupedTransactions).map(([label, txs]: any) => (
                                                 <>
-                                                    {/* GROUP HEADER */}
                                                     <TableRow key={label}>
                                                         <TableCell
                                                             colSpan={5}
@@ -368,7 +366,6 @@ export default function WalletPage() {
                                                         </TableCell>
                                                     </TableRow>
 
-                                                    {/* TRANSACTIONS */}
                                                     {txs.map((tx: Transaction) => (
                                                         <TableRow key={tx.id} className="hover:bg-black/10">
                                                             <TableCell>
@@ -428,39 +425,39 @@ export default function WalletPage() {
                                 </Table>
                             </CardContent>
                         </Card>
-                    </TabsContent>
+                    </TabsContent> */}
 
 
 
-                    <TabsContent value="settings">
+                    {/* <TabsContent value="settings">
                         <p className="text-gray-700">Wallet settings and preferences will go here.</p>
-                    </TabsContent>
+                    </TabsContent> */}
                 </Tabs>
             </div>
 
-            <Dialog open={!!selectedTx} onOpenChange={() => setSelectedTx(null)}>
-                <DialogContent className="max-w-md  bg-white text-black/70">
-                    {selectedTx && (
+            {/* <Dialog open={!!selectedTx} onOpenChange={() => setSelectedTx(null)}> */}
+                {/* <DialogContent className="max-w-md  bg-white text-black/70"> */}
+                    {/* {selectedTx && ( */}
                         <>
-                            <DialogHeader>
+                            {/* <DialogHeader>
                                 <DialogTitle className="flex items-center justify-between">
                                     <span>
                                         {selectedTx.type === "credit" ? "Deposit" : "Withdrawal"}
                                     </span>
                                 </DialogTitle>
-                            </DialogHeader>
+                            </DialogHeader> */}
 
-                            <Card className="border-none shadow-none">
-                                <CardContent className="space-y-4 p-0">
+                            {/* <Card className="border-none shadow-none"> */}
+                                {/* <CardContent className="space-y-4 p-0"> */}
                                     {/* DATE */}
-                                    <p className="text-sm text-gray-500">
+                                    {/* <p className="text-sm text-gray-500">
                                         {selectedTx.date
                                             ? new Date(selectedTx.date).toLocaleString("en-NG")
                                             : "—"}
-                                    </p>
+                                    </p> */}
 
                                     {/* AMOUNT */}
-                                    <p
+                                    {/* <p
                                         className={`text-2xl font-bold ${selectedTx.type === "credit"
                                                 ? "text-green-600"
                                                 : "text-red-600"
@@ -468,10 +465,10 @@ export default function WalletPage() {
                                     >
                                         {selectedTx.type === "credit" ? "+" : "-"}₦
                                         {selectedTx.amount.toLocaleString()}
-                                    </p>
+                                    </p> */}
 
                                     {/* DETAILS */}
-                                    <div className="space-y-2 text-sm">
+                                    {/* <div className="space-y-2 text-sm">
                                         <div className="flex justify-between">
                                             <span className="text-gray-500">Description</span>
                                             <span className="font-medium text-right">
@@ -492,10 +489,10 @@ export default function WalletPage() {
                                                 {selectedTx.reference}
                                             </span>
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     {/* SHARE BUTTON */}
-                                    <Button
+                                    {/* <Button
                                         variant="outline"
                                         className="w-full flex gap-2 shadow hover:text-black/80"
                                         onClick={() => {
@@ -507,13 +504,13 @@ export default function WalletPage() {
                                     >
                                         <Share2 className="w-4 h-4" />
                                         Share Transaction
-                                    </Button>
-                                </CardContent>
-                            </Card>
+                                    </Button> */}
+                                {/* </CardContent> */}
+                            {/* </Card> */}
                         </>
-                    )}
-                </DialogContent>
-            </Dialog>
+                    {/* )} */}
+                {/* </DialogContent> */}
+            {/* </Dialog> */}
 
         </UserProfileLayout>
     );

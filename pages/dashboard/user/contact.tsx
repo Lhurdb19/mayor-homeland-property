@@ -83,12 +83,10 @@ export default function UserContactPage() {
 
   return (
     <UserProfileLayout>
-      <div className="flex flex-col w-full max-w-3xl mx-auto md:py-10 px-2 md:px-0">
+      <div className="flex flex-col w-full max-w-8xl mx-auto pt-18 md:py-10 px-2 md:px-0">
 
-        {/* Header */}
         <h1 className="text-2xl font-bold mb-4">Your Messages</h1>
 
-        {/* CHAT BOX */}
         <div
           className="
           flex flex-col h-[70vh] md:h-[75vh] 
@@ -96,10 +94,9 @@ export default function UserContactPage() {
           border dark:border-gray-800 
           rounded-lg overflow-hidden"
         >
-          {/* Messages Area */}
           <div
             className="
-            flex-1 p-3 overflow-y-auto 
+            flex-1 p-2 overflow-y-auto 
             space-y-4 scrollbar-thin 
             scrollbar-thumb-gray-400 
             dark:scrollbar-thumb-gray-700"
@@ -119,18 +116,17 @@ export default function UserContactPage() {
                 .map((c) => (
                   <div key={c._id} className="space-y-3">
 
-                    {/* USER MESSAGE (RIGHT) */}
                     {c.sender === "user" ? (
                       <div className="flex justify-end">
                         <div className="
               bg-[#005C4B] text-white 
-              px-3 py-2 rounded-lg 
+              px-2 py-1 rounded-lg 
               max-w-[75%] shadow-md 
               whitespace-pre-wrap break-words text-sm
             ">
                           {c.message}
 
-                          <div className="flex justify-end gap-1 text-[10px] opacity-70 mt-1">
+                          <div className="flex justify-end gap-1 text-[9px] opacity-70 mt-1">
                             {new Date(c.createdAt).toLocaleTimeString()}
                             <BsCheckAll className="text-blue-400" />
                           </div>
@@ -141,13 +137,13 @@ export default function UserContactPage() {
                       <div className="flex justify-start">
                         <div className="
               bg-[#202C33] text-white 
-              px-3 py-2 rounded-lg 
-              max-w-[75%] shadow-md 
+              px-3 py-1 rounded-lg 
+              max-w-[70%] shadow-md 
               whitespace-pre-wrap break-words text-sm
             ">
                           {c.message}
 
-                          <div className="text-[10px] opacity-70 mt-1">
+                          <div className="text-[9px] opacity-70 mt-1">
                             {new Date(c.createdAt).toLocaleTimeString()}
                           </div>
                         </div>
@@ -157,8 +153,6 @@ export default function UserContactPage() {
                 ))
             )}
 
-
-            {/* Typing Indicator */}
             {typing && (
               <div className="text-green-400 text-[10px] md:text-sm animate-pulse">Typing...</div>
             )}
